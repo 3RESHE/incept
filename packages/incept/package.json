@@ -1,0 +1,40 @@
+{
+  "name": "@stackpress/incept",
+  "version": "0.1.0",
+  "license": "MIT",
+  "description": "Idea transformer to Typescript types",
+  "author": "Chris <chris@stackpress.io>",
+  "homepage": "https://github.com/stackpress/incept",
+  "bugs": "https://github.com/stackpress/incept/issues",
+  "repository": "stackpress/incept",
+  "bin": {
+    "incept": "./bin.js"
+  },
+  "scripts": {
+    "build": "tsc"
+  },
+  "main": "index.js",
+  "files": [
+    "dist",
+    "index.js",
+    "index.d.ts",
+    "README.md",
+    "tsconfig.json"
+  ],
+  "dependencies": {},
+  "devDependencies": {
+    "@stackpress/idea-parser": "0.1.8",
+    "@stackpress/idea-transformer": "0.1.8",
+    "@stackpress/incept-assert": "0.1.0",
+    "@stackpress/incept-ts": "0.1.0",
+    "@stackpress/ingest": "0.1.0",
+    "@stackpress/ingest-vercel": "0.1.0",
+    "@stackpress/ink": "0.1.8",
+    "@stackpress/ink-css": "0.1.8",
+    "@stackpress/ink-ui": "0.1.8",
+    "@types/node": "22.7.5",
+    "ts-morph": "23.0.0",
+    "ts-node": "10.9.2",
+    "typescript": "5.6.2"
+  }
+}
