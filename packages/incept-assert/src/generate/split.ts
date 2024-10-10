@@ -10,7 +10,7 @@ import generateUpdate from './update';
 export default function generate(
   source: Directory, 
   filename: string, 
-  output: string, 
+  asserts: string, 
   types: string
 ) {
   //loop through models
@@ -29,7 +29,7 @@ export default function generate(
     //import { ProfileCreateInput, ProfileUpdateInput } from '../profile/types';
     file.addImportDeclaration({
       moduleSpecifier: Loader.relative(
-        model.destination(output),
+        model.destination(asserts),
         model.destination(types)
       ),
       namedImports: [ 
@@ -42,8 +42,8 @@ export default function generate(
       const fieldset = column.fieldset as Fieldset;
       file.addImportDeclaration({
         moduleSpecifier: Loader.relative(
-          model.destination(output),
-          fieldset.destination(output)
+          model.destination(asserts),
+          fieldset.destination(asserts)
         ),
         defaultImport: `* as ${fieldset.camel}`
       });
@@ -68,7 +68,7 @@ export default function generate(
     //import { ProfileCreateInput, ProfileUpdateInput } from '../profile/types';
     file.addImportDeclaration({
       moduleSpecifier: Loader.relative(
-        fieldset.destination(output),
+        fieldset.destination(asserts),
         fieldset.destination(types)
       ),
       namedImports: [ 
@@ -81,8 +81,8 @@ export default function generate(
       const subfieldset = column.fieldset as Fieldset;
       file.addImportDeclaration({
         moduleSpecifier: Loader.relative(
-          fieldset.destination(output),
-          subfieldset.destination(output)
+          fieldset.destination(asserts),
+          subfieldset.destination(asserts)
         ),
         defaultImport: `* as ${subfieldset.camel}`
       });

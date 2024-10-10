@@ -1,12 +1,4 @@
-plugin "@stackpress/incept-ts" {
-  lang "ts"
-  enums "./modules/enums"
-  types "./modules/[name]/types"
-}
-
-plugin "@stackpress/incept-assert" {
-  output "./modules/[name]/assert"
-}
+plugin "@stackpress/incept" {}
 
 //--------------------------------------------------------------------//
 // User System

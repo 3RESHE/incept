@@ -12,14 +12,14 @@ import generateMain from './main';
 //
 // plugin "@stackpress/incept-assert" {
 //   lang "ts"
-//   output "./modules/[name]/assert"
+//   asserts "./modules/[name]/assert"
 // }
 //
 // or 
 //
 // plugin "@stackpress/incept-assert" {
 //   lang "ts"
-//   output "./modules/assert"
+//   asserts "./modules/assert"
 // }
 
 /**
@@ -29,8 +29,8 @@ export default function generate({ config, schema, cli }: PluginWithCLIProps) {
   //we need @stackpress/incept-ts
   if (!schema.plugin?.['@stackpress/incept-ts']) {
     return cli.terminal.error('@stackpress/incept-ts plugin is required');
-  //we need an output path
-  } else if (typeof config.output !== 'string') {
+  //we need an asserts path
+  } else if (typeof config.asserts !== 'string') {
     return cli.terminal.error('Output path is required');
   }
   //short name for @stackpress/incept-ts
@@ -52,36 +52,36 @@ export default function generate({ config, schema, cli }: PluginWithCLIProps) {
     Fieldset.add(schema.type[name]);
   }
 
-  //output "modules/assert"
-  //output "modules/[name]/assert"
-  //output "./modules/assert"
-  //output "./modules/[name]/validators"
-  //output "../modules/validators"
-  //output "../modules/[name]/validators"
-  //output "env(OUTPUT)"
-  const output = ensolute(config.output, cli.cwd);
-  if (typeof output !== 'string') {
+  //asserts "modules/assert"
+  //asserts "modules/[name]/assert"
+  //asserts "./modules/assert"
+  //asserts "./modules/[name]/validators"
+  //asserts "../modules/validators"
+  //asserts "../modules/[name]/validators"
+  //asserts "env(OUTPUT)"
+  const asserts = ensolute(config.asserts, cli.cwd);
+  if (typeof asserts !== 'string') {
     return cli.terminal.error('Output path is invalid');
   }
   
   // /FULL_PATH/modules
-  const dirname = output.includes(`${path.sep}[name]`) 
-    ? output.split(`${path.sep}[name]`)[0]
-    : output.includes('[name]') 
-    ? output.split('[name]')[0]
-    : path.dirname(output);
+  const dirname = asserts.includes(`${path.sep}[name]`) 
+    ? asserts.split(`${path.sep}[name]`)[0]
+    : asserts.includes('[name]') 
+    ? asserts.split('[name]')[0]
+    : path.dirname(asserts);
   //determine outfile
-  const filename = path.extname(output) === '.ts'
+  const filename = path.extname(asserts) === '.ts'
     ? (
-      output.split(dirname)[1].startsWith('/')
+      asserts.split(dirname)[1].startsWith('/')
         //cannot have leading slash (will error)
-        ? output.split(dirname)[1].substring(1)
-        : output.split(dirname)[1]
+        ? asserts.split(dirname)[1].substring(1)
+        : asserts.split(dirname)[1]
     ): (
-      output.split(dirname)[1].startsWith('/')
+      asserts.split(dirname)[1].startsWith('/')
         //cannot have leading slash (will error)
-        ? output.split(dirname)[1].substring(1) + '.ts'
-        : output.split(dirname)[1] + '.ts'
+        ? asserts.split(dirname)[1].substring(1) + '.ts'
+        : asserts.split(dirname)[1] + '.ts'
     );
   //set up the ts-morph project
   const project = new Project({
@@ -100,14 +100,14 @@ export default function generate({ config, schema, cli }: PluginWithCLIProps) {
       indentationText: IndentationText.TwoSpaces
     }
   });
-  //create the output directory if not exists
+  //create the asserts directory if not exists
   const source = project.createDirectory(dirname);
   //check if we need to split types by files 
   //or put it into one singular file
-  if (output.includes('[name]')) {
-    generateSplit(source, filename, output, types);
+  if (asserts.includes('[name]')) {
+    generateSplit(source, filename, asserts, types);
   } else {
-    generateMain(source, filename, output, types);
+    generateMain(source, filename, asserts, types);
   }
   //if you want ts, tsx files
   if ((config.lang || tsConfig.lang || 'ts') == 'ts') {
