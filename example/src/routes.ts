@@ -11,7 +11,8 @@ const routes = (root: string, model: string) => {
   if (process.env.SERVER_ENV === 'development') {
     server.all('/dev.js', path.resolve(__dirname, 'pages/dev'));
     server.all('/__ink_dev__', path.resolve(__dirname, 'pages/dev'));
-    server.all('/build/client/:build', path.resolve(__dirname, 'pages/build'));
+    server.all('/build/client/:build', path.resolve(__dirname, 'pages/dev'));
+    server.all('**', path.resolve(__dirname, 'pages/assets'));
   }
   server.all(`/${root}/${model}/search`, resolve(model, 'search'));
   server.all(`/${root}/${model}/create`, resolve(model, 'create'));

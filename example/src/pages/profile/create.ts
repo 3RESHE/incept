@@ -4,7 +4,7 @@ import type Request from '@stackpress/ingest/dist/payload/Request';
 import type Response from '@stackpress/ingest/dist/payload/Response';
 
 import client from '@stackpress/incept/client';
-import compiler from '../../template';
+import { render } from '../../template';
 
 export default async function ProfileCreate(req: Request, res: Response) {
   if (req.method === 'POST') {
@@ -18,12 +18,12 @@ export default async function ProfileCreate(req: Request, res: Response) {
       if (response.errors) {
         res.errors.set(response.errors);
       }
-      res.body = await compiler.render('@/templates/create.ink', response);
+      res.body = await render('@/templates/create.ink', response);
     } else {
       res.headers.set('Location', `/admin/profile/detail/${response.results?.id}`);
     }
     return;
   }
   res.mimetype = 'text/html';
-  res.body = await compiler.render('@/templates/create.ink', {});
+  res.body = await render('@/templates/create.ink');
 };

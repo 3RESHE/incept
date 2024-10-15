@@ -22,5 +22,12 @@ compiler.use(cache({
   buildPath: build
 }));
 
-export { refresh };
+const render = (filePath: string, props: Record<string, unknown> = {}) => {
+  if (process.env.SERVER_ENV === 'development') {
+    refresh.sync(compiler.fromSource(filePath));
+  }
+  return compiler.render(filePath, props);
+};
+
+export { refresh, render };
 export default compiler;

@@ -1,5 +1,7 @@
 <link rel="import" type="template" href="@stackpress/incept/components/theme/head.ink" name="html-head" />
 <link rel="import" type="component" href="@stackpress/ink-ui/layout/panel.ink" name="panel-layout" />
+<link rel="import" type="component" href="@/components/app-head.ink" name="app-head" />
+<link rel="import" type="component" href="@/components/app-left.ink" name="app-left" />
 <style>
   @ink theme;
   @ink reset;
@@ -15,10 +17,10 @@
 </script>
 <html>
   <html-head />
-  <body>
+  <body class="dark bg-t-0 tx-t-1">
     <panel-layout>
-      <header></header>
-      <aside left>Add Menu</aside>
+      <header><app-head /></header>
+      <aside left><app-left /></aside>
       <main>
         <h1>Profile Creation</h1>
         <form action="/profile/create" method="post">

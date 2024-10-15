@@ -2,7 +2,7 @@ import type Request from '@stackpress/ingest/dist/payload/Request';
 import type Response from '@stackpress/ingest/dist/payload/Response';
 
 import client from '@stackpress/incept/client';
-import compiler from '../../template';
+import { render } from '../../template';
 
 const error = '@stackpress/incept/components/theme/error.ink';
 
@@ -30,7 +30,7 @@ export default async function ProfileSearch(req: Request, res: Response) {
 
   if (response.code === 200) {
     res.mimetype = 'text/html';
-    res.body = await compiler.render('@/templates/search.ink', { 
+    res.body = await render('@/templates/search.ink', { 
       filter, 
       span, 
       sort, 
@@ -42,5 +42,5 @@ export default async function ProfileSearch(req: Request, res: Response) {
   }
 
   res.mimetype = 'text/html';
-  res.body = await compiler.render(error, response);
+  res.body = await render(error, response);
 };
