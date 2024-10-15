@@ -1,3 +1,3 @@
-module.exports = {
-  ...require('./dist/index')
-}
+const generator = require('./dist/index');
+module.exports = generator.default
+Object.assign(module.exports, generator);

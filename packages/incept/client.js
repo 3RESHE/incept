@@ -1,3 +1,1 @@
-module.exports = {
-  ...require('@stackpress/.incept/index')
-}
+Object.assign(exports, require('@stackpress/.incept/index'));

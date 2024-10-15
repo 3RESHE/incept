@@ -11,10 +11,14 @@
     "incept": "./bin.js"
   },
   "scripts": {
-    "build": "tsc"
+    "build": "yarn build:ts && yarn build:mv:components && yarn build:cp:components",
+    "build:ts": "tsc",
+    "build:mv:components": "rimraf ./components && mv ./dist/components .",
+    "build:cp:components": "copyfiles -u 2 ./src/components/**/*.ink ./components"
   },
   "main": "index.js",
   "files": [
+    "components",
     "dist",
     "index.js",
     "index.d.ts",
@@ -23,16 +27,15 @@
   ],
   "dependencies": {},
   "devDependencies": {
-    "@stackpress/idea-parser": "0.1.8",
-    "@stackpress/idea-transformer": "0.1.8",
-    "@stackpress/incept-assert": "0.1.0",
-    "@stackpress/incept-ts": "0.1.0",
-    "@stackpress/ingest": "0.1.0",
-    "@stackpress/ingest-vercel": "0.1.0",
-    "@stackpress/ink": "0.1.8",
-    "@stackpress/ink-css": "0.1.8",
-    "@stackpress/ink-ui": "0.1.8",
+    "@stackpress/idea-parser": "0.1.9",
+    "@stackpress/idea-transformer": "0.1.9",
+    "@stackpress/ingest": "0.1.3",
+    "@stackpress/ink": "0.1.10",
+    "@stackpress/ink-css": "0.1.10",
+    "@stackpress/ink-ui": "0.1.10",
     "@types/node": "22.7.5",
+    "copyfiles": "2.4.1",
+    "rimraf": "6.0.1",
     "ts-morph": "23.0.0",
     "ts-node": "10.9.2",
     "typescript": "5.6.2"

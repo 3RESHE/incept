@@ -130,4 +130,6 @@ dist
 .pnp.*
 
 .DS_Store
-example/modules
+example/build
+archives
+packages/incept/components

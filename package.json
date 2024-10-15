@@ -5,12 +5,10 @@
     "packages/*"
   ],
   "scripts": {
+    "dev": "yarn --cwd example dev",
     "incept": "yarn --cwd example incept",
-    "build": "yarn build:spec && yarn build:ts && yarn build:assert && yarn build:incept",
-    "build:incept": "yarn --cwd packages/incept build",
-    "build:assert": "yarn --cwd packages/incept-assert build",
-    "build:spec": "yarn --cwd packages/incept-spec build",
-    "build:ts": "yarn --cwd packages/incept-ts build"
+    "build": "yarn build:incept",
+    "build:incept": "yarn --cwd packages/incept build"
   },
   "devDependencies": {
     "npm-run-all": "4.1.5"
