@@ -1,7 +1,7 @@
-<link rel="import" type="template" href="@stackpress/incept/components/theme/head.ink" name="html-head" />
-<link rel="import" type="component" href="@stackpress/ink-ui/layout/panel.ink" name="panel-layout" />
-<link rel="import" type="component" href="@/components/app-head.ink" name="app-head" />
-<link rel="import" type="component" href="@/components/app-left.ink" name="app-left" />
+<link rel="import" type="template" href="@stackpress/incept-admin/theme/head.ink" name="html-head" />
+<link rel="import" type="component" href="@stackpress/ink-ui/element/crumbs.ink" name="element-crumbs" />
+<link rel="import" type="component" href="@stackpress/.incept/Profile/form.ink" name="profile-form" />
+<link rel="import" type="component" href="@/components/app.ink" name="admin-app" />
 <style>
   @ink theme;
   @ink reset;
@@ -9,31 +9,39 @@
   @ink utilities;
 </style>
 <script>
-  import { env } from '@stackpress/ink';
-  import { _ } from '@stackpress/incept/components/i18n';
+  import { env, props } from '@stackpress/ink';
+  import { _ } from '@stackpress/incept-i18n';
 
   const url = '/ink/index.html';
   const title = _('Create Profile');
+
+  const crumbs = [
+    { icon: 'home', label: 'Home', href: '/ink/index.html' },
+    { icon: 'book', label: 'Docs' }
+  ];
+
+  const { errors = {} } = props('document');
+
+  const data = { name: 'John Doe' };
 </script>
 <html>
   <html-head />
-  <body class="dark bg-t-0 tx-t-1">
-    <panel-layout>
-      <header><app-head /></header>
-      <aside left><app-left /></aside>
-      <main>
-        <h1>Profile Creation</h1>
-        <form action="/profile/create" method="post">
-          <label for="name">Name:</label>
-          <input type="text" id="name" name="name" required />
-          <label for="email">Email:</label>
-          <input type="email" id="email" name="email" required />
-          <label for="password">Password:</label>
-          <input type="password" id="password" name="password" required />
-          <button type="submit">Create Profile</button>
-        </form>
-      </main>
-    </panel-layout>
-    
+  <body class="dark bg-t-0 tx-t-1 tx-arial">
+    <admin-app {url} {title}>
+      <header class="p-10 bg-t-1">
+        <element-crumbs 
+          crumbs={crumbs} 
+          block 
+          bold 
+          white 
+          underline
+          icon-muted
+          link-primary
+          spacing={2}
+        />
+      </header>
+      <h1>Profile Creation</h1>
+      <profile-form {data} {errors} action="/admin/profile/create" />
+    </admin-app>
   </body>
 </html>

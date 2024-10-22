@@ -1,0 +1,37 @@
+{
+  "name": "@stackpress/incept-admin",
+  "version": "0.1.0",
+  "license": "MIT",
+  "description": "This package manages the theme of the admin in an Incept app.",
+  "author": "Chris <chris@stackpress.io>",
+  "homepage": "https://github.com/stackpress/incept",
+  "bugs": "https://github.com/stackpress/incept/issues",
+  "repository": "stackpress/incept",
+  "scripts": {
+    "build": "yarn build:ts && yarn build:ink",
+    "build:ts": "tsc",
+    "build:ink": "copyfiles -u 1 ./src/**/*.ink ./dist"
+  },
+  "main": "index.js",
+  "files": [
+    "dist",
+    "index.js",
+    "index.d.ts",
+    "LICENSE",
+    "README.md",
+    "tsconfig.json"
+  ],
+  "dependencies": {},
+  "devDependencies": {
+    "@stackpress/incept-spec": "0.1.0",
+    "@stackpress/ink": "0.1.11",
+    "@stackpress/ink-css": "0.1.11",
+    "@stackpress/ink-ui": "0.1.11",
+    "@types/node": "22.7.5",
+    "copyfiles": "2.4.1",
+    "rimraf": "6.0.1",
+    "ts-morph": "23.0.0",
+    "ts-node": "10.9.2",
+    "typescript": "5.6.2"
+  }
+}

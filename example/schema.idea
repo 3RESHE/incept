@@ -1,4 +1,4 @@
-plugin "@stackpress/incept" {}
+plugin "@stackpress/incept/idea" {}
 
 //--------------------------------------------------------------------//
 // User System
@@ -52,8 +52,8 @@ model Profile @label("User" "Users") {
   files       File[]    @label("Files")
   
   tags        String[]  @label("Tags") 
-                        @field.tags
-                        @view.tags
+                        @field.taglist
+                        @view.taglist
   
   references  Hash?     @label("References") 
                         @field.metadata

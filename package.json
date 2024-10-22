@@ -7,8 +7,20 @@
   "scripts": {
     "dev": "yarn --cwd example dev",
     "incept": "yarn --cwd example incept",
-    "build": "yarn build:incept",
-    "build:incept": "yarn --cwd packages/incept build"
+    "build": "yarn build:generators && yarn build:plugins",
+    "build:generators": "yarn build:spec && yarn build:types && yarn build:assert && yarn build:drizzle && yarn build:ink && yarn build:incept",
+    "build:spec": "yarn --cwd packages/incept-spec build",
+    "build:types": "yarn --cwd packages/incept-types build",
+    "build:assert": "yarn --cwd packages/incept-assert build",
+    "build:drizzle": "yarn --cwd packages/incept-drizzle build",
+    "build:ink": "yarn --cwd packages/incept-ink build",
+    "build:incept": "yarn --cwd packages/incept build",
+    "build:plugins": "yarn build:i18n && yarn build:session && yarn build:admin",
+    "build:i18n": "yarn --cwd packages/incept-i18n build",
+    "build:session": "yarn --cwd packages/incept-session build",
+    "build:admin": "yarn --cwd packages/incept-admin build",
+    "push": "yarn --cwd example push",
+    "migrate": "yarn --cwd example migrate"
   },
   "devDependencies": {
     "npm-run-all": "4.1.5"

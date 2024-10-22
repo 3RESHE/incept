@@ -4,7 +4,7 @@ import type Request from '@stackpress/ingest/dist/payload/Request';
 import type Response from '@stackpress/ingest/dist/payload/Response';
 
 import client from '@stackpress/incept/client';
-import { render } from '../../template';
+import { render } from '../../boot';
 
 const error = '@stackpress/incept/components/theme/error.ink';
 

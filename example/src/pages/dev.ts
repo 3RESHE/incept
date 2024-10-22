@@ -2,7 +2,7 @@ import type { IM, SR } from '@stackpress/ingest/dist/http';
 import type Request from '@stackpress/ingest/dist/payload/Request';
 import type Response from '@stackpress/ingest/dist/payload/Response';
 
-import compiler, { refresh } from '../template';
+import { compiler, refresh } from '../boot';
 
 export default async function InkDevelop(req: Request<IM>, res: Response<SR>) {
   if (req.url.pathname.startsWith('/build/client/')) {
