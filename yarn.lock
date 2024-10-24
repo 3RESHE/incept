@@ -7,11 +7,6 @@
   resolved "https://registry.yarnpkg.com/@adraffy/ens-normalize/-/ens-normalize-1.10.1.tgz#63430d04bd8c5e74f8d7d049338f1cd9d4f02069"
   integrity sha512-96Z2IP3mYmF1Xg2cDm8f1gWGf/HUVedQ3FMifV4kG/PQ4yEP51xDtRAEfhVNt5f/uzpNkZHwWQuUcu6D6K+Ekw==
 
-"@blanquera/types@1.0.2":
-  version "1.0.2"
-  resolved "https://registry.yarnpkg.com/@blanquera/types/-/types-1.0.2.tgz#22126dd03fbd7ae4495370b1b8c7aebfe4e47ac1"
-  integrity sha512-oFGYwb6yuhjgHlVhzGm6uVAlnRMlX3PVrJawGtArIf0Rar6glqqKaAS3Sj7v5nuu0qyv2SEVzztwucyws5WvjA==
-
 "@codexteam/icons@^0.0.4":
   version "0.0.4"
   resolved "https://registry.yarnpkg.com/@codexteam/icons/-/icons-0.0.4.tgz#8b72dcd3f3a1b0d880bdceb2abebd74b46d3ae13"
@@ -526,12 +521,12 @@
   dependencies:
     "@stackpress/idea-parser" "0.1.9"
 
-"@stackpress/ingest-vercel@0.1.6":
-  version "0.1.6"
-  resolved "https://registry.yarnpkg.com/@stackpress/ingest-vercel/-/ingest-vercel-0.1.6.tgz#465c2ecb72c4df468f62768d533a3bb6dad5c564"
-  integrity sha512-daTuxkMwByADBFu1H7a4uwJDEcoCNXMHRleTE0NNHMIPZUm4hameU0TLl3BPxCqpoIxGvPfKgvR3CXKEAB1dNA==
+"@stackpress/ingest-vercel@0.1.7":
+  version "0.1.7"
+  resolved "https://registry.yarnpkg.com/@stackpress/ingest-vercel/-/ingest-vercel-0.1.7.tgz#d33993105c0b0c3a46f4c1af82b591a78cbb0cb2"
+  integrity sha512-ap6N7QBvFA6tHtbrFdPHGnFtNjEnUr8uFx0pe6ZtZl1MuPJeEdi/8ly6wrxzUKMycJWCwUa2WAE1khyT3FEkrA==
   dependencies:
-    "@stackpress/ingest" "0.1.6"
+    "@stackpress/ingest" "0.1.7"
     cookie "0.7.0"
 
 "@stackpress/ingest@0.1.6":
@@ -541,34 +536,39 @@
   dependencies:
     cookie "0.7.0"
 
-"@stackpress/ink-css@0.1.11":
-  version "0.1.11"
-  resolved "https://registry.yarnpkg.com/@stackpress/ink-css/-/ink-css-0.1.11.tgz#263624243ab7a20f2bf63dc2e8734864cd3e1c21"
-  integrity sha512-FtRwjVeKk7+HPS4CBdmiP6JAneGeVV1DTYpGjgFctWprMRH0jaHxRXcfyVKJr9z8OJORF4afGhg1V+NFE0MVNw==
+"@stackpress/ingest@0.1.7":
+  version "0.1.7"
+  resolved "https://registry.yarnpkg.com/@stackpress/ingest/-/ingest-0.1.7.tgz#96b612a6058638cfaf9d6756939d3de9454062cc"
+  integrity sha512-92ysxN7dgjIKK+rWrxswQ9cm6Ul3W6bc6Fyzz2ItdyQdrFgm2HJXpO/bczjvfDM8lH66qZywQ5qdiK0DABN9ZQ==
   dependencies:
-    "@stackpress/ink" "0.1.11"
+    cookie "0.7.0"
 
-"@stackpress/ink-dev@0.1.11":
-  version "0.1.11"
-  resolved "https://registry.yarnpkg.com/@stackpress/ink-dev/-/ink-dev-0.1.11.tgz#bcfbe78311b882ef5afaf9bb7b635a6e964edf5a"
-  integrity sha512-p+FN3VqSeXYYM70bbY8mYV5KE5IQco1nTp+GzGc2hcD/8T6Phn5CpvJyPAQP9q3MNbNdSlMzOYUByOEShIRBig==
+"@stackpress/ink-css@0.1.12":
+  version "0.1.12"
+  resolved "https://registry.yarnpkg.com/@stackpress/ink-css/-/ink-css-0.1.12.tgz#3e8c7a78d164b1eec4461f0949c531068d781102"
+  integrity sha512-pw2Syr9xCajBvAfnJKU1SfbsLlYUtp7EixZ0tZRLI3woxmFduMHO5CHxfsSHvbl1FZ6N84rVmD3Ky3S0DefDcg==
   dependencies:
-    "@blanquera/types" "1.0.2"
-    "@stackpress/ink" "0.1.11"
+    "@stackpress/ink" "0.1.12"
+
+"@stackpress/ink-dev@0.1.12":
+  version "0.1.12"
+  resolved "https://registry.yarnpkg.com/@stackpress/ink-dev/-/ink-dev-0.1.12.tgz#8f31145cf15be4dd6e91e67fa3b036279106d029"
+  integrity sha512-wwZNwP2AuuHFdwVTT7mALNn0n/0aLz/TIr65n9Zp95hNqvQRVAuHg5Fq0b///t1hNYpY1E1m+vauqK7MdTBcFg==
+  dependencies:
+    "@stackpress/ink" "0.1.12"
     chokidar "3.6.0"
-    ws "8.17.0"
 
-"@stackpress/ink-ui@0.1.10":
-  version "0.1.10"
-  resolved "https://registry.yarnpkg.com/@stackpress/ink-ui/-/ink-ui-0.1.10.tgz#c7fe95170c7fdda5f3e53797445c31ce86b041f9"
-  integrity sha512-ZggFzi31Gwd8d0EYAifEq60L4IGOwmQ1iuQIciG57n+rWmxL3DQvjCZI+BLzskbsGKF8nBwfC14S2ZvZmo6Pdg==
+"@stackpress/ink-ui@0.1.12":
+  version "0.1.12"
+  resolved "https://registry.yarnpkg.com/@stackpress/ink-ui/-/ink-ui-0.1.12.tgz#54e515359f1f02119b7b81274ca1b9849b219735"
+  integrity sha512-TAhkC+skfTxS9HNTBR7X19Dc737iOgF+pYy/CzOWsb/b2E2MDOsr+QUz89WDpLOHl9VBEj9ibU163HLq9Go/Ig==
   dependencies:
     "@editorjs/editorjs" "2.30.6"
     "@editorjs/header" "2.8.7"
     "@editorjs/image" "2.9.3"
     "@editorjs/list" "1.10.0"
     "@editorjs/paragraph" "2.11.6"
-    "@stackpress/ink" "0.1.10"
+    "@stackpress/ink" "0.1.12"
     codemirror "5.65.17"
     dayjs "1.11.13"
     dompurify "3.1.6"
@@ -577,38 +577,10 @@
     prismjs "1.29.0"
     suneditor "2.47.0"
 
-"@stackpress/ink-ui@0.1.11":
-  version "0.1.11"
-  resolved "https://registry.yarnpkg.com/@stackpress/ink-ui/-/ink-ui-0.1.11.tgz#eb4151e784d31e759f756d1d34228f43272326d8"
-  integrity sha512-b13bOSPsPOt6cClR4zPSp9G3XyPs0euHKj9RngjqPLzEKUM/AXtTH0HKlgmS8G7cQWgPuO5t/iTuGDRfTIBdCw==
-  dependencies:
-    "@editorjs/editorjs" "2.30.6"
-    "@editorjs/header" "2.8.7"
-    "@editorjs/image" "2.9.3"
-    "@editorjs/list" "1.10.0"
-    "@editorjs/paragraph" "2.11.6"
-    "@stackpress/ink" "0.1.11"
-    codemirror "5.65.17"
-    dayjs "1.11.13"
-    dompurify "3.1.6"
-    inputmask "5.0.9"
-    marked "14.1.2"
-    prismjs "1.29.0"
-    suneditor "2.47.0"
-
-"@stackpress/ink@0.1.10":
-  version "0.1.10"
-  resolved "https://registry.yarnpkg.com/@stackpress/ink/-/ink-0.1.10.tgz#c2e1469938164eedac1518725d55f38e34274049"
-  integrity sha512-Io2uQMrhBzRXVCaYzN2JeU5bDhEl8ZNfkceABM6YmVez3O+9/CIfMwgmufVpfRNNk3PKqQeiL0/T9pTSISMPvw==
-  dependencies:
-    esbuild "0.24.0"
-    ts-morph "23.0.0"
-    typescript "5.6.2"
-
-"@stackpress/ink@0.1.11":
-  version "0.1.11"
-  resolved "https://registry.yarnpkg.com/@stackpress/ink/-/ink-0.1.11.tgz#f68a60361f1a315eb30dd49e8cb0750af995af1d"
-  integrity sha512-TXiKBPSExyGSecQzDioc6JnBBF2TN/hJTGCbCEbZr4Bo4a3dvSUcr9TqKF7v8nVhMOQkzBa7vVh999C8EO5nxw==
+"@stackpress/ink@0.1.12":
+  version "0.1.12"
+  resolved "https://registry.yarnpkg.com/@stackpress/ink/-/ink-0.1.12.tgz#3f13dc1764f2ac42bae4f406aa806da7de899b06"
+  integrity sha512-5HPbbCyfUcsQ5ScmSnAZVE0Y4tmkA+MWoXmtwhhroVAEu3zCRo/7kOQCfU4i1U6aLD3axIzZ1Upue0cXkPIY+A==
   dependencies:
     esbuild "0.24.0"
     ts-morph "23.0.0"
@@ -2928,11 +2900,6 @@ wrappy@1:
   version "1.0.2"
   resolved "https://registry.yarnpkg.com/wrappy/-/wrappy-1.0.2.tgz#b5243d8f3ec1aa35f1364605bc0d1036e30ab69f"
   integrity sha512-l4Sp/DRseor9wL6EvV2+TuQn63dMkPjZ/sp9XkghTEbV9KlPS1xUsZ3u7/IQO4wxtcFB4bgpQPRcR3QCvezPcQ==
-
-ws@8.17.0:
-  version "8.17.0"
-  resolved "https://registry.yarnpkg.com/ws/-/ws-8.17.0.tgz#d145d18eca2ed25aaf791a183903f7be5e295fea"
-  integrity sha512-uJq6108EgZMAl20KagGkzCKfMEjxmKvZHG7Tlq0Z6nOky7YF7aq4mOx6xK8TJ/i1LeK4Qus7INktacctDgY8Ow==
 
 ws@8.17.1:
   version "8.17.1"

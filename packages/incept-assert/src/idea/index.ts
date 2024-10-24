@@ -31,7 +31,7 @@ export default function generate(directory: Directory, registry: Registry) {
       const fieldset = column.fieldset as Fieldset;
       source.addImportDeclaration({
         moduleSpecifier: `../${fieldset.name}/assert`,
-        defaultImport: `* as ${fieldset.name}`
+        defaultImport: `* as ${fieldset.camel}`
       });
     })
     //generate the model
@@ -46,8 +46,8 @@ export default function generate(directory: Directory, registry: Registry) {
     const source = directory.createSourceFile(file, '', { overwrite: true });
     //import { assert } from '@stackpress/incept/dist/assert';
     source.addImportDeclaration({
-      moduleSpecifier: '@stackpress/incept/dist/assert',
-      namedImports: [ 'assert' ]
+      moduleSpecifier: '@stackpress/incept-assert/dist/assert',
+      defaultImport: 'assert'
     });
     //import { ProfileInput } from '../profile/types';
     source.addImportDeclaration({
@@ -59,7 +59,7 @@ export default function generate(directory: Directory, registry: Registry) {
       const fieldset = column.fieldset as Fieldset;
       source.addImportDeclaration({
         moduleSpecifier: `../${fieldset.name}/assert`,
-        defaultImport: `* as ${fieldset.name}`
+        defaultImport: `* as ${fieldset.camel}`
       });
     })
     //generate the fieldset

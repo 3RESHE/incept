@@ -24,9 +24,9 @@
   "dependencies": {},
   "devDependencies": {
     "@stackpress/incept-spec": "0.1.0",
-    "@stackpress/ink": "0.1.11",
-    "@stackpress/ink-css": "0.1.11",
-    "@stackpress/ink-ui": "0.1.11",
+    "@stackpress/ink": "0.1.12",
+    "@stackpress/ink-css": "0.1.12",
+    "@stackpress/ink-ui": "0.1.12",
     "@types/node": "22.7.5",
     "ts-morph": "23.0.0",
     "ts-node": "10.9.2",

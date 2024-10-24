@@ -62,11 +62,11 @@ export function body(fieldset: Fieldset) {
         return `
           if (typeof input.${column.name} !== 'undefined') {
             //check ${column.name}
-            errors.${fieldset.camel} = input.${column.name}.map(${
+            errors.${column.name} = input.${column.name}.map(${
               fieldset.camel
             }.create).filter(Boolean);
-            if (errors.${fieldset.camel}.length === 0) {
-              delete errors.${fieldset.camel};
+            if (errors.${column.name}.length === 0) {
+              delete errors.${column.name};
             }
           }
         `.trim();

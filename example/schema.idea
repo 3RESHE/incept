@@ -48,16 +48,21 @@ model Profile @label("User" "Users") {
                         @view.tags
   
   address     Address   @label("Address") 
+                        @field.fieldset
 
   files       File[]    @label("Files")
+                        @field.fieldset
+                        @default("[]")
   
   tags        String[]  @label("Tags") 
                         @field.taglist
                         @view.taglist
+                        @default("[]")
   
   references  Hash?     @label("References") 
                         @field.metadata
                         @view.metadata
+                        @default("{}")
   
   active      Boolean   @label("Active") 
                         @default(true) @filterable
@@ -204,8 +209,8 @@ type File {
                      @view.link
   
   tags      String[] @label("Tags") 
-                     @field.tags
-                     @view.tags
+                     @field.taglist
+                     @view.taglist
 }
 
 //--------------------------------------------------------------------//

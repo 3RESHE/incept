@@ -97,7 +97,10 @@ export default class Column {
       }
     }
     // - required
-    if (this.required && typeof this.attributes.default === 'undefined') {
+    if (!this.multiple 
+      && this.required 
+      && typeof this.attributes.default === 'undefined'
+    ) {
       if (!assertions.find(v => v.method === 'required')) {
         assertions.unshift({ 
           method: 'required', 
@@ -415,8 +418,8 @@ export default class Column {
     this._fieldset = fieldset;
     this.type = info.type;
     this.name = info.name;
-    this.required = info.required;
     this.multiple = info.multiple;
+    this.required = info.required;
     this.attributes = new Attributes(
       Object.entries(info.attributes)
     );

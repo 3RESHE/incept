@@ -6,7 +6,7 @@ export default defineConfig({
   schema: '../node_modules/@stackpress/incept-drizzle/schema.d.ts',
   driver: 'pglite',
   dbCredentials: {
-    url: './build/datanase/'//process.env.DATABASE_URL as string,
+    url: process.env.DATABASE_URL as string,
   },
   extensionsFilters: ['postgis'],
   schemaFilter: 'public',

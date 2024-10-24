@@ -8,11 +8,9 @@ import { formatCode } from '@stackpress/incept-spec/dist/helpers';
 
 export default function generate(source: SourceFile, config: Config) {
   //import { PGlite } from '@electric-sql/pglite';
-  
-  //import { Pool } from 'pg';
   source.addImportDeclaration({
-    moduleSpecifier: 'pg',
-    namedImports: [ 'Pool' ]
+    moduleSpecifier: '@electric-sql/pglite',
+    namedImports: [ 'PGlite' ]
   });
   //import * as core from 'drizzle-orm/pg-core';
   source.addImportDeclaration({
@@ -37,7 +35,11 @@ export default function generate(source: SourceFile, config: Config) {
     declarationKind: VariableDeclarationKind.Const,
     declarations: [{
       name: 'resource',
-      initializer: formatCode(`resourceGlobal.resource || new PGlite()`)
+      initializer: formatCode(`resourceGlobal.resource || new PGlite(${
+        config.url.type === 'env' 
+        ? `process.env.${config.url.value} as string`
+        : `'${config.url.value}'`
+      })`)
     }]
   });
   //const db = orm.drizzle(resource, { schema });

@@ -30,7 +30,7 @@ export default function generate({ config, schema, cli }: PluginWithCLIProps) {
   //determine url
   const url = enval<string>(config.url || 'env(DATABASE_URL)');
   //determine engine
-  const engine = enval<string>(config.engine || 'pg');
+  const engine = enval<string>(config.engine || 'pglite');
   
   //-----------------------------//
   // 2. Registry

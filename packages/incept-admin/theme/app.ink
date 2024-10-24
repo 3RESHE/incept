@@ -1,9 +1,13 @@
 <link rel="import" type="component" href="@stackpress/ink-ui/element/icon.ink" name="element-icon" />
+<link rel="import" type="component" href="@stackpress/ink-ui/element/notify.ink" name="element-notify" />
 <script>
   import Cookies from 'js-cookie';
 
   const { 
     url, 
+    code, 
+    status,
+    errors = {},
     brand = 'Admin', 
     logo = '/images/incept-logo-square-1.png'
   } = this.props;
@@ -153,6 +157,23 @@
       show.right ? 'lg-right-200' : 'lg-right-0'
     ].join(' ')
   };
+
+  const notify = () => {
+    //get notifier
+    const notifier = document.querySelector('element-notify');
+    //check if notifier exists
+    if (!notifier) return;
+    //check if there are errors
+    if (Object.keys(errors).length > 0) {
+      for (const key in errors) {
+        if (typeof errors[key] === 'string') {
+          notifier.notify('error', errors[key]);
+        }
+      }
+    } else if (code !== 200) {
+      notifier.notify('error', status);
+    }
+  };
 </script>
 <header class={className.head}>
   <menu class="h-full flex flex-center-y px-10 m-0 bg-t-2">
@@ -199,4 +220,5 @@
     </a>
   </main>
 </aside>
-<main class={className.main}>{children}</main>
+<main class={className.main} mount=notify>{children}</main>
+<element-notify />

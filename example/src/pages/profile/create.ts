@@ -23,7 +23,7 @@ export default async function ProfileCreate(req: Request, res: Response) {
         res.errors.set(response.errors);
       }
       res.mimetype = 'text/html';
-      res.body = await render('@/templates/create.ink', response);
+      res.body = await render('@/templates/create.ink', { ...response, input });
     } else {
       res.headers.set('Location', `/admin/profile/detail/${response.results?.id}`);
     }

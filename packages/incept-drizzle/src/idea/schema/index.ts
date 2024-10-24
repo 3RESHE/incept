@@ -114,7 +114,7 @@ export default function generate(
     //import { mysqlTable as table, int as integer, mysqlEnum, uniqueIndex, varchar, serial } from 'drizzle-orm/mysql-core';
     //...or...
     //import { sqliteTable as table, integer, text, uniqueIndex } from 'drizzle-orm/sqlite-core';
-    if (['neon', 'xata', 'postgres', 'pg', 'vercel'].includes(engine)) {
+    if (['neon', 'xata', 'postgres', 'pg', 'pglite', 'vercel'].includes(engine)) {
       source.addImportDeclaration({
         moduleSpecifier: 'drizzle-orm/pg-core',
         namedImports: ['pgTable as table', ...methods]
