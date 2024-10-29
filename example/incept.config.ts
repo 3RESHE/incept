@@ -117,7 +117,13 @@ export const access = {
   ]
 };
 
+export const dev = {
+  buildRoute: '/build/client',
+  socketRoute: '/__ink_dev__'
+}
+
 export const admin = {
+  root: '/admin',
   menu: [
     {
       name: 'Auths',

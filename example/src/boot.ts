@@ -1,19 +1,19 @@
 // NOTE: Keep it short. Keep it brief. This boot is loaded per request.
 import path from 'path';
-import { access, admin, languages } from '../incept.config';
+import * as config from '../incept.config';
 
 //--------------------------------------------------------------------//
 // i18n Setup
 
 import { i18n } from '@stackpress/incept-i18n';
-i18n.languages = languages;
+i18n.languages = config.languages;
 
 //--------------------------------------------------------------------//
 // Session Setup
 
 import { Session } from '@stackpress/incept-session';
 const seed = process.env.SESSION_SEED as string || 'default';
-const session = new Session(seed, access);
+const session = new Session(seed, config.access);
 
 //--------------------------------------------------------------------//
 // Ink Setup
@@ -46,4 +46,4 @@ const render = function(filePath: string, props: Record<string, unknown> = {}) {
   return compiler.render(filePath, props);
 };
 
-export { i18n, session, compiler, refresh, render, admin };
+export { i18n, session, compiler, refresh, render, config };

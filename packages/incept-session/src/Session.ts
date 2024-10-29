@@ -4,7 +4,7 @@ import type { JwtPayload } from 'jsonwebtoken';
 import type { PermissionList, SessionData } from './types';
 
 import jwt from 'jsonwebtoken';
-import Exception from './Exception';
+import Exception from '@stackpress/incept-spec/dist/Exception';
 
 /**
  * Used to get session data from tokens and check permissions

@@ -23,10 +23,7 @@ export default function generate({ config, schema, cli }: PluginWithCLIProps) {
   //-----------------------------//
   // 1. Config
   const client = Loader.absolute('@stackpress/.incept', cli.cwd);
-
   const lang = config.lang || 'js';
-  //const admin = config.admin || '/admin/';
-
   //determine url
   const url = enval<string>(config.url || 'env(DATABASE_URL)');
   //determine engine
@@ -60,7 +57,7 @@ export default function generate({ config, schema, cli }: PluginWithCLIProps) {
   
   //-----------------------------//
   // 4. Generators
-  generateConfig(directory, config);
+  generateConfig(directory, schema);
   generateTypes(directory, registry);
   generateAssert(directory, registry);
   generateDrizzle(directory, registry, { url, engine });

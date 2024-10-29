@@ -1,5 +1,4 @@
 export type * from './types';
-import Exception from './Exception';
 import {
   toResponse,
   toErrorResponse,
@@ -11,7 +10,6 @@ import {
 } from './helpers';
 
 export {
-  Exception,
   toResponse,
   toErrorResponse,
   toSqlString,

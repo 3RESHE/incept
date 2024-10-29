@@ -1,4 +1,4 @@
-import { Exception } from '@stackpress/idea-parser';
+import Exception from './Exception';
 
 /**
  * Wraps any errors or exceptions in a reponse payload. 
@@ -8,20 +8,11 @@ import { Exception } from '@stackpress/idea-parser';
  * Example: `await prisma.create().catch(errorToResponse)`
  */
 export function toErrorResponse(e: Error|Exception, code = 400) {
-  if (e.constructor.name === 'Exception') {
-    const exception = e as Exception;
-    return exception.toResponse();
+  if (!(e instanceof Exception)) {
+    e = Exception.upgrade(e, code);
   }
-  const status = e.message;
-  const payload: {
-    code: number;
-    status: string;
-    errors?: Record<string, string|string[]>;
-  } = { code, status };
-  if (e instanceof Exception) {
-    payload.errors = e.errors;
-  }
-  return payload;
+  const error = e as Exception;
+  return error.toResponse();
 };
 
 /**
@@ -71,7 +62,7 @@ export function toSqlBoolean<
  * Formats an inputted value to an acceptable SQL date string
  */
 export function toSqlDate<
-  Strict = string|null|undefined
+  Strict = Date|null|undefined
 >(value: any, strict = false): Strict {
   if (!strict) {
     if (typeof value === 'undefined') {
@@ -81,25 +72,14 @@ export function toSqlDate<
     }
   }
   
-  let date = value instanceof Date? value: new Date(value);
+  let date = value instanceof Date ? value : new Date(value);
   //if invalid date
   if (isNaN(date.getTime())) {
     //soft error
     date = new Date(0);
   }
 
-  const format = {
-    year: String(date.getFullYear()),
-    month: String(date.getMonth() + 1).padStart(2, '0'),
-    day: String(date.getDate()).padStart(2, '0'),
-    hour: String(date.getHours() % 12).padStart(2, '0'),
-    min: String(date.getMinutes()).padStart(2, '0'),
-    sec: String(date.getSeconds()).padStart(2, '0')
-  };
-  return [
-    `${format.year}-${format.month}-${format.day}`,
-    `${format.hour}:${format.min}:${format.sec}`
-  ].join(' ') as Strict;
+  return date as Strict;
 }
 
 /**

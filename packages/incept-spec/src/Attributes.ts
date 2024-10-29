@@ -99,10 +99,29 @@ export default class Attributes extends Map<string, unknown> {
   }
 
   /**
-   * Returns true if column is @filterable
+   * Returns the column filter field (defaults to none)
+   * example: @filter.text({type "text"})
    */
-  public get filterable() {
-    return this.get('filterable') === true;
+  public get filter(): Component {
+    for (const name of this.keys()) {
+      if (!name.startsWith('filter.')) {
+        continue;
+      }
+      //we found it.
+      const field = this.get(name);
+      //get the method
+      const method = name.replace('filter.', '');
+      //get the arguments
+      const args = Array.isArray(field)? field as Data[]: [];
+      //the first argument is the field attributes
+      const attributes = typeof args[0] === 'object' 
+        ? (args[0] || {}) as Record<string, Data>
+        : {};
+     
+      return { method, args, attributes };
+    }
+
+    return { method: 'none', args: [], attributes: {} };
   }
 
   /**
@@ -135,7 +154,10 @@ export default class Attributes extends Map<string, unknown> {
    * Returns true if column is @filterable, @searchable, or @sortable
    */
   public get indexable() {
-    return this.searchable || this.filterable || this.spanable || this.sortable;
+    return this.searchable 
+      || this.filter.method !== 'none'
+      || this.span.method !== 'none'
+      || this.sortable;
   }
 
   /**
@@ -235,32 +257,6 @@ export default class Attributes extends Map<string, unknown> {
   }
 
   /**
-   * Returns the column @step
-   * example: @step(0.01)
-   */
-  public get step() {
-    const step = this.get('step');
-    if (Array.isArray(step)) {
-      return step[0];
-    }
-    const max = this.max;
-    const min = this.min;
-    //if max has decimals, get the length
-    const maxDecimals = max.toString().split('.')[1]?.length || 0;
-    //if min has decimals, get the length
-    const minDecimals = min.toString().split('.')[1]?.length || 0;
-    //which ever is longer that's the step
-    const decimalLength = Math.max(maxDecimals, minDecimals);
-    //if no decimals
-    if (decimalLength === 0) {
-      //step is 1 by default
-      return 1;
-    }
-    //convert to 0.001 for example
-    return Math.pow(10, -decimalLength);
-  }
-
-  /**
    * Returns relation information
    */
   public get relation() {
@@ -289,10 +285,66 @@ export default class Attributes extends Map<string, unknown> {
   }
 
   /**
-   * Returns true if column is @spanable
+   * Returns the column span field (defaults to none)
+   * example: @span.text({type "text"})
    */
-  public get spanable() {
-    return this.get('spanable') === true;
+  public get span(): Component {
+    for (const name of this.keys()) {
+      if (!name.startsWith('span.')) {
+        continue;
+      }
+      //we found it.
+      const field = this.get(name);
+      //get the method
+      const method = name.replace('span.', '');
+      //get the arguments
+      const args = Array.isArray(field)? field as Data[]: [];
+      //the first argument is the field attributes
+      const attributes = typeof args[0] === 'object' 
+        ? (args[0] || {}) as Record<string, Data>
+        : {};
+     
+      return { method, args, attributes };
+    }
+
+    return { method: 'none', args: [], attributes: {} };
+  }
+
+  /**
+   * Returns the column @suggestion
+   */
+  public get suggestion() {
+    const suggestion = this.get('suggestion');
+    if (Array.isArray(suggestion)) {
+      return suggestion[0];
+    }
+    return undefined;
+  }
+
+  /**
+   * Returns the column @step
+   * example: @step(0.01)
+   */
+  public get step() {
+    const step = this.get('step');
+    if (Array.isArray(step)) {
+      return step[0];
+    }
+    const max = this.max;
+    const min = this.min;
+    //if max has decimals, get the length
+    const maxDecimals = max.toString().split('.')[1]?.length || 0;
+    //if min has decimals, get the length
+    const minDecimals = min.toString().split('.')[1]?.length || 0;
+    //which ever is longer that's the step
+    const decimalLength = Math.max(maxDecimals, minDecimals);
+    //if no decimals
+    if (decimalLength === 0) {
+      //step is 1 by default
+      return 1;
+    }
+    //convert to 0.001 for example
+    return Math.pow(10, -decimalLength);
   }
 
   /**

@@ -16,17 +16,19 @@
     code = 200, 
     status = 'OK', 
     errors = {}, 
+    results = {},
     input = { name: 'John Doe' },
     settings = { menu: [] }
   } = props('document');
 
-  const url = '/admin/profile/create';
-  const title = _('Create Profile');
+  const url = `/admin/profile/update/${results.id}`;
+  const title = _('Update Profile');
 
   const crumbs = [
     { icon: 'home', label: 'Home', href: '/admin' },
     { icon: 'user', label: 'Profiles', href: '/admin/profile/search' },
-    { icon: 'plus', label: title }
+    { label: results.suggestion || _('Profile Detail') },
+    { icon: 'edit', label: title }
   ];
 </script>
 <html>

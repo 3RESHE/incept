@@ -18,15 +18,16 @@ enum Role {
 //why we call it profile instead of user and company indicating it's 
 //just a general information of an entity.
 
-model Profile @label("User" "Users") {
+model Profile @label("User" "Users") @suggestion("{{name}}") {
   id          String    @label("ID") 
                         @id @default("cuid()")
+                        @list.overflow({ length 10 hellip true })
   
   name        String    @label("Name") 
                         @searchable
                         @field.text
                         @is.required
-                        @list.text @view.text
+                        @list.view @view.text
 
   image       String?   @label("Image") 
                         @field.url
@@ -34,47 +35,52 @@ model Profile @label("User" "Users") {
   
   description String?   @label("Description") 
                         @field.textarea
-                        @list.none @view.text
+                        @list.hide @view.text
   
   type        Type      @label("Type") 
                         @default("person") 
-                        @filterable
+                        @filter.text
                         @field.text
-                        @is.required
-                        @list.lowercase @view.lowercase
+                        @list.text({ lower true }) 
+                        @view.text({ lower true })
   
   roles       String[]  @label("Roles") 
                         @field.textlist
-                        @view.tags
+                        @list.hide @view.taglist
   
   address     Address   @label("Address") 
                         @field.fieldset
+                        @list.hide @view.metadata
 
   files       File[]    @label("Files")
-                        @field.fieldset
                         @default("[]")
+                        @field.fieldset
+                        @list.hide @view.table
   
   tags        String[]  @label("Tags") 
-                        @field.taglist
-                        @view.taglist
                         @default("[]")
+                        @field.taglist
+                        @list.hide @view.taglist
   
   references  Hash?     @label("References") 
-                        @field.metadata
-                        @view.metadata
                         @default("{}")
+                        @field.metadata
+                        @list.hide @view.metadata
   
   active      Boolean   @label("Active") 
-                        @default(true) @filterable
+                        @default(true) 
+                        @filter.switch
                         @list.yesno @view.yesno
   
   created     Datetime  @label("Created") 
                         @default("now()") @sortable
+                        @span.datetime
                         @list.date("m d, Y h:iA") 
                         @view.date("m d, Y h:iA")
   
   updated     Datetime  @label("Updated") 
                         @default("now()") @timestamp @sortable
+                        @span.datetime
                         @list.date("m d, Y h:iA") 
                         @view.date("m d, Y h:iA")
   
@@ -84,43 +90,49 @@ model Profile @label("User" "Users") {
 }
 
 //Auth is used to authenticate a profile and create a session.
-model Auth {
+model Auth @label("Auth" "Auth") @suggestion("{{username}}") {
   id        String   @label("ID") 
                      @id @default("cuid()")
+                     @list.overflow({ length 10 hellip true })
   
   profileId String   @label("Profile") 
-                     @filterable 
                      @field.autocomplete("Profile" "id" "name") 
                      @is.required
+                     @filter.autocomplete("Profile" "id" "name") 
                      @list.relation("Profile" "id" "name")
                      @view.relation("Profile" "id" "name")
                      
   username  String   @label("Username")
-                     @unique @searchable @filterable
+                     @unique @searchable
                      @field.text
                      @is.required @is.cge(5)
+                     @filter.text
                      @list.text @view.text
   
   email     String?  @label("Email Address")
-                     @unique @searchable @filterable
+                     @unique @searchable 
                      @field.email
                      @is.email
+                     @filter.email
                      @list.text @view.email
   
   phone     String?  @label("Phone Number")
-                     @unique @searchable @filterable
+                     @unique @searchable 
                      @field.text
                      @is.pattern("/^\+[0-9]{0,3} [0-9]+$/")
+                     @filter.phone
                      @list.text @view.phone
   
   password  String   @label("Password") 
                      @field.password
                      @is.required
+                     @list.hide @view.hide
   
   twofa     String?  @label("2FA") 
                      @field.text
+                     @list.hide @view.hide
   
-  verified  Int      @label("Verified") 
+  verified  Integer  @label("Verified") 
                      @default(0) //0=unverified, 1=email, 2=phone, 3=both
   
   lastLogin Datetime @label("Last Logged In") 
@@ -129,7 +141,8 @@ model Auth {
                      @view.date("m d, Y h:iA")
   
   active    Boolean  @label("Active") 
-                     @default(true) @filterable
+                     @default(true) 
+                     @filter.switch
                      @list.yesno @view.yesno
   
   created   Datetime @label("Created") 
@@ -174,7 +187,8 @@ model Connection {
                     @view.tags
   
   active   Boolean  @label("Active") 
-                    @default(true) @filterable
+                    @default(true) 
+                    @filter.switch
                     @list.yesno @view.yesno
   
   created  Datetime @label("Created") 
@@ -254,29 +268,24 @@ type Address {
                         @list.text @view.text
   
   city         String   @label("City")
-                        @filterable
                         @field.text
                         @is.required
                         @list.text @view.text
   
   state        String?  @label("State")
-                        @filterable
                         @field.text
                         @list.text @view.text
   
   region       String?  @label("Region")
-                        @filterable
                         @field.text
                         @list.text @view.text
   
   country      String   @label("Country")
-                        @filterable
                         @field.country
                         @is.required
                         @list.text @view.text
   
   postal       String   @label("Postal Code")
-                        @filterable
                         @field.text
                         @is.required
                         @list.text @view.text

@@ -151,10 +151,11 @@ export default class Column {
   }
 
   /**
-   * Returns true if column is @filterable
+   * Returns the column filter field (defaults to none)
+   * example: @filter.text({type "text"})
    */
-  public get filterable() {
-    return this.attributes.filterable;
+  public get filter() {
+    return this.attributes.filter;
   }
 
   /**
@@ -191,6 +192,9 @@ export default class Column {
    * example: @list.char({length 1})
    */
   public get list() {
+    if (this.model) {
+      return { method: 'hide', args: [], attributes: {} };
+    }
     return this.attributes.list;
   }
 
@@ -206,17 +210,6 @@ export default class Column {
    */
   public get min() {
     return this.attributes.min;
-  }
-
-  /**
-   * Returns number step value
-   */
-  public get step() {
-    const step = this.attributes.step;
-    if (step === 1 && this.type === 'Float') {
-      return 0.01;
-    }
-    return step || 1;
   }
 
   /**
@@ -390,10 +383,22 @@ export default class Column {
   }
 
   /**
-   * Returns true if column is @spanable
+   * Returns the column span field (defaults to none)
+   * example: @span.text({type "text"})
    */
-  public get spanable() {
-    return this.attributes.spanable;
+  public get span() {
+    return this.attributes.span;
+  }
+
+  /**
+   * Returns number step value
+   */
+  public get step() {
+    const step = this.attributes.step;
+    if (step === 1 && this.type === 'Float') {
+      return 0.01;
+    }
+    return step || 1;
   }
 
   /**
@@ -408,6 +413,9 @@ export default class Column {
    * example: @view.char({length 1})
    */
   public get view() {
+    if (this.model) {
+      return { method: 'hide', args: [], attributes: {} };
+    }
     return this.attributes.view;
   }
 

@@ -10,9 +10,11 @@ export default async function Assets(req: Request<IM>, res: Response<SR>) {
   const resource = req.url.pathname.substring(1).replace(/\/\//, '/'); 
   const file = path.resolve(__dirname, '../../public',resource); 
   if (fs.existsSync(file)) {
-    res.code = 200;
-    res.status = 'OK';
-    fs.createReadStream(file).pipe(res.resource as SR);
+    res.stop();
+    const response = res.resource as SR;
+    response.statusCode = 200;
+    response.statusMessage = 'OK';
+    fs.createReadStream(file).pipe(response);
     return;
   }
 };

@@ -18,10 +18,14 @@
     "README.md",
     "tsconfig.json"
   ],
-  "dependencies": {},
+  "dependencies": {
+    "@stackpress/idea-parser": "0.1.12",
+    "@stackpress/idea-transformer": "0.1.12",
+    "@stackpress/types": "0.1.4",
+    "mustache": "4.2.0"
+  },
   "devDependencies": {
-    "@stackpress/idea-parser": "0.1.9",
-    "@stackpress/idea-transformer": "0.1.9",
+    "@types/mustache": "4.2.5",
     "ts-node": "10.9.2",
     "typescript": "5.6.2"
   }

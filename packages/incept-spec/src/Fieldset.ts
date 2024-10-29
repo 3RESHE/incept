@@ -1,6 +1,7 @@
 import type { ColumnInfo } from './types';
 import type Registry from './Registry';
 
+import Mustache from 'mustache';
 import Attributes from './Attributes';
 import Column from './Column';
 import { camelize, capitalize } from './helpers';
@@ -105,6 +106,13 @@ export default class Fieldset {
   }
 
   /**
+   * Returns the fieldset @suggestion
+   */
+  public get suggestion() {
+    return this.attributes.suggestion;
+  }
+
+  /**
    * Returns the capitalized column name
    */
   public get title() {
@@ -142,5 +150,22 @@ export default class Fieldset {
    */
   public column(name: string) {
     return this.columns.get(name);
+  }
+
+  /**
+   * Renders a suggestion given the data
+   */
+  public suggest(data: Record<string, any>) {
+    if (!this.suggestion) {
+      return '';
+    }
+    return Mustache.render(this.suggestion, data);
+  }
+
+  /**
+   * Binds the data to the template
+   */
+  public render(template: string, data: Record<string, any>) {
+    return Mustache.render(template, { config: this, data });
   }
 }

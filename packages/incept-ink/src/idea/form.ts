@@ -5,7 +5,7 @@ import type Registry from '@stackpress/incept-spec/dist/Registry';
 
 import fs from 'fs';
 import path from 'path';
-import { objectToAttributeString } from '../helpers';
+import { objectToAttributeString } from './helpers';
 
 const methods = [
   'checkbox', 'color',    'country',
@@ -58,7 +58,7 @@ const template = `
 </script>
 <form method="post" {action}>
   [[fields]]
-  <form-button class="mt-20" type="submit" success lg>Submit</form-button>
+  <form-button class="mt-20" type="submit" primary lg>Submit</form-button>
 </form>`.trim();
 
 export function body(columns: Column[], imports: Set<string>, inFieldset = false) {

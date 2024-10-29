@@ -21,12 +21,15 @@
     "README.md",
     "tsconfig.json"
   ],
-  "dependencies": {},
-  "devDependencies": {
+  "dependencies": {
     "@stackpress/incept-spec": "0.1.0",
-    "@stackpress/ingest": "0.1.6",
+    "@stackpress/ingest": "0.1.12",
+    "@stackpress/ink": "0.1.15",
+    "@stackpress/ink-dev": "0.1.15",
+    "ts-morph": "23.0.0"
+  },
+  "devDependencies": {
     "@types/node": "22.7.5",
-    "ts-morph": "23.0.0",
     "ts-node": "10.9.2",
     "typescript": "5.6.2"
   }

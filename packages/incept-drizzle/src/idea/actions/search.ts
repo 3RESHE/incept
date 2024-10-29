@@ -44,7 +44,7 @@ export function body(model: Model) {
   if (model.sortables.length > 0) {
     query.unshift('sort = {}');
   }
-  if (model.spanables.length > 0) {
+  if (model.spans.length > 0) {
     query.unshift('span = {}');
   }
   if (model.searchables.length > 0) {
@@ -175,7 +175,7 @@ export function body(model: Model) {
         where.push(eq(${model.camel}.${model.active.name}, filter.${model.active.name}));
       }
     `: ''}
-    ${model.filterables.filter(
+    ${model.filters.filter(
       column => !model.active || model.active.name !== column.name
     ).map(column => {
       const helper = helpers[column.type];
@@ -190,7 +190,7 @@ export function body(model: Model) {
         }
       `;
     }).join('\n')}
-    ${model.spanables.map(column => {
+    ${model.spans.map(column => {
       const helper = helpers[column.type];
       const min = helper
         ? `${helper}(span.${column.name}[0])`
@@ -204,7 +204,9 @@ export function body(model: Model) {
             column.name
           }[0] !== 'undefined' && span.${
             column.name
-          }[0] !== null) {
+          }[0] !== null && span.${
+            column.name
+          }[0] !== '') {
             where.push(gte(${model.camel}.${
               column.name
             }, ${min}));
@@ -213,7 +215,9 @@ export function body(model: Model) {
             column.name
           }[1] !== 'undefined' && span.${
             column.name
-          }[1] !== null) {
+          }[1] !== null && span.${
+            column.name
+          }[1] !== '') {
             where.push(lte(${model.camel}.${
               column.name
             }, ${max}));

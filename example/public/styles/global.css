@@ -1,8 +1,8 @@
 /* Default Theme
 ---------------------------------*/
 :root {
-  --primary: #91C8D5;
-  --secondary: #243545;
+  --primary: #1474FC;
+  --secondary: #F43980;
 }
 
 body.dark {

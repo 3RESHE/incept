@@ -1,27 +1,24 @@
 import path from 'path';
 import http from '@stackpress/ingest/http';
+import route from '@stackpress/incept-ingest/dist/route';
+import { route as dev } from '@stackpress/incept-ingest/dist/inkdev';
+import * as config from '../incept.config';
 
 const server = http({ minify: false });
 
-const resolve = (model: string, page: string) => {
-  return path.resolve(__dirname, `pages/${model}/${page}`);
+if (process.env.SERVER_ENV === 'development') {
+  dev({
+    buildRoute: config.dev.buildRoute,
+    socketRoute: config.dev.socketRoute,
+    entryPath: path.resolve(__dirname, 'pages/dev'),
+    router: server
+  });
+  server.all('**', path.resolve(__dirname, 'pages/assets'));
 }
-
-const routes = (root: string, model: string) => {
-  if (process.env.SERVER_ENV === 'development') {
-    server.all('/dev.js', path.resolve(__dirname, 'pages/dev'));
-    server.all('/__ink_dev__', path.resolve(__dirname, 'pages/dev'));
-    server.all('/build/client/:build', path.resolve(__dirname, 'pages/dev'));
-    server.all('**', path.resolve(__dirname, 'pages/assets'));
-  }
-  server.all(`/${root}/${model}/search`, resolve(model, 'search'));
-  server.all(`/${root}/${model}/create`, resolve(model, 'create'));
-  server.all(`/${root}/${model}/detail/:id`, resolve(model, 'detail'));
-  server.all(`/${root}/${model}/update/:id`, resolve(model, 'update'));
-  server.all(`/${root}/${model}/remove/:id`, resolve(model, 'remove'));
-  server.all(`/${root}/${model}/restore/:id`, resolve(model, 'restore'));
-};
-
-routes('admin', 'profile');
+route({
+  routePath: `${config.admin.root}/profile`,
+  entryPath: path.resolve(__dirname, 'pages/profile'),
+  router: server
+});
 
 export default server;

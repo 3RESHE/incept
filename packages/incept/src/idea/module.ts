@@ -9,10 +9,10 @@ export default function generate(project: Directory, registry: Registry) {
   for (const model of registry.model.values()) {
     const filepath = `${model.name}/index.ts`;
     const source = project.createSourceFile(filepath, '', { overwrite: true });
-    //import type Model from '@stackpress/incept/dist/spec/Model';
+    //import type Model from '@stackpress/incept-spec/dist/Model';
     source.addImportDeclaration({ 
       isTypeOnly: true,
-      moduleSpecifier: `@stackpress/incept/dist/spec/Model`, 
+      moduleSpecifier: `@stackpress/incept-spec/dist/Model`, 
       defaultImport: 'Model'
     });
     //export type * from './module/[name]/types';
@@ -38,7 +38,7 @@ export default function generate(project: Directory, registry: Registry) {
       defaultImport: 'registry'
     });
     //const config = registry.model.get('profile');
-    source.addStatements(`const config = registry.model.get('${model.camel}') as Model;`);
+    source.addStatements(`const config = registry.model.get('${model.name}') as Model;`);
     //export { schema, assert, action };
     source.addExportDeclaration({ 
       namedExports: [ 'config', 'schema', 'assert', 'action' ] 
@@ -68,7 +68,7 @@ export default function generate(project: Directory, registry: Registry) {
       defaultImport: 'registry'
     });
     //const config = registry.fieldset.get('profile');
-    source.addStatements(`const config = registry.fieldset.get('${fieldset.camel}') as Fieldset;`);
+    source.addStatements(`const config = registry.fieldset.get('${fieldset.name}') as Fieldset;`);
     //export { assert };
     source.addExportDeclaration({ namedExports: [ 'config', 'assert' ] });
   }

@@ -1,3 +1,3 @@
-import { objectToAttributeString } from './helpers';
+import { addQueryParam, removeQueryParam } from './helpers';
 
-export { objectToAttributeString };
+export { addQueryParam, removeQueryParam };

@@ -8,6 +8,7 @@
     code, 
     status,
     errors = {},
+    settings = { menu: [] },
     brand = 'Admin', 
     logo = '/images/incept-logo-square-1.png'
   } = this.props;
@@ -203,8 +204,20 @@
       <element-icon name="chevron-left" />
     </a>
   </header>
-  <main class="p-10 bg-t-2 h-calc-full-60">
-    menu
+  <main class="bg-t-2 h-calc-full-60">
+    <each value=item from={settings.menu}>
+      <if true={url.startsWith(item.path)}>
+        <a class="flex flex-center-y p-10 tx-t-1 b-t-1 b-solid bb-1 bx-0 bt-0" href={item.path}>
+          <element-icon name={item.icon} class="mr-10" />
+          {item.name}
+        </a>
+      <else />
+        <a class="flex flex-center-y p-10 tx-primary b-t-1 b-solid bb-1 bx-0 bt-0" href={item.path}>
+          <element-icon name={item.icon} class="mr-10 tx-t-1" />
+          {item.name}
+        </a>
+      </if>
+    </each>
   </main>
 </aside>
 <aside right class={className.right}>

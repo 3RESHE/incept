@@ -70,14 +70,14 @@ export default function generate(
       ).concat(
         model.ids.length > 1 && model.relations.length > 0 ? [ 'eq' ]: []
       ).concat(
-        model.spanables.length > 0 ? [ 'lte', 'gte' ]: []
+        model.spans.length > 0 ? [ 'lte', 'gte' ]: []
       ).concat([ 'asc', 'desc' ]).concat(
         model.searchables.length > 0 ? [ 'or', 'ilike' ]: []
       )
     });
-    //import Exception from '@stackpress/incept-drizzle/dist/Exception';
+    //import Exception from '@stackpress/incept-spec/dist/Exception';
     source.addImportDeclaration({
-      moduleSpecifier: '@stackpress/incept-drizzle/dist/Exception',
+      moduleSpecifier: '@stackpress/incept-spec/dist/Exception',
       defaultImport: 'Exception'
     });
     //import { toResponse, toErrorResponse } from '@stackpress/incept-drizzle/dist/helpers';
@@ -88,8 +88,8 @@ export default function generate(
         'toErrorResponse',
         ...[
           ...model.assertions, 
-          ...model.filterables, 
-          ...model.spanables
+          ...model.filters, 
+          ...model.spans
         ].filter(
           column => !!typemap[column.type]
         ).map(

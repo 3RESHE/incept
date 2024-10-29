@@ -4,7 +4,7 @@ import type Request from '@stackpress/ingest/dist/payload/Request';
 import type Response from '@stackpress/ingest/dist/payload/Response';
 
 import client from '@stackpress/incept/client';
-import { render, session } from '../../boot';
+import { config, render, session } from '../../boot';
 
 export default async function ProfileCreate(req: Request, res: Response) {
   //if not authorized
@@ -23,13 +23,18 @@ export default async function ProfileCreate(req: Request, res: Response) {
         res.errors.set(response.errors);
       }
       res.mimetype = 'text/html';
-      res.body = await render('@/templates/create.ink', { ...response, input });
+      res.body = await render(
+        '@/templates/create.ink', 
+        { ...response, settings: config.admin, input }
+      );
     } else {
+      res.code = 302;
+      res.status = 'Found';
       res.headers.set('Location', `/admin/profile/detail/${response.results?.id}`);
     }
     return;
   }
   //show form
   res.mimetype = 'text/html';
-  res.body = await render('@/templates/create.ink');
+  res.body = await render('@/templates/create.ink', { settings: config.admin });
 };

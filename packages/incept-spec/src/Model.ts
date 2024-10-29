@@ -21,11 +21,11 @@ export default class Model extends Fieldset {
   }
 
   /**
-   * Returns all the @filterable columns
+   * Returns all the filter field columns
    */
-  public get filterables() {
+  public get filters() {
     return Array.from(this.columns.values()).filter(
-      column => column.filterable
+      column => column.filter.method !== 'none'
     );
   }
 
@@ -95,11 +95,11 @@ export default class Model extends Fieldset {
   }
 
   /**
-   * Returns all the @spanable columns
+   * Returns all the span field columns
    */
-  public get spanables() {
+  public get spans() {
     return Array.from(this.columns.values()).filter(
-      column => column.spanable
+      column => column.span.method !== 'none'
     );
   }
 

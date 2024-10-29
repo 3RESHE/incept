@@ -11,9 +11,9 @@ export default function generate(project: Directory) {
     moduleSpecifier: '@stackpress/idea-parser',
     namedImports: [ 'SchemaConfig' ]
   });
-  //import Registry from '@stackpress/incept/dist/spec/Registry';
+  //import Registry from '@stackpress/incept-spec/dist/Registry';
   source.addImportDeclaration({
-    moduleSpecifier: '@stackpress/incept/dist/spec/Registry',
+    moduleSpecifier: '@stackpress/incept-spec/dist/Registry',
     defaultImport: 'Registry'
   });
   //import schema from './schema.json';
