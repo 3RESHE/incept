@@ -68,7 +68,7 @@ model Profile @label("User" "Users") @suggestion("{{name}}") {
                         @list.hide @view.metadata
   
   active      Boolean   @label("Active") 
-                        @default(true) 
+                        @default(true) @active
                         @filter.switch
                         @list.yesno @view.yesno
   
@@ -141,7 +141,7 @@ model Auth @label("Auth" "Auth") @suggestion("{{username}}") {
                      @view.date("m d, Y h:iA")
   
   active    Boolean  @label("Active") 
-                     @default(true) 
+                     @default(true) @active
                      @filter.switch
                      @list.yesno @view.yesno
   

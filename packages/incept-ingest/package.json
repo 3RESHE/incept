@@ -23,9 +23,9 @@
   ],
   "dependencies": {
     "@stackpress/incept-spec": "0.1.0",
-    "@stackpress/ingest": "0.1.12",
-    "@stackpress/ink": "0.1.15",
-    "@stackpress/ink-dev": "0.1.15",
+    "@stackpress/ingest": "0.1.14",
+    "@stackpress/ink": "0.1.17",
+    "@stackpress/ink-dev": "0.1.17",
     "ts-morph": "23.0.0"
   },
   "devDependencies": {

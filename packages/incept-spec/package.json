@@ -19,9 +19,9 @@
     "tsconfig.json"
   ],
   "dependencies": {
-    "@stackpress/idea-parser": "0.1.12",
-    "@stackpress/idea-transformer": "0.1.12",
-    "@stackpress/types": "0.1.4",
+    "@stackpress/idea-parser": "0.1.14",
+    "@stackpress/idea-transformer": "0.1.14",
+    "@stackpress/types": "0.1.5",
     "mustache": "4.2.0"
   },
   "devDependencies": {

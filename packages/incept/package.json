@@ -25,8 +25,8 @@
     "tsconfig.json"
   ],
   "dependencies": {
-    "@stackpress/idea-parser": "0.1.12",
-    "@stackpress/idea-transformer": "0.1.12",
+    "@stackpress/idea-parser": "0.1.14",
+    "@stackpress/idea-transformer": "0.1.14",
     "@stackpress/incept-assert": "0.1.0",
     "@stackpress/incept-drizzle": "0.1.0",
     "@stackpress/incept-ink": "0.1.0",

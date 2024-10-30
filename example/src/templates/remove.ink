@@ -27,7 +27,10 @@
   const crumbs = [
     { icon: 'home', label: 'Home', href: '/admin' },
     { icon: 'user', label: 'Profiles', href: '/admin/profile/search' },
-    { label: results.suggestion || _('Profile Detail') },
+    { 
+      label: results.suggestion || _('Profile Detail'), 
+      href: `/admin/profile/detail/${results.id}` 
+    },
     { icon: 'trash', label: title }
   ];
 </script>
