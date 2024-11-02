@@ -25,18 +25,25 @@
     span = {}, 
     filter = {},
     results = [],
-    settings = { menu: [] },
     total = 0,
     skip = 0,
-    take = 50
+    take = 50,
+    settings = { 
+      root: '/admin',
+      menu: [], 
+      session: { 
+        id: 0, 
+        token: '', 
+        roles: [ 'GUEST' ], 
+        permissions: [] 
+      }
+    }
   } = props('document');
-  
   const url = '/ink/index.html';
-  const title = _('Profile Search');
-
+  const title = _('Profiles');
   const crumbs = [
-    { icon: 'home', label: 'Home', href: '/admin' },
-    { icon: 'user', label: 'Profiles' }
+    { icon: 'home', label: 'Home', href: settings.root },
+    { icon: 'user', label: title }
   ];
   const page = (page: number) => {
     window.location.search = addQueryParam(

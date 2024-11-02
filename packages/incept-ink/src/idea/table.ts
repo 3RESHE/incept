@@ -125,7 +125,7 @@ export default function generate(directory: Directory, registry: Registry) {
         .replaceAll('  ', ' ')
       );
     }
-    const file = path.join(directory.getPath(), `${model.name}/search.ink`);
+    const file = path.join(directory.getPath(), `${model.name}/components/table.ink`);
     if (!fs.existsSync(path.dirname(file))) {
       fs.mkdirSync(path.dirname(file), { recursive: true });
     }

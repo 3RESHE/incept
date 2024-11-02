@@ -1,4 +1,4 @@
-plugin "@stackpress/incept/idea" {}
+plugin "@stackpress/incept-idea" {}
 
 //--------------------------------------------------------------------//
 // User System

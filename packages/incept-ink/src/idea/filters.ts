@@ -93,7 +93,7 @@ export default function generate(directory: Directory, registry: Registry) {
   for (const model of registry.model.values()) {
     const imports = new Set<string>();
     const fields = body(Array.from(model.columns.values()), imports);
-    const file = path.join(directory.getPath(), `${model.name}/filters.ink`);
+    const file = path.join(directory.getPath(), `${model.name}/components/filters.ink`);
     if (!fs.existsSync(path.dirname(file))) {
       fs.mkdirSync(path.dirname(file), { recursive: true });
     }

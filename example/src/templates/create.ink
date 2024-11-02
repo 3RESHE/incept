@@ -16,16 +16,24 @@
     code = 200, 
     status = 'OK', 
     errors = {}, 
-    input = { name: 'John Doe' },
-    settings = { menu: [] }
+    input = {},
+    settings = { 
+      root: '/admin',
+      menu: [], 
+      session: { 
+        id: 0, 
+        token: '', 
+        roles: [ 'GUEST' ], 
+        permissions: [] 
+      }
+    }
   } = props('document');
-
-  const url = '/admin/profile/create';
+  const url = `${settings.root}/profile/create`;
   const title = _('Create Profile');
-
+  const links = { search: `${settings.root}/profile/search` };
   const crumbs = [
-    { icon: 'home', label: 'Home', href: '/admin' },
-    { icon: 'user', label: 'Profiles', href: '/admin/profile/search' },
+    { icon: 'home', label: 'Home', href: settings.root },
+    { icon: 'user', label: _('Profiles'), href: links.search },
     { icon: 'plus', label: title }
   ];
 </script>

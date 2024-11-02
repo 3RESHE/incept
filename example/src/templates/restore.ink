@@ -18,19 +18,28 @@
     code = 200, 
     status = 'OK', 
     results = {},
-    settings = { menu: [] }
+    settings = { 
+      root: '/admin',
+      menu: [], 
+      session: { 
+        id: 0, 
+        token: '', 
+        roles: [ 'GUEST' ], 
+        permissions: [] 
+      }
+    }
   } = props('document');
-
-  const url = `/admin/profile/restore/${results.id}`;
+  const url = `${settings.root}/profile/restore/${results.id}`;
   const title = _('Restore Profile');
-
+  const links = {
+    search: `${settings.root}/profile/search`,
+    detail: `${settings.root}/profile/detail/${results.id}`,
+    restore: `${url}?confirmed=true`
+  };
   const crumbs = [
-    { icon: 'home', label: 'Home', href: '/admin' },
-    { icon: 'user', label: 'Profiles', href: '/admin/profile/search' },
-    { 
-      label: results.suggestion || _('Profile Detail'), 
-      href: `/admin/profile/detail/${results.id}` 
-    },
+    { icon: 'home', label: 'Home', href: settings.root },
+    { icon: 'user', label: _('Profiles'), href: links.search },
+    { label: results.suggestion || _('Profile Detail'), href: links.detail },
     { icon: 'arrows-rotate', label: title }
   ];
 </script>
@@ -56,17 +65,11 @@
             'Are you sure you want to restore %s?', 
             results.suggestion
           )}</p>
-          <form-button 
-            lg success
-            href={`/admin/profile/restore/${results.id}?confirmed=true`} 
-          >
+          <form-button lg success href={links.restore}>
             <element-icon name="arrows-rotate" class="mr-5" />
             {_('Yes, Restore')}
           </form-button>
-          <form-button 
-            lg info
-            href={`/admin/profile/detail/${results.id}`} 
-          >
+          <form-button lg info href={links.detail}>
             <element-icon name="backward" class="mr-5" />
             {_('Nevermind')}
           </form-button>

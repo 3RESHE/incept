@@ -16,7 +16,7 @@ export default class Session {
   /**
    * Need seed to verify tokens and access for roles 
    */
-  constructor(seed: string, access: PermissionList) {
+  public constructor(seed: string, access: PermissionList) {
     this.seed = seed;
     this.access = access;
   }
@@ -24,14 +24,15 @@ export default class Session {
   /**
    * Authorizes a request, to be used with api handlers
    */
-  authorize(
+  public authorize(
     req: Request, 
     res: Response, 
     permits: string[] = []
   ) {
-    const authorization = req.headers.get('Authorization') as string;
-    if (authorization) {
-      const [ , token ] = authorization.split(' ');
+    const token = this.fromAuthorization(req);
+    const permissions = this.permits(token || '');
+    
+    if (token) {
       const session = this.get(token);
       //if no session
       if (!session) {
@@ -45,11 +46,9 @@ export default class Session {
         res.body = Exception.for('Unauthorized').withCode(401).toResponse();
         return false;
       }
-      
-      return { ...session, token };
-    }
 
-    const token = null;
+      return { ...session, token, permissions };
+    }
 
     if (!this.can('', ...permits)) {
       res.mimetype = 'application/json';
@@ -57,13 +56,38 @@ export default class Session {
       return false;
     }
     
-    return { id: 0, roles: [ 'GUEST' ], token };
+    return { id: 0, roles: [ 'GUEST' ], token, permissions };
+  }
+
+  /**
+   * Returns true if a token has the required permissions
+   */
+  public can(token: string, ...permits: string[]) {
+    if (permits.length === 0) {
+      return true;
+    }
+    const permissions = this.permits(token);      
+    return Array.isArray(permits) && permits.every(
+      permit => permissions.includes(permit)
+    );
+  }
+
+  /**
+   * Gets token from request authorization header
+   */
+  public fromAuthorization(req: Request) {
+    const authorization = req.headers.get('Authorization') as string;
+    if (authorization) {
+      const [ , token ] = authorization.split(' ');
+      return token;
+    }
+    return null;
   }
 
   /**
    * Get session data from token
    */
-  get(token: string): SessionData|null {
+  public get(token: string): SessionData|null {
     if (!token?.length) {
       return null;
     }
@@ -80,25 +104,17 @@ export default class Session {
   }
 
   /**
-   * Returns true if a token has the required permissions
+   * Returns a list of permissions for a token
    */
-  can(token: string, ...permits: string[]) {
-    if (permits.length === 0) {
-      return true;
-    }
-
+  public permits(token: string) {
     const session = this.get(token);
     const roles: string[] = session?.roles || [ 'GUEST' ];
-    const permissions = roles.map(
+    return roles.map(
       //ie. [ ['GUEST', 'USER'], ['USER', 'ADMIN'] ]
       role => this.access[role] || []
     ).flat().filter(
       //unique
       (value, index, self) => self.indexOf(value) === index
-    );
-      
-    return Array.isArray(permits) && permits.every(
-      permit => permissions.includes(permit)
     );
   }
 };

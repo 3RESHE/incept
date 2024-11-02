@@ -1,19 +1,24 @@
 {
   "name": "incept-example",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "private": true,
   "scripts": {
-    "incept": "dotenv -e .env.local -- incept",
+    "incept": "dotenv -e .env.local -- incept transform",
     "dev": "dotenv -e .env.local -- ts-node src/develop.ts",
     "push": "dotenv -e .env.local -- drizzle-kit push",
     "migrate": "dotenv -e .env.local -- drizzle-kit generate",
     "studio": "dotenv -e .env.local -- drizzle-kit studio --verbose"
   },
-  "incept": {},
+  "incept": [
+    "./project.config.js",
+    "@stackpress/incept-i18n/dist", 
+    "@stackpress/incept-session/dist", 
+    "@stackpress/incept-ink/dist" 
+  ],
   "dependencies": {
     "@paralleldrive/cuid2": "2.2.2",
     "@stackpress/incept": "0.1.0",
-    "@stackpress/ingest": "0.1.14",
+    "@stackpress/ingest": "0.1.15",
     "better-sqlite3": "11.3.0",
     "cookie": "1.0.0",
     "js-cookie": "3.0.5",
@@ -25,11 +30,11 @@
   },
   "devDependencies": {
     "@electric-sql/pglite": "0.2.12",
-    "@stackpress/ingest-vercel": "0.1.14",
-    "@stackpress/ink": "0.1.17",
-    "@stackpress/ink-css": "0.1.17",
-    "@stackpress/ink-dev": "0.1.17",
-    "@stackpress/ink-ui": "0.1.17",
+    "@stackpress/ingest-vercel": "0.1.15",
+    "@stackpress/ink": "0.1.18",
+    "@stackpress/ink-css": "0.1.18",
+    "@stackpress/ink-dev": "0.1.18",
+    "@stackpress/ink-ui": "0.1.18",
     "@types/js-cookie": "3.0.5",
     "@types/jsonwebtoken": "9.0.7",
     "@types/better-sqlite3": "7.6.9",

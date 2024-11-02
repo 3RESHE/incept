@@ -18,15 +18,28 @@
     code = 200, 
     status = 'OK', 
     results = {},
-    settings = { menu: [] }
+    settings = { 
+      root: '/admin',
+      menu: [], 
+      session: { 
+        id: 0, 
+        token: '', 
+        roles: [ 'GUEST' ], 
+        permissions: [] 
+      }
+    }
   } = props('document');
-
-  const url = `/admin/profile/detail/${results.id}`;
+  const url = `${settings.root}/profile/detail/${results.id}`;
   const title = results.suggestion || _('Profile Detail');
-
+  const links = {
+    search: `${settings.root}/profile/search`,
+    update: `${settings.root}/profile/update/${results.id}`,
+    remove: `${settings.root}/profile/remove/${results.id}`,
+    restore: `${settings.root}/profile/restore/${results.id}`
+  };
   const crumbs = [
-    { icon: 'home', label: 'Home', href: '/admin' },
-    { icon: 'user', label: 'Profiles', href: '/admin/profile/search' },
+    { icon: 'home', label: 'Home', href: settings.root },
+    { icon: 'user', label: _('Profiles'), href: links.search },
     { label: title }
   ];
 </script>
@@ -50,7 +63,7 @@
         <div class="tx-right mb-20">
           <form-button 
             md warning
-            href={`/admin/profile/update/${results.id}`} 
+            href={links.update} 
           >
             <element-icon name="edit" class="mr-5" />
             {_('Update')}
@@ -58,7 +71,7 @@
           <form-button 
             md error
             class={results.active ? 'inline-block' : 'none'}
-            href={`/admin/profile/remove/${results.id}`} 
+            href={links.remove} 
           >
             <element-icon name="trash" class="mr-5" />
             {_('Remove')}
@@ -66,7 +79,7 @@
           <form-button 
             md success
             class={!results.active ? 'inline-block' : 'none'}
-            href={`/admin/profile/restore/${results.id}`} 
+            href={links.restore} 
           >
             <element-icon name="arrows-rotate" class="mr-5" />
             {_('Restore')}

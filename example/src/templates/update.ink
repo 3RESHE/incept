@@ -17,20 +17,28 @@
     status = 'OK', 
     errors = {}, 
     results = {},
-    input = { name: 'John Doe' },
-    settings = { menu: [] }
+    input = {},
+    settings = { 
+      root: '/admin',
+      menu: [], 
+      session: { 
+        id: 0, 
+        token: '', 
+        roles: [ 'GUEST' ], 
+        permissions: [] 
+      }
+    }
   } = props('document');
-
   const url = `/admin/profile/update/${results.id}`;
   const title = _('Update Profile');
-
+  const links = {
+    search: `${settings.root}/profile/search`,
+    detail: `${settings.root}/profile/detail/${results.id}`
+  };
   const crumbs = [
-    { icon: 'home', label: 'Home', href: '/admin' },
-    { icon: 'user', label: 'Profiles', href: '/admin/profile/search' },
-    { 
-      label: results.suggestion || _('Profile Detail'), 
-      href: `/admin/profile/detail/${results.id}` 
-    },
+    { icon: 'home', label: 'Home', href: settings.root },
+    { icon: 'user', label: _('Profiles'), href: links.search },
+    { label: results.suggestion || _('Profile Detail'), href: links.detail },
     { icon: 'edit', label: title }
   ];
 </script>

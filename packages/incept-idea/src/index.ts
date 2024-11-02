@@ -12,6 +12,7 @@ import generateTypes from '@stackpress/incept-types/idea';
 import generateAssert from '@stackpress/incept-assert/idea';
 import generateDrizzle from '@stackpress/incept-drizzle/idea';
 import generateInk from '@stackpress/incept-ink/idea';
+import generateAdmin from '@stackpress/incept-admin/idea';
 import generateModule from './module';
 import generateRegistry from './registry';
 import generateClient from './client';
@@ -37,7 +38,7 @@ export default function generate({ config, schema, cli }: PluginWithCLIProps) {
   // 3. Project
   //set up the ts-morph project
   const project = new Project({
-    tsConfigFilePath: path.resolve(__dirname, '../../tsconfig.json'),
+    tsConfigFilePath: path.resolve(__dirname, '../tsconfig.json'),
     skipAddingFilesFromTsConfig: true,
     compilerOptions: {
       outDir: client,
@@ -62,6 +63,7 @@ export default function generate({ config, schema, cli }: PluginWithCLIProps) {
   generateAssert(directory, registry);
   generateDrizzle(directory, registry, { url, engine });
   generateInk(directory, registry);
+  generateAdmin(directory, registry);
   generateModule(directory, registry);
   generateRegistry(directory);
   generateClient(directory, registry);

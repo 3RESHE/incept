@@ -21,6 +21,9 @@
     "README.md",
     "tsconfig.json"
   ],
+  "dependencies": {
+    "@stackpress/incept": "0.1.0"
+  },
   "devDependencies": {
     "@types/node": "22.7.5",
     "ts-morph": "23.0.0",
