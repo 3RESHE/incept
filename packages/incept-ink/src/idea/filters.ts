@@ -5,6 +5,7 @@ import type Registry from '@stackpress/incept-spec/dist/Registry';
 
 import fs from 'fs';
 import path from 'path';
+import { render } from '@stackpress/incept-spec/dist/helpers';
 import { objectToAttributeString } from './helpers';
 
 const methods = [
@@ -25,30 +26,35 @@ const alias: Record<string, { method: string, attributes: Record<string, unknown
   'url': { method: 'input', attributes: { type: 'url' } },
 };
 
-const link = '<link rel="import" type="component" href="@stackpress/ink-ui/field/[[field]].ink" name="field-[[field]]" />';
+const link = `
+<link rel="import" type="component" href="@stackpress/ink-ui/field/{{field}}.ink" name="field-{{field}}" />
+`.trim();
 
 const filter = `
-<form-control class="pt-20" label="[[label]]" error={errors.[[name]]}>
-  <field-[[field]] class="block" name="filter[[[name]]]" value={filter.[[name]]} [[attributes]] />
-</form-control>`.trim();
+<form-control class="pt-20" label="{{label}}" error={errors.{{name}}}>
+  <field-{{field}} class="block" name="filter[{{name}}]" value={filter.{{name}}} {{attributes}} />
+</form-control>
+`.trim();
 
 const span = `
-<form-control class="pt-20" label="[[label]]" error={errors.[[name]]}>
-  <field-[[field]] class="block" name="span[[[name]]][0]" value={span.[[name]]?.[0]} [[attributes]] />
-  <field-[[field]] class="block" name="span[[[name]]][1]" value={span.[[name]]?.[1]} [[attributes]] />
-</form-control>`.trim();
+<form-control class="pt-20" label="{{label}}" error={errors.{{name}}}>
+  <field-{{field}} class="block" name="span[{{name}}][0]" value={span.{{name}}?.[0]} {{attributes}} />
+  <field-{{field}} class="block" name="span[{{name}}][1]" value={span.{{name}}?.[1]} {{attributes}} />
+</form-control>
+`.trim();
 
 const template = `
 <link rel="import" type="component" href="@stackpress/ink-ui/form/control.ink" name="form-control" />
 <link rel="import" type="component" href="@stackpress/ink-ui/form/button.ink" name="form-button" />
-[[imports]]
+{{imports}}
 <script>
   const { filter = {}, span = {}, errors = {} } = this.props;
 </script>
 <form>
-  [[fields]]
+  {{fields}}
   <form-button class="mt-20" type="submit" primary lg>Filter</form-button>
-</form>`.trim();
+</form>
+`.trim();
 
 export function body(columns: Column[], imports: Set<string>) {
   const fields: string[] = [];
@@ -62,13 +68,13 @@ export function body(columns: Column[], imports: Set<string>) {
         attributes = Object.assign({}, attributes, alias[method].attributes);
         method = alias[method].method;
       }
-      imports.add(link.replaceAll('[[field]]', method));
-      fields.push(filter
-        .replaceAll('[[label]]', label)
-        .replaceAll('[[name]]', name)
-        .replaceAll('[[field]]', method)
-        .replaceAll('[[attributes]]', objectToAttributeString(attributes))
-      );
+      imports.add(render(link, { field: method }));
+      fields.push(render(filter, { 
+        label, 
+        name, 
+        field: method, 
+        attributes: objectToAttributeString(attributes) 
+      }));
     } else if (column.span.method !== 'none') {
       let { method, attributes } = column.span;
       if (!methods.includes(method)) {
@@ -77,13 +83,13 @@ export function body(columns: Column[], imports: Set<string>) {
         attributes = Object.assign({}, attributes, alias[method].attributes);
         method = alias[method].method;
       }
-      imports.add(link.replaceAll('[[field]]', method));
-      fields.push(span
-        .replaceAll('[[label]]', label)
-        .replaceAll('[[name]]', name)
-        .replaceAll('[[field]]', method)
-        .replaceAll('[[attributes]]', objectToAttributeString(attributes))
-      );
+      imports.add(render(link, { field: method }));
+      fields.push(render(span, { 
+        label, 
+        name, 
+        field: method, 
+        attributes: objectToAttributeString(attributes) 
+      }));
     }
   }
   return fields;
@@ -97,9 +103,9 @@ export default function generate(directory: Directory, registry: Registry) {
     if (!fs.existsSync(path.dirname(file))) {
       fs.mkdirSync(path.dirname(file), { recursive: true });
     }
-    fs.writeFileSync(file, template
-      .replaceAll('[[imports]]', Array.from(imports.values()).join('\n'))
-      .replaceAll('[[fields]]', fields.join('\n  '))
-    );
+    fs.writeFileSync(file, render(template, {
+      imports: Array.from(imports.values()).join('\n'),
+      fields: fields.join('\n  ')
+    }));
   }
 };

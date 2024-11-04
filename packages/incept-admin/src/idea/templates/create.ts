@@ -4,7 +4,7 @@ import type Registry from '@stackpress/incept-spec/dist/Registry';
 
 import fs from 'fs';
 import path from 'path';
-import mustache from 'mustache';
+import { render } from '@stackpress/incept-spec/dist/helpers';
 
 const template = `
 <link rel="import" type="template" href="@stackpress/incept-admin/theme/head.ink" name="html-head" />
@@ -81,7 +81,7 @@ export default function generate(directory: Directory, registry: Registry) {
     if (!fs.existsSync(path.dirname(file))) {
       fs.mkdirSync(path.dirname(file), { recursive: true });
     }
-    const source = mustache.render(template, { 
+    const source = render(template, { 
       lower: model.lower, 
       plural: model.plural 
     });

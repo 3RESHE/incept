@@ -2,13 +2,26 @@
 import type { Directory } from 'ts-morph';
 import Registry from '@stackpress/incept-spec/dist/Registry';
 
-import { formatCode } from '@stackpress/incept-spec/dist/helpers';
-
 /**
  * This is the The params comes form the cli
  */
 export default function generate(directory: Directory, registry: Registry) {
   const source = directory.createSourceFile('client.ts', '', { overwrite: true });
+  //import path from 'path';
+  source.addImportDeclaration({
+    moduleSpecifier: 'path',
+    defaultImport: 'path'
+  });
+  //import Project from '@stackpress/incept/dist/Project';
+  source.addImportDeclaration({
+    moduleSpecifier: '@stackpress/incept/dist/Project',
+    defaultImport: 'Project'
+  });
+  //import ConfigLoader from '@stackpress/incept/dist/loader/Config';
+  source.addImportDeclaration({
+    moduleSpecifier: '@stackpress/incept/dist/loader/Config',
+    defaultImport: 'ConfigLoader'
+  });
   //import * as profile from './module/profile';
   for (const model of registry.model.values()) {
     source.addImportDeclaration({
@@ -23,12 +36,32 @@ export default function generate(directory: Directory, registry: Registry) {
       defaultImport: `* as ${fieldset.camel}`
     });
   }
-  //export default client;
-  source.addStatements(formatCode(`
-    const client = {
-      ${Array.from(registry.model.values()).map(model => model.camel).join(',\n  ')},
-      ${Array.from(registry.fieldset.values()).map(fieldset => fieldset.camel).join(',\n  ')},
-    };
-    export default client;
-  `));
+  //export function make(config: Record<string, any>) {};
+  source.addFunction({
+    name: 'make',
+    parameters: [
+      { name: 'config', type: 'Record<string, any>' }
+    ],
+    statements: `
+      return {
+        model: {
+          ${Array.from(registry.model.values()).map(model => model.camel).join(',\n  ')}
+        },
+        fieldset: {
+          ${Array.from(registry.fieldset.values()).map(fieldset => fieldset.camel).join(',\n  ')}
+        },
+        project: new Project(config)
+      };
+    `.trim()
+  });
+  source.addStatements(`
+    const cwd = process.cwd();
+    const config = new ConfigLoader({ cwd });
+    export default make(
+      config.require<Record<string, any>>(
+        path.join(cwd, 'incept.config.js'), 
+        { cwd }
+      )
+    );
+  `.trim());
 }

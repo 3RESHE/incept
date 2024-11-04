@@ -14,7 +14,7 @@ export default function generate(directory: Directory, schema: SchemaConfig) {
     fs.mkdirSync(pwd, { recursive: true });
   }
   fs.writeFileSync(
-    path.join(pwd, 'schema.json'), 
+    path.join(pwd, 'config.json'), 
     JSON.stringify(schema, null, 2)
   );
 };

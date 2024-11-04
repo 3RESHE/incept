@@ -5,6 +5,7 @@ import type Registry from '@stackpress/incept-spec/dist/Registry';
 
 import fs from 'fs';
 import path from 'path';
+import { render } from '@stackpress/incept-spec/dist/helpers';
 import { objectToAttributeString } from './helpers';
 
 const methods = [
@@ -30,36 +31,42 @@ const alias: Record<string, { method: string, attributes: Record<string, unknown
   'url': { method: 'input', attributes: { type: 'url' } },
 };
 
-const link = '<link rel="import" type="component" href="@stackpress/ink-ui/field/[[field]].ink" name="field-[[field]]" />';
+const link = `
+<link rel="import" type="component" href="@stackpress/ink-ui/field/{{field}}.ink" name="field-{{field}}" />
+`.trim();
 
 const fieldset = `
-<form-control class="pt-20" label="[[label]]" error={typeof errors.[[name]] === 'string' && errors.[[name]]}>
-  <form-fieldset legend="[[legend]]" name="[[name]]" inputs={input.[[name]]} errors={errors.[[name]]} multiple={[[multiple]]}>
-    [[fields]]
+<form-control class="pt-20" label="{{label}}" error={typeof errors.{{name}} === 'string' && errors.{{name}}}>
+  <form-fieldset legend="{{legend}}" name="{{name}}" inputs={input.{{name}}} errors={errors.{{name}}} multiple={{{multiple}}}>
+    {{fields}}
   </form-fieldset>
-</form-control>`.trim();
+</form-control>
+`.trim();
 
 const fieldsetField = `
-<form-control control="[[name]]" class="pt-20" label="[[label]]">
-  <field-[[field]] field="[[name]]" class="block" [[attributes]] />
-</form-control>`.trim();
+<form-control control="{{name}}" class="pt-20" label="{{label}}">
+  <field-{{field}} field="{{name}}" class="block" {{attributes}} />
+</form-control>
+`.trim();
 
 const field = `
-<form-control class="pt-20" label="[[label]]" error={errors.[[name]]}>
-  <field-[[field]] class="block" name="[[field_name]]" value={input.[[name]]} [[attributes]] />
-</form-control>`.trim();
+<form-control class="pt-20" label="{{label}}" error={errors.{{name}}}>
+  <field-{{field}} class="block" name="{{field_name}}" value={input.{{name}}} {{attributes}} />
+</form-control>
+`.trim();
 
 const template = `
 <link rel="import" type="component" href="@stackpress/ink-ui/form/control.ink" name="form-control" />
 <link rel="import" type="component" href="@stackpress/ink-ui/form/button.ink" name="form-button" />
-[[imports]]
+{{imports}}
 <script>
   const { input = {}, errors = {}, action } = this.props;
 </script>
 <form method="post" {action}>
-  [[fields]]
+  {{fields}}
   <form-button class="mt-20" type="submit" primary lg>Submit</form-button>
-</form>`.trim();
+</form>
+`.trim();
 
 export function body(columns: Column[], imports: Set<string>, inFieldset = false) {
   const fields: string[] = [];
@@ -77,26 +84,26 @@ export function body(columns: Column[], imports: Set<string>, inFieldset = false
         '<link rel="import" type="component" href="@stackpress/ink-ui/form/fieldset.ink" name="form-fieldset" />'
       );
       const fieldsetFields = body(column.fieldset.fields, imports, true);
-      fields.push(fieldset
-        .replaceAll('[[name]]', name)
-        .replaceAll('[[label]]', label)
-        .replaceAll('[[legend]]', column.multiple ? `${label} %s` : label)
-        .replaceAll('[[multiple]]', column.multiple ? 'true' : 'false')
-        .replaceAll('[[fields]]', fieldsetFields.join('\n    '))
-      );
+      fields.push(render(fieldset, {
+        name, 
+        label, 
+        legend: column.multiple ? `${label} %s` : label, 
+        multiple: column.multiple ? 'true' : 'false',
+        fields: fieldsetFields.join('\n    ')
+      }));
       continue;
     } else if (alias[method]) {
       attributes = Object.assign({}, attributes, alias[method].attributes);
       method = alias[method].method;
     }
-    imports.add(link.replaceAll('[[field]]', method));
-    fields.push((inFieldset ? fieldsetField : field)
-      .replaceAll('[[label]]', label)
-      .replaceAll('[[name]]', name)
-      .replaceAll('[[field_name]]', fieldName)
-      .replaceAll('[[field]]', method)
-      .replaceAll('[[attributes]]', objectToAttributeString(attributes))
-    );
+    imports.add(render(link, { field: method }));
+    fields.push(render((inFieldset ? fieldsetField : field), {
+      label, 
+      name, 
+      field_name: fieldName,
+      field: method, 
+      attributes: objectToAttributeString(attributes)
+    }));
   }
   return fields;
 }
@@ -109,9 +116,9 @@ export default function generate(directory: Directory, registry: Registry) {
     if (!fs.existsSync(path.dirname(file))) {
       fs.mkdirSync(path.dirname(file), { recursive: true });
     }
-    fs.writeFileSync(file, template
-      .replaceAll('[[imports]]', Array.from(imports.values()).join('\n'))
-      .replaceAll('[[fields]]', fields.join('\n  '))
-    );
+    fs.writeFileSync(file, render(template, {
+      imports: Array.from(imports.values()).join('\n'),
+      fields: fields.join('\n  ')
+    }));
   }
 };

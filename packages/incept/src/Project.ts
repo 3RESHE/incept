@@ -1,15 +1,18 @@
+import ReadonlyNest from '@stackpress/types/dist/readonly/Nest';
 import EventEmitter from '@stackpress/types/dist/EventEmitter';
-import PluginLoader from './Plugin';
+import PluginLoader from './loader/Plugin';
 
 export default class Project extends EventEmitter<Record<string, any[]>> {
   /**
    * Makes a new project and bootstraps it
    */
-  public static bootstrap(cwd?: string, plugins: string[] = []) {
-    const project = new Project(cwd, plugins);
+  public static bootstrap(config: Record<string, any> = {}) {
+    const project = new Project(config);
     return project.bootstrap();
   }
 
+  //config
+  public readonly config: ReadonlyNest;
   //plugin loader
   public readonly loader: PluginLoader;
   //list of plugins
@@ -25,13 +28,13 @@ export default class Project extends EventEmitter<Record<string, any[]>> {
   /**
    * Sets up the plugin loader
    */
-  public constructor(cwd?: string, plugins: string[] = []) {
+  public constructor(config: Record<string, any> = {}) {
     super();
-    this.loader = new PluginLoader(
-      cwd || process.cwd(), 
-      undefined, 
-      plugins
-    );
+    this.config = new ReadonlyNest(config);
+    this.loader = new PluginLoader({
+      cwd: config.cwd || process.cwd(),
+      plugins: config.plugins || []
+    });
   }
 
   /**

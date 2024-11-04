@@ -4,6 +4,7 @@ import type Registry from '@stackpress/incept-spec/dist/Registry';
 
 import fs from 'fs';
 import path from 'path';
+import { render } from '@stackpress/incept-spec/dist/helpers';
 import { objectToAttributeString } from './helpers';
 
 const methods = [
@@ -29,24 +30,49 @@ const alias: Record<string, { method: string, attributes: Record<string, unknown
   'line': { method: 'separated', attributes: { separator: 'line' } },
 }
 
-const link = '<link rel="import" type="component" href="@stackpress/ink-ui/format/[[format]].ink" name="format-[[format]]" />';
-const head = '<table-head class="tx-[[direction]]">[[label]]</table-head>';
-const sortable = `<table-head class="tx-[[direction]]"><a class="tx-primary cursor-pointer" href={sort('[[name]]')}>[[label]] <element-icon name={order('[[name]]')} /></a></table-head>`;
+const link = `
+<link rel="import" type="component" href="@stackpress/ink-ui/format/{{format}}.ink" name="format-{{format}}" />
+`.trim();
 
-const none = '{data.[[name]].toString()}';
-const format = '<format-[[format]] [[attributes]] value={data.[[name]]} />';
+const head = `
+<table-head class="tx-{{direction}}">{{label}}</table-head>
+`.trim();
 
-const col = '<table-col class="tx-[[direction]]" nowrap>[[format]]</table-col>';
-const filterable = `<table-col class="tx-[[direction]]" nowrap><a class="tx-primary cursor-pointer" href={filter('[[name]]', data.[[name]])}>[[format]]</a></table-col>`;
-const viewable = `<table-col class="tx-[[direction]]" nowrap><a class="tx-primary cursor-pointer" href={data._view}>{data.[[name]].toString()}</a></table-col>`;
+const sortable = `
+<table-head class="tx-{{direction}}">
+  <a class="tx-primary cursor-pointer" href={sort('{{name}}')}>
+    {{label}} <element-icon name={order('{{name}}')} />
+  </a>
+</table-head>
+`.trim();
 
-const template = `<link rel="import" type="component" href="@stackpress/ink-ui/layout/table.ink" name="table-layout" />
+const none = '{data.{{name}}.toString()}';
+
+const format = `
+<format-{{format}} {{attributes}} value={data.{{name}}} />
+`.trim();
+
+const col = `
+<table-col class="tx-{{direction}}" nowrap>{{format}}</table-col>
+`.trim();
+
+const filterable = `
+<table-col class="tx-{{direction}}" nowrap>
+  <a class="tx-primary cursor-pointer" href={filter('{{name}}', data.{{name}})}>
+    {{format}}
+  </a>
+</table-col>
+`.trim();
+const viewable = `<table-col class="tx-{{direction}}" nowrap><a class="tx-primary cursor-pointer" href={data._view}>{data.{{name}}.toString()}</a></table-col>`;
+
+const template = `
+<link rel="import" type="component" href="@stackpress/ink-ui/layout/table.ink" name="table-layout" />
 <link rel="import" type="component" href="@stackpress/ink-ui/layout/table/head.ink" name="table-head" />
 <link rel="import" type="component" href="@stackpress/ink-ui/layout/table/row.ink" name="table-row" />
 <link rel="import" type="component" href="@stackpress/ink-ui/layout/table/col.ink" name="table-col" />
 <link rel="import" type="component" href="@stackpress/ink-ui/element/alert.ink" name="element-alert" />
 <link rel="import" type="component" href="@stackpress/ink-ui/element/icon.ink" name="element-icon" />
-[[imports]]
+{{imports}}
 <script>
   import { filter, sort, order } from '@stackpress/incept-ink/dist/helpers';
   const { rows = [], none = 'No results found.' } = this.props;
@@ -59,10 +85,10 @@ const template = `<link rel="import" type="component" href="@stackpress/ink-ui/l
     even="bg-t-1"
     top
   >
-    [[headers]]
+    {{headers}}
     <each key=i value=data from={rows}>
       <table-row>
-        [[formats]]
+        {{formats}}
       </table-row>
     </each>
   </table-layout>
@@ -71,7 +97,8 @@ const template = `<link rel="import" type="component" href="@stackpress/ink-ui/l
     <element-icon name="info-circle" />
     {none}
   </element-alert>
-</if>`;
+</if>
+`.trim();
 
 export default function generate(directory: Directory, registry: Registry) {
   for (const model of registry.model.values()) {
@@ -101,38 +128,38 @@ export default function generate(directory: Directory, registry: Registry) {
         } 
       } 
       if (method !== 'none' && method !== 'view') {
-        imports.add(link.replaceAll('[[format]]', method));
+        imports.add(render(link, { format: method }));
       }
 
-      const row = (column.filter.method !== 'none'
+      const row = column.filter.method !== 'none'
         ? filterable 
         : method === 'view' 
         ? viewable
-        : col
-      );
-
-      headers.push((column.sortable ? sortable : head)
-        .replaceAll('[[direction]]', direction)
-        .replaceAll('[[label]]', label)
-        .replaceAll('[[name]]', column.name)
-      );
-      formats.push(row
-        .replaceAll('[[direction]]', direction)
-        .replaceAll('[[format]]', method === 'none' ? none : format)
-        .replaceAll('[[name]]', column.name)
-        .replaceAll('[[format]]', method)
-        .replaceAll('[[attributes]]', objectToAttributeString(attributes))
-        .replaceAll('  ', ' ')
-      );
+        : col;
+      headers.push(render(column.sortable ? sortable : head, { 
+        label,
+        direction, 
+        name: column.name 
+      }));
+      formats.push(render(row, {
+        direction,
+        format: method === 'none' ? none : render(format, {
+          format: method,
+          name: column.name,
+          attributes: objectToAttributeString(attributes)
+        }),
+        name: column.name,
+        attributes: objectToAttributeString(attributes)
+      }).replaceAll('  ', ' '));
     }
     const file = path.join(directory.getPath(), `${model.name}/components/table.ink`);
     if (!fs.existsSync(path.dirname(file))) {
       fs.mkdirSync(path.dirname(file), { recursive: true });
     }
-    fs.writeFileSync(file, template
-      .replaceAll('[[imports]]', Array.from(imports.values()).join('\n'))
-      .replaceAll('[[headers]]', headers.join('\n  '))
-      .replaceAll('[[formats]]', formats.join('\n      '))
-    );
+    fs.writeFileSync(file, render(template, {
+      imports: Array.from(imports.values()).join('\n'),
+      headers: headers.join('\n  '),
+      formats: formats.join('\n    ')
+    }));
   }
 };

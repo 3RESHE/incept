@@ -4,6 +4,7 @@ import type Registry from '@stackpress/incept-spec/dist/Registry';
 
 import fs from 'fs';
 import path from 'path';
+import { render } from '@stackpress/incept-spec/dist/helpers';
 import { objectToAttributeString } from './helpers';
 
 const methods = [
@@ -29,13 +30,29 @@ const alias: Record<string, { method: string, attributes: Record<string, unknown
   'line': { method: 'separated', attributes: { separator: 'line' } },
 }
 
-const link = '<link rel="import" type="component" href="@stackpress/ink-ui/format/[[format]].ink" name="format-[[format]]" />';
-const none = '<table-row><table-col>[[label]]</table-col><table-col>{data.[[name]].toString()}</table-col></table-row>';
-const format = '<table-row><table-col>[[label]]</table-col><table-col><format-[[format]] [[attributes]] value={data.[[name]]} /></table-col></table-row>';
-const template = `<link rel="import" type="component" href="@stackpress/ink-ui/layout/table.ink" name="table-layout" />
+const link = `
+<link rel="import" type="component" href="@stackpress/ink-ui/format/{{format}}.ink" name="format-{{format}}" />
+`.trim();
+
+const none = `
+<table-row>
+  <table-col>{{label}}</table-col>
+  <table-col>{data.{{name}}.toString()}</table-col>
+</table-row>
+`.trim();
+
+const format = `
+<table-row>
+  <table-col>{{label}}</table-col>
+  <table-col><format-{{format}} {{attributes}} value={data.{{name}}} /></table-col>
+</table-row>
+`.trim();
+
+const template = `
+<link rel="import" type="component" href="@stackpress/ink-ui/layout/table.ink" name="table-layout" />
 <link rel="import" type="component" href="@stackpress/ink-ui/layout/table/row.ink" name="table-row" />
 <link rel="import" type="component" href="@stackpress/ink-ui/layout/table/col.ink" name="table-col" />
-[[imports]]
+{{imports}}
 <script>
   const { data = {} } = this.props;
 </script>
@@ -45,8 +62,9 @@ const template = `<link rel="import" type="component" href="@stackpress/ink-ui/l
   odd="bg-t-0"
   even="bg-t-1"
 >
-  [[formats]]
-</table-layout>`;
+  {{formats}}
+</table-layout>
+`.trim();
 
 export default function generate(directory: Directory, registry: Registry) {
   for (const model of registry.model.values()) {
@@ -63,10 +81,7 @@ export default function generate(directory: Directory, registry: Registry) {
         method = alias[method].method;
       }
       if (method === 'none') {
-        formats.push(none
-          .replaceAll('[[name]]', column.name)
-          .replaceAll('[[label]]', label)
-        );
+        formats.push(render(none, { label, name: column.name }));
         continue;
       } else if (method === 'metadata') {
         attributes = { 
@@ -76,22 +91,21 @@ export default function generate(directory: Directory, registry: Registry) {
           'background-theme': 'bg-2'
         } 
       }
-      imports.add(link.replaceAll('[[format]]', method));
-      formats.push(format
-        .replaceAll('[[name]]', column.name)
-        .replaceAll('[[label]]', label)
-        .replaceAll('[[format]]', method)
-        .replaceAll('[[attributes]]', objectToAttributeString(attributes))
-        .replaceAll('  ', ' ')
-      );
+      imports.add(render(link, { format: method }));
+      formats.push(render(format, { 
+        label, 
+        name: column.name, 
+        format: method, 
+        attributes: objectToAttributeString(attributes) 
+      }).replaceAll('  ', ' '));
     }
     const file = path.join(directory.getPath(), `${model.name}/components/view.ink`);
     if (!fs.existsSync(path.dirname(file))) {
       fs.mkdirSync(path.dirname(file), { recursive: true });
     }
-    fs.writeFileSync(file, template
-      .replaceAll('[[imports]]', Array.from(imports.values()).join('\n'))
-      .replaceAll('[[formats]]', formats.join('\n  '))
-    );
+    fs.writeFileSync(file, render(template, {
+      imports: Array.from(imports.values()).join('\n'),
+      formats: formats.join('\n  ')
+    }));
   }
 };

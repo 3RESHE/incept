@@ -1,5 +1,6 @@
 import type { Data } from '@stackpress/idea-parser';
-import { Loader } from '@stackpress/idea-transformer';
+import NodeFS from '@stackpress/types/dist/filesystem/NodeFS';
+import FileLoader from '@stackpress/types/dist/filesystem/FileLoader';
 
 /**
  * Returns true if the value is a native JS object
@@ -39,11 +40,35 @@ export function capitalize(word: string) {
 }
 
 /**
+ * Converts a string into dash format
+ * ie. "some string" to "some-string"
+ * ie. "someString" to "some-string"
+ */
+export function dasherize(string: string) {
+  return string.trim()
+    //replace special characters with dashes
+    .replace(/[^a-zA-Z0-9]/g, '-')
+    //replace multiple dashes with a single dash
+    .replace(/-{2,}/g, '-')
+    //trim dashes from the beginning and end of the string
+    .replace(/^-+|-+$/g, '')
+    //replace "someString" to "some-string"
+    .replace(/([a-z])([A-Z0-9])/g, '$1-$2')
+    .toLowerCase();
+}
+
+/**
  * Converts a word into lower format
  * ie. "Title" to "title"
  */
 export function lowerize(word: string) {
   return word.charAt(0).toLowerCase() + word.slice(1);
+}
+
+export function render(template: string, data: Record<string, any> = {}) {
+  return template.replace(/\{\{([a-zA-Z0-9_\-]+)\}\}/g, (match, key) => {
+    return data[key] || '';
+  });
 }
 
 /**
@@ -65,9 +90,10 @@ export function enval<T = Data>(value: Data) {
  */
 export function ensolute(output: string, cwd: string) {
   const path = enval<string>(output);
+  const loader = new FileLoader(new NodeFS(), cwd);
   return path.type === 'env' 
     ? process.env[path.value]
-    : Loader.absolute(path.value, cwd);
+    : loader.absolute(path.value, cwd);
 }
 
 /**

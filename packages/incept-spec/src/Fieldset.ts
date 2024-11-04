@@ -4,7 +4,7 @@ import type Registry from './Registry';
 import Mustache from 'mustache';
 import Attributes from './Attributes';
 import Column from './Column';
-import { camelize, capitalize } from './helpers';
+import { camelize, capitalize, dasherize } from './helpers';
 
 export default class Fieldset {
   //stores the registry
@@ -30,6 +30,13 @@ export default class Fieldset {
    */
   public get camel() {
     return camelize(this.name);
+  }
+
+  /**
+   * Returns the dashed fieldset name
+   */
+  public get dash() {
+    return dasherize(this.name);
   }
 
   /**

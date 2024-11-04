@@ -1,6 +1,6 @@
 {
   "name": "@stackpress/incept-spec",
-  "version": "0.1.0",
+  "version": "0.1.22",
   "license": "MIT",
   "description": "This package describes the structure and properties of a column, fieldset and model found in an idea file for normalization in an Incept client.",
   "author": "Chris <chris@stackpress.io>",
@@ -19,9 +19,8 @@
     "tsconfig.json"
   ],
   "dependencies": {
-    "@stackpress/idea-parser": "0.1.17",
-    "@stackpress/idea-transformer": "0.1.17",
-    "@stackpress/types": "0.1.12",
+    "@stackpress/idea-parser": "0.1.22",
+    "@stackpress/types": "0.1.22",
     "mustache": "4.2.0"
   },
   "devDependencies": {

@@ -32,17 +32,11 @@ export default function generate(directory: Directory, registry: Registry) {
       moduleSpecifier: '@stackpress/incept-ink/dist/types',
       namedImports: [ 'InkPlugin' ]
     });
-    // import { Project } from '@stackpress/incept';
+    // import client from '../../client';
     source.addImportDeclaration({
-      moduleSpecifier: '@stackpress/incept',
-      namedImports: [ 'Project' ]
-    });
-    // import client from '@stackpress/incept/client';
-    source.addImportDeclaration({
-      moduleSpecifier: '@stackpress/incept/client',
+      moduleSpecifier: '../../client',
       defaultImport: 'client'
     });
-
     // export default async function ProfileSearch(req: Request, res: Response) {
     source.addFunction({
       name: 'ProfileSearch',
@@ -53,10 +47,12 @@ export default function generate(directory: Directory, registry: Registry) {
         { name: 'res', type: 'Response' }
       ],
       statements: `
+        //extract project and model from client
+        const { project, model } = client;
         //bootstrap plugins
-        const project = await Project.bootstrap();
+        await project.bootstrap();
         //get the project config
-        const config = project.get<Record<string, any>>('project');
+        const config = project.config.get<Record<string, any>>();
         //get the session
         const session = project.get<Session>('session');
         //get the renderer
@@ -64,7 +60,7 @@ export default function generate(directory: Directory, registry: Registry) {
         //prep error page
         const error = '@stackpress/incept-admin/theme/error';
         //get authorization
-        const authorization = session.authorize(req, res, [ 'profile-search' ]);
+        const authorization = session.authorize(req, res, [ '${model.dash}-search' ]);
         //if not authorized
         if (!authorization) return;
         //general settings
@@ -87,17 +83,17 @@ export default function generate(directory: Directory, registry: Registry) {
           take = Number(take);
         }
         //search using the filters
-        const response = await client.profile.action.search(
+        const response = await model.${model.camel}.action.search(
           { q, filter, span, sort, skip, take }
         );
         //if successfully searched
         if (response.code === 200) {
           //render the search page
-          const ids = client.profile.config.ids.map(
+          const ids = model.${model.camel}.config.ids.map(
             column => \`{{data.\${column.name}}}\`
           ).join('/');
           res.mimetype = 'text/html';
-          res.body = await render('@/templates/search', { 
+          res.body = await render('@stackpress/.incept/${model.name}/admin/search', { 
             q,
             filter, 
             span, 
@@ -108,8 +104,8 @@ export default function generate(directory: Directory, registry: Registry) {
             ...response,
             results: (response.results || []).map(data => ({
               ...data,
-              _view: client.profile.config.render(
-                \`\${config.admin.root}/profile/detail/\${ids}\`, 
+              _view: model.${model.camel}.config.render(
+                \`\${config.admin.root}/${model.dash}/detail/\${ids}\`, 
                 data
               )
             }))

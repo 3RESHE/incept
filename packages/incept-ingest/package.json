@@ -1,6 +1,6 @@
 {
   "name": "@stackpress/incept-ingest",
-  "version": "0.1.0",
+  "version": "0.1.22",
   "license": "MIT",
   "description": "This package generates server endpoints based on models in an Incept client.",
   "author": "Chris <chris@stackpress.io>",
@@ -22,10 +22,10 @@
     "tsconfig.json"
   ],
   "dependencies": {
-    "@stackpress/incept-spec": "0.1.0",
-    "@stackpress/ingest": "0.1.15",
-    "@stackpress/ink": "0.1.18",
-    "@stackpress/ink-dev": "0.1.18",
+    "@stackpress/incept-spec": "0.1.22",
+    "@stackpress/ingest": "0.1.22",
+    "@stackpress/ink": "0.1.22",
+    "@stackpress/ink-dev": "0.1.22",
     "ts-morph": "23.0.0"
   },
   "devDependencies": {

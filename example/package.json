@@ -9,16 +9,10 @@
     "migrate": "dotenv -e .env.local -- drizzle-kit generate",
     "studio": "dotenv -e .env.local -- drizzle-kit studio --verbose"
   },
-  "incept": [
-    "./project.config.js",
-    "@stackpress/incept-i18n/dist", 
-    "@stackpress/incept-session/dist", 
-    "@stackpress/incept-ink/dist" 
-  ],
   "dependencies": {
     "@paralleldrive/cuid2": "2.2.2",
-    "@stackpress/incept": "0.1.0",
-    "@stackpress/ingest": "0.1.15",
+    "@stackpress/incept": "0.1.22",
+    "@stackpress/ingest": "0.1.22",
     "better-sqlite3": "11.3.0",
     "cookie": "1.0.0",
     "js-cookie": "3.0.5",
@@ -30,11 +24,11 @@
   },
   "devDependencies": {
     "@electric-sql/pglite": "0.2.12",
-    "@stackpress/ingest-vercel": "0.1.15",
-    "@stackpress/ink": "0.1.18",
-    "@stackpress/ink-css": "0.1.18",
-    "@stackpress/ink-dev": "0.1.18",
-    "@stackpress/ink-ui": "0.1.18",
+    "@stackpress/ingest-vercel": "0.1.22",
+    "@stackpress/ink": "0.1.22",
+    "@stackpress/ink-css": "0.1.22",
+    "@stackpress/ink-dev": "0.1.22",
+    "@stackpress/ink-ui": "0.1.22",
     "@types/js-cookie": "3.0.5",
     "@types/jsonwebtoken": "9.0.7",
     "@types/better-sqlite3": "7.6.9",

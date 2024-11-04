@@ -1,6 +1,6 @@
 {
   "name": "@stackpress/incept-drizzle",
-  "version": "0.1.0",
+  "version": "0.1.22",
   "license": "MIT",
   "description": "This package generates store, schema and actions based on models and fieldsets in an Incept client.",
   "author": "Chris <chris@stackpress.io>",
@@ -24,8 +24,8 @@
     "tsconfig.json"
   ],
   "dependencies": {
-    "@stackpress/incept-spec": "0.1.0",
-    "@stackpress/types": "0.1.12",
+    "@stackpress/incept-spec": "0.1.22",
+    "@stackpress/types": "0.1.22",
     "ts-morph": "23.0.0"
   },
   "devDependencies": {

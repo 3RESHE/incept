@@ -32,23 +32,17 @@ export default function generate(directory: Directory, registry: Registry) {
       moduleSpecifier: '@stackpress/incept-ink/dist/types',
       namedImports: [ 'InkPlugin' ]
     });
-    // import type { ProfileInput } from '@stackpress/incept/client';
+    // import type { ProfileInput } from '../types';
     source.addImportDeclaration({
       isTypeOnly: true,
-      moduleSpecifier: '@stackpress/incept/client',
+      moduleSpecifier: '../types',
       namedImports: [ 'ProfileInput' ]
     });
-    // import { Project } from '@stackpress/incept';
+    // import client from '../../client';
     source.addImportDeclaration({
-      moduleSpecifier: '@stackpress/incept',
-      namedImports: [ 'Project' ]
-    });
-    // import client from '@stackpress/incept/client';
-    source.addImportDeclaration({
-      moduleSpecifier: '@stackpress/incept/client',
+      moduleSpecifier: '../../client',
       defaultImport: 'client'
     });
-
     // export default async function ProfileCreate(req: Request, res: Response) {  
     source.addFunction({
       name: 'ProfileCreate',
@@ -59,16 +53,18 @@ export default function generate(directory: Directory, registry: Registry) {
         { name: 'res', type: 'Response' }
       ],
       statements: `
+        //extract project and model from client
+        const { project, model } = client;
         //bootstrap plugins
-        const project = await Project.bootstrap();
+        await project.bootstrap();
         //get the project config
-        const config = project.get<Record<string, any>>('project');
+        const config = project.config.get<Record<string, any>>();
         //get the session
         const session = project.get<Session>('session');
         //get the renderer
         const { render } = project.get<InkPlugin>('template');
         //get authorization
-        const authorization = session.authorize(req, res, [ 'profile-create' ]);
+        const authorization = session.authorize(req, res, [ '${model.dash}-create' ]);
         //if not authorized
         if (!authorization) return;
         //general settings
@@ -77,7 +73,7 @@ export default function generate(directory: Directory, registry: Registry) {
         if (req.method === 'POST') {
           //get form body
           const input = req.post.get() as ProfileInput;
-          const response = await client.profile.action.create(input);
+          const response = await model.${model.camel}.action.create(input);
           //if successfully created
           if (response.code === 200) {
             //redirect
@@ -85,7 +81,7 @@ export default function generate(directory: Directory, registry: Registry) {
             res.status = 'Found';
             res.headers.set(
               'Location', 
-              \`\${config.admin.root}/profile/detail/\${response.results?.id}\`
+              \`\${config.admin.root}/${model.dash}/detail/\${response.results?.id}\`
             );
             return;
           }
@@ -99,14 +95,17 @@ export default function generate(directory: Directory, registry: Registry) {
           res.status = response.status as string;
           res.mimetype = 'text/html';
           res.body = await render(
-            '@/templates/create', 
+            '@stackpress/.incept/${model.name}/admin/create', 
             { ...response, input, settings }
           );
           return;
         }
         //show form
         res.mimetype = 'text/html';
-        res.body = await render('@/templates/create', { settings });
+        res.body = await render(
+          '@stackpress/.incept/${model.name}/admin/create', 
+          { settings }
+        );
       `
     });
   }

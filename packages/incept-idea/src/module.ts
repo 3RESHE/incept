@@ -32,14 +32,12 @@ export default function generate(project: Directory, registry: Registry) {
       moduleSpecifier: `./schema`,
       defaultImport: 'schema'
     });
-    //import registry from '../../registry';
+    //import config from './config';
     source.addImportDeclaration({
-      moduleSpecifier: `../registry`,
-      defaultImport: 'registry'
+      moduleSpecifier: `./config`,
+      defaultImport: 'config'
     });
-    //const config = registry.model.get('profile');
-    source.addStatements(`const config = registry.model.get('${model.name}') as Model;`);
-    //export { schema, assert, action };
+    //export { config, schema, assert, action };
     source.addExportDeclaration({ 
       namedExports: [ 'config', 'schema', 'assert', 'action' ] 
     });
@@ -62,14 +60,12 @@ export default function generate(project: Directory, registry: Registry) {
       moduleSpecifier: `./assert`,
       defaultImport: '* as assert'
     });
-    //import registry from '../registry';
+    //import config from './config';
     source.addImportDeclaration({
-      moduleSpecifier: `../registry`,
-      defaultImport: 'registry'
+      moduleSpecifier: `./config`,
+      defaultImport: 'config'
     });
-    //const config = registry.fieldset.get('profile');
-    source.addStatements(`const config = registry.fieldset.get('${fieldset.name}') as Fieldset;`);
-    //export { assert };
+    //export { config, assert };
     source.addExportDeclaration({ namedExports: [ 'config', 'assert' ] });
   }
 }

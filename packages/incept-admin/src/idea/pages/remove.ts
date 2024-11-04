@@ -32,17 +32,11 @@ export default function generate(directory: Directory, registry: Registry) {
       moduleSpecifier: '@stackpress/incept-ink/dist/types',
       namedImports: [ 'InkPlugin' ]
     });
-    // import { Project } from '@stackpress/incept';
+    // import client from '../../client';
     source.addImportDeclaration({
-      moduleSpecifier: '@stackpress/incept',
-      namedImports: [ 'Project' ]
-    });
-    // import client from '@stackpress/incept/client';
-    source.addImportDeclaration({
-      moduleSpecifier: '@stackpress/incept/client',
+      moduleSpecifier: '../../client',
       defaultImport: 'client'
     });
-
     // export default async function ProfileRemove(req: Request, res: Response) {
     source.addFunction({
       name: 'ProfileRemove',
@@ -53,10 +47,12 @@ export default function generate(directory: Directory, registry: Registry) {
         { name: 'res', type: 'Response' }
       ],
       statements: `
+        //extract project and model from client
+        const { project, model } = client;
         //bootstrap plugins
-        const project = await Project.bootstrap();
+        await project.bootstrap();
         //get the project config
-        const config = project.get<Record<string, any>>('project');
+        const config = project.config.get<Record<string, any>>();
         //get the session
         const session = project.get<Session>('session');
         //get the renderer
@@ -64,14 +60,14 @@ export default function generate(directory: Directory, registry: Registry) {
         //prep error page
         const error = '@stackpress/incept-admin/theme/error';
         //get authorization
-        const authorization = session.authorize(req, res, [ 'profile-remove' ]);
+        const authorization = session.authorize(req, res, [ '${model.dash}-remove' ]);
         //if not authorized
         if (!authorization) return;
         //general settings
         const settings = { ...config.admin, session: authorization };
         //get url params
         const { params } = req.ctxFromRoute(
-          \`\${config.admin.root}/profile/remove/:id\`
+          \`\${config.admin.root}/${model.dash}/remove/:id\`
         );
         //get id from url params
         const id = params.get('id');
@@ -80,7 +76,7 @@ export default function generate(directory: Directory, registry: Registry) {
           //if confirmed
           if (req.query.get<string>('confirmed')) {
             //remove the row with the id
-            const response = await client.profile.action.remove(id);
+            const response = await model.${model.camel}.action.remove(id);
             //if successfully removed
             if (response.code === 200) {
               //redirect
@@ -88,7 +84,7 @@ export default function generate(directory: Directory, registry: Registry) {
               res.status = 'Found';
               res.headers.set(
                 'Location', 
-                \`\${config.admin.root}/profile/search\`
+                \`\${config.admin.root}/${model.dash}/search\`
               );
               return;
             }
@@ -98,17 +94,17 @@ export default function generate(directory: Directory, registry: Registry) {
             return;
           }
           //not confirmed, fetch the data using the id
-          const response = await client.profile.action.detail(id);
+          const response = await model.${model.camel}.action.detail(id);
           //if successfully fetched
           if (response.code === 200) {
             //render the remove page
             const results: Record<string, any> = response.results || {};
-            results.suggestion = client.profile.config.suggest(results);
+            results.suggestion = model.${model.camel}.config.suggest(results);
             res.mimetype = 'text/html';
             res.body = await render(
-              '@/templates/remove', 
+              '@stackpress/.incept/${model.name}/admin/remove', 
               { ...response, settings, results }
-            );
+              );
             return;
           }
           //it did not fetch, render error page

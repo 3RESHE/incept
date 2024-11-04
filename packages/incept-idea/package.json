@@ -1,6 +1,6 @@
 {
   "name": "@stackpress/incept-idea",
-  "version": "0.1.0",
+  "version": "0.1.22",
   "license": "MIT",
   "description": "The main Idea generator for Incept",
   "author": "Chris <chris@stackpress.io>",
@@ -20,14 +20,14 @@
     "tsconfig.json"
   ],
   "dependencies": {
-    "@stackpress/idea-parser": "0.1.17",
-    "@stackpress/idea-transformer": "0.1.17",
-    "@stackpress/incept-admin": "0.1.0",
-    "@stackpress/incept-assert": "0.1.0",
-    "@stackpress/incept-drizzle": "0.1.0",
-    "@stackpress/incept-ink": "0.1.0",
-    "@stackpress/incept-spec": "0.1.0",
-    "@stackpress/incept-types": "0.1.0",
+    "@stackpress/idea-parser": "0.1.22",
+    "@stackpress/idea-transformer": "0.1.22",
+    "@stackpress/incept-admin": "0.1.22",
+    "@stackpress/incept-assert": "0.1.22",
+    "@stackpress/incept-drizzle": "0.1.22",
+    "@stackpress/incept-ink": "0.1.22",
+    "@stackpress/incept-spec": "0.1.22",
+    "@stackpress/incept-types": "0.1.22",
     "ts-morph": "23.0.0"
   },
   "devDependencies": {

@@ -8,7 +8,7 @@ import { dev } from '@stackpress/ink-dev';
 type ProjectConfig = { 
   src: string,
   template: { brand?: string },
-} | undefined;
+};
 
 const environment = process.env.SERVER_ENV as string || 'development';
 
@@ -17,10 +17,7 @@ const environment = process.env.SERVER_ENV as string || 'development';
  */
 export default function plugin(project: Project) {
   //get the project config
-  const config = project.get<ProjectConfig>('project');
-  if (!config) {
-    throw new Error('Project config not found');
-  }
+  const config = project.config.get<ProjectConfig>();
 
   const { refresh } = dev({ cwd: config.src });
   const buildPath = path.join(project.cwd, 'build');

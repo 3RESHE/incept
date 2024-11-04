@@ -1,20 +1,16 @@
-//types
-import { PluginProps } from '@stackpress/idea-transformer/dist/Transformer';
+import type ConfigLoader from './loader/Config';
 
-import BaseTerminal from '@stackpress/types/dist/Terminal';
-import Transformer from '@stackpress/idea-transformer/dist/Transformer';
-import Loader from '@stackpress/idea-transformer/dist/Loader';
+import path from 'path';
+import IdeaTerminal from '@stackpress/idea-transformer/dist/Terminal';
 import Project from './Project';
 
-export type CLIProps = { cli: InceptTerminal };
-export type TerminalTransformer = Transformer<CLIProps>
-export type PluginWithCLIProps = PluginProps<CLIProps>;
-
-export default class InceptTerminal extends BaseTerminal {
+export default class InceptTerminal extends IdeaTerminal {
   // brand to prefix in all logs
   public static brand: string = '[INCEPT]';
   //access to static methods from the instance
+  //@ts-ignore - Types of construct signatures are incompatible.
   public readonly terminal: typeof InceptTerminal;
+  //the project
   public readonly project: Project;
 
   protected _bootstrapped = false;
@@ -22,21 +18,17 @@ export default class InceptTerminal extends BaseTerminal {
   /**
    * Preloads the input and output settings
    */
-  public constructor(args: string[], cwd = Loader.cwd()) {
-    super(args, cwd);
+  public constructor(args: string[], loader: ConfigLoader) {
+    super(args, { cwd: loader.cwd, fs: loader.fs });
+    //make static methods available to this instance
     this.terminal = this.constructor as typeof InceptTerminal;
-    this.project = new Project(cwd);
-    this.on('transform', _ => {
-      //get io from commandline
-      const input = Loader.absolute(
-        //get the idea location from the cli
-        this.expect([ 'input', 'i' ], './schema.idea'), 
-        this.cwd
-      );
-      const transformer = new Transformer<CLIProps>(input, this.cwd);
-      transformer.transform({ cli: this });
-      this.terminal.success('Your idea has been transformed');
-    });
+    //create a new project
+    this.project = new Project(
+      loader.require<Record<string, any>>(
+        path.join(loader.cwd, 'incept.config.js'), 
+        { cwd: loader.cwd }
+      )
+    );
   }
 
   /**

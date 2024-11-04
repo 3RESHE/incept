@@ -3,7 +3,6 @@ import type { PluginWithCLIProps } from '@stackpress/idea-transformer';
 //project
 import path from 'path';
 import { Project, IndentationText } from 'ts-morph';
-import { Loader } from '@stackpress/idea-transformer';
 import Registry from '@stackpress/incept-spec/dist/Registry';
 import { enval } from '@stackpress/incept-spec/dist/helpers';
 //generators
@@ -16,6 +15,7 @@ import generateAdmin from '@stackpress/incept-admin/idea';
 import generateModule from './module';
 import generateRegistry from './registry';
 import generateClient from './client';
+import generateRoutes from './routes';
 
 /**
  * This is the The params comes form the cli
@@ -23,7 +23,10 @@ import generateClient from './client';
 export default function generate({ config, schema, cli }: PluginWithCLIProps) {
   //-----------------------------//
   // 1. Config
-  const client = Loader.absolute('@stackpress/.incept', cli.cwd);
+  const client = path.resolve(
+    cli.transformer.loader.modules(), 
+    '@stackpress/.incept'
+  );
   const lang = config.lang || 'js';
   //determine url
   const url = enval<string>(config.url || 'env(DATABASE_URL)');
@@ -65,8 +68,9 @@ export default function generate({ config, schema, cli }: PluginWithCLIProps) {
   generateInk(directory, registry);
   generateAdmin(directory, registry);
   generateModule(directory, registry);
-  generateRegistry(directory);
+  generateRegistry(directory, registry);
   generateClient(directory, registry);
+  generateRoutes(directory, registry);
   
   //-----------------------------//
   // 5. index.ts
@@ -80,10 +84,10 @@ export default function generate({ config, schema, cli }: PluginWithCLIProps) {
   source.addExportDeclaration({ 
     moduleSpecifier: './enums' 
   });
-  //import schema from './schema.json';
+  //import config from './config.json';
   source.addImportDeclaration({ 
-    moduleSpecifier: './schema.json', 
-    defaultImport: 'schema' 
+    moduleSpecifier: './config.json', 
+    defaultImport: 'config' 
   });
   //import registry from './registry';
   source.addImportDeclaration({ 

@@ -32,23 +32,17 @@ export default function generate(directory: Directory, registry: Registry) {
       moduleSpecifier: '@stackpress/incept-ink/dist/types',
       namedImports: [ 'InkPlugin' ]
     });
-    // import type { ProfileInput } from '@stackpress/incept/client';
+    // import type { ProfileInput } from '../types';
     source.addImportDeclaration({
       isTypeOnly: true,
-      moduleSpecifier: '@stackpress/incept/client',
+      moduleSpecifier: '../types',
       namedImports: [ 'ProfileInput' ]
     });
-    // import { Project } from '@stackpress/incept';
+    // import client from '../../client';
     source.addImportDeclaration({
-      moduleSpecifier: '@stackpress/incept',
-      namedImports: [ 'Project' ]
-    });
-    // import client from '@stackpress/incept/client';
-    source.addImportDeclaration({
-      moduleSpecifier: '@stackpress/incept/client',
+      moduleSpecifier: '../../client',
       defaultImport: 'client'
     });
-
     // export default async function ProfileCreate(req: Request, res: Response) {  
     source.addFunction({
       name: 'ProfileCreate',
@@ -59,10 +53,12 @@ export default function generate(directory: Directory, registry: Registry) {
         { name: 'res', type: 'Response' }
       ],
       statements: `
+        //extract project and model from client
+        const { project, model } = client;
         //bootstrap plugins
-        const project = await Project.bootstrap();
+        await project.bootstrap();
         //get the project config
-        const config = project.get<Record<string, any>>('project');
+        const config = project.config.get<Record<string, any>>();
         //get the session
         const session = project.get<Session>('session');
         //get the renderer
@@ -70,14 +66,14 @@ export default function generate(directory: Directory, registry: Registry) {
         //prep error page
         const error = '@stackpress/incept-admin/theme/error';
         //get authorization
-        const authorization = session.authorize(req, res, [ 'profile-update' ]);
+        const authorization = session.authorize(req, res, [ '${model.dash}-update' ]);
         //if not authorized
         if (!authorization) return;
         //general settings
         const settings = { ...config.admin, session: authorization };
         //get url params
         const { params } = req.ctxFromRoute(
-          \`\${config.admin.root}/profile/update/:id\`
+          \`\${config.admin.root}/${model.dash}/update/:id\`
         );
         //get id from url params
         const id = params.get('id');
@@ -88,7 +84,7 @@ export default function generate(directory: Directory, registry: Registry) {
             //get form body
             const input = req.post.get() as Partial<ProfileInput>;
             //update the row using the id and the submitted input
-            const response = await client.profile.action.update(id, input);
+            const response = await model.${model.camel}.action.update(id, input);
             //if successfully updated
             if (response.code === 200) {
               //redirect
@@ -96,7 +92,7 @@ export default function generate(directory: Directory, registry: Registry) {
               res.status = 'Found';
               res.headers.set(
                 'Location', 
-                \`\${config.admin.root}/profile/detail/\${id}\`
+                \`\${config.admin.root}/${model.dash}/detail/\${id}\`
               );
             }
             //it did not update...
@@ -109,22 +105,22 @@ export default function generate(directory: Directory, registry: Registry) {
             res.status = response.status as string;
             res.mimetype = 'text/html';
             res.body = await render(
-              '@/templates/update', 
+              '@stackpress/.incept/${model.name}/admin/update', 
               { ...response, settings, input }
             );
             return;
           }
           //not submitted, fetch the data using the id
-          const response = await client.profile.action.detail(id);
+          const response = await model.${model.camel}.action.detail(id);
           //if successfully fetched
           if (response.code === 200) {
             //render the update page
             const input: Record<string, any> = { ...(response.results || {}) };
             const results: Record<string, any> = response.results || {};
-            results.suggestion = client.profile.config.suggest(results);
+            results.suggestion = model.${model.camel}.config.suggest(results);
             res.mimetype = 'text/html';
             res.body = await render(
-              '@/templates/update', 
+              '@stackpress/.incept/${model.name}/admin/update', 
               { ...response, settings, results, input }
             );
             return;

@@ -1,24 +1,22 @@
 import path from 'path';
-import http from '@stackpress/ingest/http';
-import route from '@stackpress/incept-ingest/dist/route';
-import { route as dev } from '@stackpress/incept-ingest/dist/inkdev';
-import * as config from '../incept.config';
+import vercel from '@stackpress/ingest-vercel';
+import routes from '@stackpress/incept/routes';
+import client from '@stackpress/incept/client';
+import { route } from '@stackpress/incept-ingest/dist/inkdev';
 
-const server = http({ minify: false });
+const server = vercel({ minify: false });
+const config = client.project.config.get<Record<string, any>>() || {};
 
 if (process.env.SERVER_ENV === 'development') {
-  dev({
-    buildRoute: config.dev.buildRoute,
-    socketRoute: config.dev.socketRoute,
-    entryPath: path.resolve(__dirname, 'pages/dev'),
+  route({
+    buildRoute: config.dev.buildRoute || '/build/client',
+    socketRoute: config.dev.socketRoute || '/__ink_dev__',
+    entryPath: path.resolve(__dirname, 'routes/develop'),
     router: server
   });
-  server.all('**', path.resolve(__dirname, 'pages/assets'));
+  server.all('**', path.resolve(__dirname, 'routes/assets'));
 }
-route({
-  routePath: `${config.admin.root}/profile`,
-  entryPath: path.resolve(__dirname, 'pages/profile'),
-  router: server
-});
+
+routes(config.admin.root, server);
 
 export default server;

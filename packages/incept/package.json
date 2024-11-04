@@ -1,6 +1,6 @@
 {
   "name": "@stackpress/incept",
-  "version": "0.1.0",
+  "version": "0.1.22",
   "license": "MIT",
   "description": "Incept is a code generator for content management systems.",
   "author": "Chris <chris@stackpress.io>",
@@ -23,11 +23,13 @@
     "index.d.ts",
     "LICENSE",
     "README.md",
+    "routes.js",
+    "routes.d.ts",
     "tsconfig.json"
   ],
   "dependencies": {
-    "@stackpress/types": "0.1.12",
-    "@stackpress/idea-transformer": "0.1.17"
+    "@stackpress/types": "0.1.22",
+    "@stackpress/idea-transformer": "0.1.22"
   },
   "devDependencies": {
     "@types/node": "22.7.5",
