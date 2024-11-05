@@ -34,11 +34,22 @@ export default class InceptTerminal extends IdeaTerminal {
   /**
    * Bootstraps the project and binds with the terminal
    */
-  public bootstrap() {
+  public async bootstrap() {
     if (!this._bootstrapped) {
-      this.project.bootstrap();
+      await this.project.bootstrap();
       this.use(this.project);
     }
     return this;
+  }
+
+  /**
+   * Runs the command
+   */
+  public async run() {
+    if (this._command === 'transform') {
+      //@ts-ignore - Expecting [ Hash ], oops...
+      await this.emit('idea', this.transformer);
+    }
+    return await this.emit(this._command, this.params);
   }
 }

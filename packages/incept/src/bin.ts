@@ -9,7 +9,7 @@ async function main() {
     process.argv.slice(2), 
     loader
   );
-  terminal.bootstrap();
+  await terminal.bootstrap();
   await terminal.run();
 }
 

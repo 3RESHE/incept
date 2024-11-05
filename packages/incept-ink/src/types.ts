@@ -8,3 +8,19 @@ export type InkPlugin = {
   refresh: RefreshServer,
   render: Renderer
 };
+
+export type AllRouter = { all: (route: string, entry: string) => void };
+
+export type InkDevRouteConfig = {
+  buildRoute?: string,
+  socketRoute?: string,
+  entryPath: string,
+  router: AllRouter
+};
+
+export type InkDevEntryConfig = {
+  buildRoute?: string,
+  socketRoute?: string,
+  compiler: InkCompiler, 
+  refresh: RefreshServer
+};

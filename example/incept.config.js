@@ -2,9 +2,16 @@ const path = require('path');
 const environment = process.env.SERVER_ENV || 'development';
 module.exports = {
   plugins: [
-    '@stackpress/incept-i18n/dist', 
-    '@stackpress/incept-session/dist', 
-    '@stackpress/incept-ink/dist'
+    //transformers
+    '@stackpress/incept-types',
+    '@stackpress/incept-assert',
+    '@stackpress/incept-drizzle',
+    '@stackpress/incept-ink',
+    '@stackpress/incept-admin',
+    '@stackpress/incept-client',
+    //plugins
+    '@stackpress/incept-i18n', 
+    '@stackpress/incept-session'
   ],
   access: {
     ADMIN: [
@@ -74,10 +81,6 @@ module.exports = {
       'connection-update'
     ]
   },
-  dev: {
-    buildRoute: '/build/client',
-    socketRoute: '/__ink_dev__'
-  },
   server: {
     minify: false
   },
@@ -85,10 +88,15 @@ module.exports = {
     engine: 'ink',
     config: {
       brand: '',
-      minify: false,
+      minify: environment !== 'development',
+      buildPath: path.join(process.cwd(), 'build'),
       cwd: environment === 'development' 
         ? path.join(process.cwd(), 'src')
-        : path.join(process.cwd(), 'dist')
+        : path.join(process.cwd(), 'dist'),
+      dev: { 
+        buildRoute: '/build/client',
+        socketRoute: '/__ink_dev__'
+      }
     }
   },
   admin: {

@@ -1,3 +1,4 @@
+import * as develop from './develop';
 import { addQueryParam, removeQueryParam } from './helpers';
 
-export { addQueryParam, removeQueryParam };
+export { develop, addQueryParam, removeQueryParam };

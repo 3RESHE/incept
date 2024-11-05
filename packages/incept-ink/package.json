@@ -12,15 +12,21 @@
   },
   "main": "index.js",
   "files": [
-    "components",
     "dist",
+    "incept.js",
+    "incept.d.ts",
     "index.js",
     "index.d.ts",
+    "LICENSE",
     "README.md",
     "tsconfig.json"
   ],
   "dependencies": {
-    "@stackpress/incept-spec": "0.1.22",
+    "@stackpress/idea-transformer": "0.1.22",
+    "@stackpress/incept": "0.1.22",
+    "@stackpress/ink": "0.1.22",
+    "@stackpress/ink-css": "0.1.22",
+    "@stackpress/ink-dev": "0.1.22",
     "ts-morph": "23.0.0"
   },
   "devDependencies": {

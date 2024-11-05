@@ -2,15 +2,15 @@ import path from 'path';
 import vercel from '@stackpress/ingest-vercel';
 import routes from '@stackpress/incept/routes';
 import client from '@stackpress/incept/client';
-import { route } from '@stackpress/incept-ingest/dist/inkdev';
+import { route } from '@stackpress/incept-ink/dist/develop';
 
 const server = vercel({ minify: false });
 const config = client.project.config.get<Record<string, any>>() || {};
 
 if (process.env.SERVER_ENV === 'development') {
   route({
-    buildRoute: config.dev.buildRoute || '/build/client',
-    socketRoute: config.dev.socketRoute || '/__ink_dev__',
+    buildRoute: config.template.config.dev.buildRoute || '/build/client',
+    socketRoute: config.template.config.dev.socketRoute || '/__ink_dev__',
     entryPath: path.resolve(__dirname, 'routes/develop'),
     router: server
   });

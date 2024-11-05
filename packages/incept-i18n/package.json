@@ -15,6 +15,8 @@
   "main": "index.js",
   "files": [
     "dist",
+    "incept.js",
+    "incept.d.ts",
     "index.js",
     "index.d.ts",
     "LICENSE",

@@ -12,13 +12,11 @@
     "build:ts": "tsc",
     "build:ink": "copyfiles -u 1 ./src/**/*.ink ./dist"
   },
-  "main": "index.js",
   "files": [
     "dist",
-    "idea.js",
-    "idea.d.ts",
-    "index.js",
-    "index.d.ts",
+    "theme",
+    "incept.js",
+    "incept.d.ts",
     "LICENSE",
     "README.md",
     "tsconfig.json"

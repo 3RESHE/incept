@@ -13,18 +13,17 @@
   "main": "index.js",
   "files": [
     "dist",
-    "idea.js",
-    "idea.d.ts",
+    "incept.js",
+    "incept.d.ts",
     "index.js",
     "index.d.ts",
     "LICENSE",
     "README.md",
-    "schema.js",
-    "schema.d.ts",
     "tsconfig.json"
   ],
   "dependencies": {
-    "@stackpress/incept-spec": "0.1.22",
+    "@stackpress/idea-transformer": "0.1.22",
+    "@stackpress/incept": "0.1.22",
     "@stackpress/types": "0.1.22",
     "ts-morph": "23.0.0"
   },
