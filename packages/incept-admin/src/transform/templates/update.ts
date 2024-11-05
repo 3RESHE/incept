@@ -67,7 +67,6 @@ const template = `
         />
       </header>
       <main class="flex-grow p-10 scroll-auto h-calc-full-38">
-        <h1>{title}</h1>
         <div class="pb-50">
           <{{lower}}-form {input} {errors} action={url} />
         </div>

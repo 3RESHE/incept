@@ -143,7 +143,7 @@ export default function generate(directory: Directory, registry: Registry) {
       }));
       formats.push(render(row, {
         direction,
-        format: method === 'none' ? none : render(format, {
+        format: render(method === 'none' ? none : format, {
           format: method,
           name: column.name,
           attributes: objectToAttributeString(attributes)

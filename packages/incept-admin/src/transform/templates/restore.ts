@@ -67,7 +67,6 @@ const template = `
         />
       </header>
       <main class="flex-grow p-10 scroll-auto h-calc-full-38">
-        <h1>{title}</h1>
         <div class="pb-50">
           <p class="py-20">{_(
             'Are you sure you want to restore %s?', 

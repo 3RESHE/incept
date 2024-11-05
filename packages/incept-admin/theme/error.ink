@@ -49,7 +49,7 @@
     <admin-app {settings} {url} {title} code={200}>
       <main class="flex-grow p-10 scroll-auto h-calc-full-38">
         <h1>{title}</h1>
-        <div class="bg-t-4 courier tx-lh-22 tx-word-wrap p-10 scroll-x-auto">
+        <div class="bg-t-4 courier tx-lh-22 tx-word-wrap p-10 mt-10 scroll-x-auto">
           {status}
         </div>
         <if true={stack.length}>
@@ -59,30 +59,34 @@
             head="py-16 px-12 bg-t-2 b-solid b-black bt-1 bb-0 bx-0 tx-upper tx-bold" 
             body="py-16 px-12 b-solid b-black bt-1 bb-0 bx-0" 
             odd="bg-t-1"
-            even="bg-black tx-white tx-lh-8"
+            even="bg-t-2"
           >
-            <each value=trace from=stack>
+            <each key=index value=trace from=stack>
               <table-row>
-                <table-col nowrap>{trace.file} &mdash; {trace.method}</table-col>
+                <table-col nowrap>
+                  <span class="tx-bold tx-sm">
+                    #{stack.length - index}
+                  </span>
+                  <h3 class="tx-normal">{trace.method}</h3>
+                  <p class="tx-sm tx-muted">{trace.file}:{trace.line}:{trace.char}</p>
+                  <if true={trace.snippet}>
+                    <div class="mt-10 py-5 px-10 tx-lh-8 bg-h-111111 tx-h-EEEEEE">
+                      <if true={trace.snippet.before}>
+                        <pre>{trace.line - 1} | {trace.snippet.before}</pre>
+                      </if>
+                      <if true={trace.snippet.main}>
+                        <pre>{trace.line} | {trace.snippet.main}</pre>
+                      </if>
+                      <if true={trace.snippet.location}>
+                        <pre>{' '.repeat(String(trace.line).length + 3)}{trace.snippet.location}</pre>
+                      </if>
+                      <if true={trace.snippet.after}>
+                        <pre>{trace.line + 1} | {trace.snippet.after}</pre>
+                      </if>
+                    </div>
+                  </if>
+                </table-col>
               </table-row>
-              <if true={trace.snippet}>
-                <table-row>
-                  <table-col>
-                    <if true={trace.snippet.before}>
-                      <pre>{trace.line - 1} | {trace.snippet.before}</pre>
-                    </if>
-                    <if true={trace.snippet.main}>
-                      <pre>{trace.line} | {trace.snippet.main}</pre>
-                    </if>
-                    <if true={trace.snippet.location}>
-                      <pre>{' '.repeat(String(trace.line).length + 3)}{trace.snippet.location}</pre>
-                    </if>
-                    <if true={trace.snippet.after}>
-                      <pre>{trace.line + 1} | {trace.snippet.after}</pre>
-                    </if>
-                  </table-col>
-                </table-row>
-              </if>
             </each>
           </table-layout>
         </if>

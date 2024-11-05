@@ -38,7 +38,7 @@ const template = `
     }
   } = props('document');
   const url = \`\${settings.root}/{{lower}}/create\`;
-  const title = _('Create Profile');
+  const title = _('Create {{singular}}');
   const links = { search: \`\${settings.root}/{{lower}}/search\` };
   const crumbs = [
     { icon: 'home', label: 'Home', href: settings.root },
@@ -62,7 +62,6 @@ const template = `
         />
       </header>
       <main class="flex-grow p-10 scroll-auto h-calc-full-38">
-        <h1>{title}</h1>
         <div class="pb-50">
           <{{lower}}-form {input} {errors} action={url} />
         </div>
@@ -83,6 +82,7 @@ export default function generate(directory: Directory, registry: Registry) {
     }
     const source = render(template, { 
       lower: model.lower, 
+      singular: model.singular,
       plural: model.plural 
     });
     fs.writeFileSync(file, source);

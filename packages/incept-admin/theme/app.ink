@@ -206,7 +206,7 @@
   </header>
   <main class="bg-t-2 h-calc-full-60">
     <each value=item from={settings.menu}>
-      <if true={url.startsWith(item.path)}>
+      <if true={url.startsWith(item.match)}>
         <a class="flex flex-center-y p-10 tx-t-1 b-t-1 b-solid bb-1 bx-0 bt-0" href={item.path}>
           <element-icon name={item.icon} class="mr-10" />
           {item.name}

@@ -105,17 +105,20 @@ module.exports = {
       {
         name: 'Auths',
         icon: 'lock',
-        path: '/admin/auth/search'
+        path: '/admin/auth/search',
+        match: '/admin/auth'
       },
       {
         name: 'Profiles',
         icon: 'user',
-        path: '/admin/profile/search'
+        path: '/admin/profile/search',
+        match: '/admin/profile'
       },
       {
         name: 'Connections',
         icon: 'users',
-        path: '/admin/connection/search'
+        path: '/admin/connection/search',
+        match: '/admin/connection'
       }
     ]
   },

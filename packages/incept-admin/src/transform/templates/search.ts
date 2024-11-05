@@ -89,7 +89,6 @@ const template = `
         />
       </header>
       <main class="flex-grow scroll-auto h-calc-full-38 flex flex-col">
-        <h1 class="tx-upper p-10">{title}</h1>
         <div class="flex flex-y-center p-10">
           <form-button muted padding={10}>
             <element-icon name="filter" click=toggle />

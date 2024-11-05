@@ -68,7 +68,6 @@ const template = `
         />
       </header>
       <main class="flex-grow p-10 scroll-auto h-calc-full-38">
-        <h1>{title}</h1>
         <div class="tx-right mb-20">
           <form-button 
             md warning

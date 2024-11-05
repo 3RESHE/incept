@@ -27,6 +27,7 @@
     "@stackpress/ink": "0.1.22",
     "@stackpress/ink-css": "0.1.22",
     "@stackpress/ink-dev": "0.1.22",
+    "mustache": "4.2.0",
     "ts-morph": "23.0.0"
   },
   "devDependencies": {

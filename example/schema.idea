@@ -16,14 +16,14 @@ enum Role {
 //why we call it profile instead of user and company indicating it's 
 //just a general information of an entity.
 
-model Profile @label("User" "Users") @suggestion("{{name}}") {
+model Profile @label("Profile" "Profiles") @suggestion("{{name}}") {
   id          String    @label("ID") 
                         @id @default("cuid()")
                         @list.overflow({ length 10 hellip true })
   
   name        String    @label("Name") 
                         @searchable
-                        @field.text
+                        @field.text({ required true })
                         @is.required
                         @list.view @view.text
 
@@ -38,7 +38,7 @@ model Profile @label("User" "Users") @suggestion("{{name}}") {
   type        Type      @label("Type") 
                         @default("person") 
                         @filter.text
-                        @field.text
+                        @field.text({ required true })
                         @list.text({ lower true }) 
                         @view.text({ lower true })
   
@@ -102,7 +102,7 @@ model Auth @label("Auth" "Auth") @suggestion("{{username}}") {
                      
   username  String   @label("Username")
                      @unique @searchable
-                     @field.text
+                     @field.text({ required true })
                      @is.required @is.cge(5)
                      @filter.text
                      @list.text @view.text
@@ -122,7 +122,7 @@ model Auth @label("Auth" "Auth") @suggestion("{{username}}") {
                      @list.text @view.phone
   
   password  String   @label("Password") 
-                     @field.password
+                     @field.password({ required true })
                      @is.required
                      @list.hide @view.hide
   
@@ -132,6 +132,8 @@ model Auth @label("Auth" "Auth") @suggestion("{{username}}") {
   
   verified  Integer  @label("Verified") 
                      @default(0) //0=unverified, 1=email, 2=phone, 3=both
+                     @min(0) @max(3) @step(1)
+                     @field.input({ type "number" min "0" max "3" step "1" })
   
   lastLogin Datetime @label("Last Logged In") 
                      @default("now()")
@@ -178,7 +180,7 @@ model Connection {
   
   role     String   @label("Owner")
                     @default("member")
-                    @field.text
+                    @field.text({ required true })
   
   tags     String[] @label("Tags") 
                     @field.tags
