@@ -8,7 +8,7 @@ import path from 'path';
 export default async function Assets(req: Request<IM>, res: Response<SR>) {
   if (res.code || res.status || res.body) return;
   const resource = req.url.pathname.substring(1).replace(/\/\//, '/'); 
-  const file = path.resolve(__dirname, '../../public',resource); 
+  const file = path.resolve(__dirname, '../../public', resource); 
   if (fs.existsSync(file)) {
     res.stop();
     const response = res.resource as SR;

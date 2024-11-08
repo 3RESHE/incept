@@ -7,7 +7,7 @@ import path from 'path';
 import { render } from '@stackpress/incept/dist/config/helpers';
 
 const template = `
-<link rel="import" type="template" href="@stackpress/incept-admin/theme/head.ink" name="html-head" />
+<link rel="import" type="template" href="@stackpress/incept-admin/dist/components/head.ink" name="html-head" />
 <link rel="import" type="component" href="@stackpress/ink-ui/element/icon.ink" name="element-icon" />
 <link rel="import" type="component" href="@stackpress/ink-ui/element/crumbs.ink" name="element-crumbs" />
 <link rel="import" type="component" href="@stackpress/ink-ui/element/pager.ink" name="element-pager" />
@@ -15,7 +15,7 @@ const template = `
 <link rel="import" type="component" href="@stackpress/ink-ui/form/button.ink" name="form-button" />
 <link rel="import" type="component" href="../components/table.ink" name="{{lower}}-table" />
 <link rel="import" type="component" href="../components/filters.ink" name="{{lower}}-filters" />
-<link rel="import" type="component" href="@stackpress/incept-admin/theme/app.ink" name="admin-app" />
+<link rel="import" type="component" href="@stackpress/incept-admin/dist/components/app.ink" name="admin-app" />
 <style>
   @ink theme;
   @ink reset;
@@ -26,7 +26,6 @@ const template = `
   import { env, props } from '@stackpress/ink';
   import { _ } from '@stackpress/incept-i18n';
   import { addQueryParam } from '@stackpress/incept-ink/dist/helpers';
-
   const { 
     q,
     code = 200, 
@@ -60,8 +59,10 @@ const template = `
       window.location.search, 
       'skip', 
       (page - 1) * take
-    )
+    );
   };
+  const detail = \`\${settings.root}/{{lower}}/detail/{{ids}}\`;
+  const update = \`\${settings.root}/{{lower}}/update/{{ids}}\`;
   const toggle = () => {
     const filter = document.querySelector('.filter');
     if (filter?.classList.contains('right-0')) {
@@ -104,7 +105,7 @@ const template = `
           </form-button>
         </div>
         <div class="flex-grow p-10">
-          <{{lower}}-table rows={results} none={_('No Results Found')} />
+          <{{lower}}-table rows={results} {detail} {update} none={_('No Results Found')} />
         </div>
         <div class="p-10">
           <element-pager 
@@ -151,6 +152,7 @@ export default function generate(directory: Directory, registry: Registry) {
       fs.mkdirSync(path.dirname(file), { recursive: true });
     }
     const source = render(template, { 
+      ids: model.ids.map(column => `{{${column.name}}}`).join('/'),
       lower: model.lower, 
       plural: model.plural 
     });

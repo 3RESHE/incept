@@ -7,6 +7,9 @@ import { route } from '@stackpress/incept-ink/dist/develop';
 const server = vercel({ minify: false });
 const config = client.project.config.get<Record<string, any>>() || {};
 
+routes(config.admin.root, server);
+server.all('/', path.resolve(__dirname, 'routes/home'));
+
 if (process.env.SERVER_ENV === 'development') {
   route({
     buildRoute: config.template.config.dev.buildRoute || '/build/client',
@@ -16,7 +19,5 @@ if (process.env.SERVER_ENV === 'development') {
   });
   server.all('**', path.resolve(__dirname, 'routes/assets'));
 }
-
-routes(config.admin.root, server);
 
 export default server;

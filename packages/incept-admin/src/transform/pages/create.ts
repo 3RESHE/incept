@@ -45,7 +45,7 @@ export default function generate(directory: Directory, registry: Registry) {
     });
     // export default async function ProfileCreate(req: Request, res: Response) {  
     source.addFunction({
-      name: 'ProfileCreate',
+      name: `Admin${model.name}Create`,
       isAsync: true,
       isDefaultExport: true,
       parameters: [

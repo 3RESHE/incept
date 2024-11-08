@@ -9,6 +9,28 @@ export default class Attributes extends Map<string, unknown> {
   }
 
   /**
+   * Returns a new set of attributes that are admin specific
+   */
+  public get admin() {
+    const attributes: Record<string, unknown> = {};
+    //explicit validators
+    for (const name in this.keys()) {
+      if (!name.startsWith('admin.')) {
+        continue;
+      }
+      //we found it.
+      const attribute = this.get(name);
+      //get the method
+      const method = name.replace('admin.', '');
+      //get the arguments
+      attributes[method] = attribute;
+    }
+    return new Attributes(
+      Object.entries(attributes)
+    );
+  }
+
+  /**
    * Returns the column assertions
    */
   public get assertions() {
@@ -311,17 +333,6 @@ export default class Attributes extends Map<string, unknown> {
   }
 
   /**
-   * Returns the column @suggestion
-   */
-  public get suggestion() {
-    const suggestion = this.get('suggestion');
-    if (Array.isArray(suggestion)) {
-      return suggestion[0];
-    }
-    return undefined;
-  }
-
-  /**
    * Returns the column @step
    * example: @step(0.01)
    */
@@ -345,6 +356,17 @@ export default class Attributes extends Map<string, unknown> {
     }
     //convert to 0.001 for example
     return Math.pow(10, -decimalLength);
+  }
+
+  /**
+   * Returns the column @template
+   */
+  public get template() {
+    const template = this.get('template');
+    if (Array.isArray(template)) {
+      return template[0];
+    }
+    return undefined;
   }
 
   /**

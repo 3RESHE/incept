@@ -7,11 +7,11 @@ import path from 'path';
 import { render } from '@stackpress/incept/dist/config/helpers';
 
 const template = `
-<link rel="import" type="template" href="@stackpress/incept-admin/theme/head.ink" name="html-head" />
+<link rel="import" type="template" href="@stackpress/incept-admin/dist/components/head.ink" name="html-head" />
 <link rel="import" type="component" href="@stackpress/ink-ui/element/icon.ink" name="element-icon" />
 <link rel="import" type="component" href="@stackpress/ink-ui/element/crumbs.ink" name="element-crumbs" />
 <link rel="import" type="component" href="@stackpress/ink-ui/form/button.ink" name="form-button" />
-<link rel="import" type="component" href="@stackpress/incept-admin/theme/app.ink" name="admin-app" />
+<link rel="import" type="component" href="@stackpress/incept-admin/dist/components/app.ink" name="admin-app" />
 <style>
   @ink theme;
   @ink reset;
@@ -19,6 +19,7 @@ const template = `
   @ink utilities;
 </style>
 <script>
+  import mustache from 'mustache';
   import { env, props } from '@stackpress/ink';
   import { _ } from '@stackpress/incept-i18n';
 
@@ -37,17 +38,18 @@ const template = `
       }
     }
   } = props('document');
-  const url = \`\${settings.root}/{{lower}}/remove/\${results.id}\`;
+  const detail = mustache.render('{{template}}', results);
+  const url = \`\${settings.root}/{{lower}}/remove/{{ids}}\`;
   const title = _('Remove {{singular}}');
   const links = {
     search: \`\${settings.root}/{{lower}}/search\`,
-    detail: \`\${settings.root}/{{lower}}/detail/\${results.id}\`,
+    detail: \`\${settings.root}/{{lower}}/detail/{{ids}}\`,
     remove: \`\${url}?confirmed=true\`
   };
   const crumbs = [
     { icon: 'home', label: 'Home', href: settings.root },
     { icon: 'user', label: _('{{plural}}'), href: links.search },
-    { label: results.suggestion || _('{{singular}} Detail'), href: links.detail },
+    { label: detail || _('{{singular}} Detail'), href: links.detail },
     { icon: 'trash', label: title }
   ];
 </script>
@@ -97,6 +99,8 @@ export default function generate(directory: Directory, registry: Registry) {
       fs.mkdirSync(path.dirname(file), { recursive: true });
     }
     const source = render(template, { 
+      ids: model.ids.map(column => `\${results.${column.name}}`).join('/'),
+      template: model.template,
       lower: model.lower, 
       singular: model.singular,
       plural: model.plural 

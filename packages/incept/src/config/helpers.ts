@@ -2,6 +2,13 @@ import type { Data } from '@stackpress/idea-parser';
 import NodeFS from '@stackpress/types/dist/filesystem/NodeFS';
 import FileLoader from '@stackpress/types/dist/filesystem/FileLoader';
 
+export const generators = [
+  'cuid()',
+  'nano()',
+  'random()',
+  'now()'
+];
+
 /**
  * Returns true if the value is a native JS object
  */

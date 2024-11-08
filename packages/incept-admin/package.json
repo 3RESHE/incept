@@ -10,7 +10,7 @@
   "scripts": {
     "build": "yarn build:ts && yarn build:ink",
     "build:ts": "tsc",
-    "build:ink": "copyfiles -u 1 ./src/**/*.ink ./dist"
+    "build:ink": "copyfiles -u 1 ./src/**/*.ink ./src/**/**/*.ink ./dist"
   },
   "files": [
     "dist",

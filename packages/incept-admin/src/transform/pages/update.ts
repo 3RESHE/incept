@@ -45,7 +45,7 @@ export default function generate(directory: Directory, registry: Registry) {
     });
     // export default async function ProfileCreate(req: Request, res: Response) {  
     source.addFunction({
-      name: 'ProfileCreate',
+      name: `Admin${model.name}Update`,
       isAsync: true,
       isDefaultExport: true,
       parameters: [
@@ -64,7 +64,7 @@ export default function generate(directory: Directory, registry: Registry) {
         //get the renderer
         const { render } = project.get<InkPlugin>('template');
         //prep error page
-        const error = '@stackpress/incept-admin/theme/error';
+        const error = '@stackpress/incept-admin/dist/components/error';
         //get authorization
         const authorization = session.authorize(req, res, [ '${model.dash}-update' ]);
         //if not authorized
@@ -73,18 +73,24 @@ export default function generate(directory: Directory, registry: Registry) {
         const settings = { ...config.admin, session: authorization };
         //get url params
         const { params } = req.ctxFromRoute(
-          \`\${config.admin.root}/${model.dash}/update/:id\`
+          \`\${config.admin.root}/${model.dash}/update/${
+            model.ids.map(column => `:${column.name}`).join('/')
+          }\`
         );
         //get id from url params
-        const id = params.get('id');
+        ${model.ids.map(
+          (column, i) => `const id${i + 1} = params.get('${column.name}');`
+        ).join('\n        ')}
         //if there is an id
-        if (id) {
+        if (${model.ids.map((_, i) => `id${i + 1}`).join(' && ')}) {
           //if form submitted
           if (req.method === 'POST') {
             //get form body
             const input = req.post.get() as Partial<ProfileInput>;
             //update the row using the id and the submitted input
-            const response = await model.${model.camel}.action.update(id, input);
+            const response = await model.${model.camel}.action.update(${
+              model.ids.map((_, i) => `id${i + 1}`).join(', ')
+            }, input);
             //if successfully updated
             if (response.code === 200) {
               //redirect
@@ -111,17 +117,17 @@ export default function generate(directory: Directory, registry: Registry) {
             return;
           }
           //not submitted, fetch the data using the id
-          const response = await model.${model.camel}.action.detail(id);
+          const response = await model.${model.camel}.action.detail(${
+            model.ids.map((_, i) => `id${i + 1}`).join(', ')
+          });
           //if successfully fetched
           if (response.code === 200) {
             //render the update page
             const input: Record<string, any> = { ...(response.results || {}) };
-            const results: Record<string, any> = response.results || {};
-            results.suggestion = model.${model.camel}.config.suggest(results);
             res.mimetype = 'text/html';
             res.body = await render(
               '@stackpress/.incept/${model.name}/admin/update', 
-              { ...response, settings, results, input }
+              { ...response, settings, input }
             );
             return;
           }

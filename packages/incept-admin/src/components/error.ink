@@ -1,9 +1,9 @@
-<link rel="import" type="template" href="@stackpress/incept-admin/theme/head.ink" name="html-head" />
+<link rel="import" type="template" href="@stackpress/incept-admin/dist/components/head.ink" name="html-head" />
 <link rel="import" type="component" href="@stackpress/ink-ui/layout/table.ink" name="table-layout" />
 <link rel="import" type="component" href="@stackpress/ink-ui/layout/table/head.ink" name="table-head" />
 <link rel="import" type="component" href="@stackpress/ink-ui/layout/table/row.ink" name="table-row" />
 <link rel="import" type="component" href="@stackpress/ink-ui/layout/table/col.ink" name="table-col" />
-<link rel="import" type="component" href="@stackpress/incept-admin/theme/app.ink" name="admin-app" />
+<link rel="import" type="component" href="@stackpress/incept-admin/dist/components/app.ink" name="admin-app" />
 <style>
   @ink theme;
   @ink reset;

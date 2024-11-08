@@ -16,7 +16,7 @@ enum Role {
 //why we call it profile instead of user and company indicating it's 
 //just a general information of an entity.
 
-model Profile @label("Profile" "Profiles") @suggestion("{{name}}") {
+model Profile @label("Profile" "Profiles") @template("{{name}}") {
   id          String    @label("ID") 
                         @id @default("cuid()")
                         @list.overflow({ length 10 hellip true })
@@ -25,7 +25,7 @@ model Profile @label("Profile" "Profiles") @suggestion("{{name}}") {
                         @searchable
                         @field.text({ required true })
                         @is.required
-                        @list.view @view.text
+                        @list.text @view.text
 
   image       String?   @label("Image") 
                         @field.url
@@ -88,17 +88,17 @@ model Profile @label("Profile" "Profiles") @suggestion("{{name}}") {
 }
 
 //Auth is used to authenticate a profile and create a session.
-model Auth @label("Auth" "Auth") @suggestion("{{username}}") {
+model Auth @label("Auth" "Auth") @template("{{username}}") {
   id        String   @label("ID") 
                      @id @default("cuid()")
                      @list.overflow({ length 10 hellip true })
   
   profileId String   @label("Profile") 
-                     @field.autocomplete("Profile" "id" "name") 
+                     @field.relation({ href "/admin/profile/search" key "profile" foreign "id" template "{{name}}" }) 
                      @is.required
-                     @filter.autocomplete("Profile" "id" "name") 
-                     @list.relation("Profile" "id" "name")
-                     @view.relation("Profile" "id" "name")
+                     @filter.relation({ href "/admin/profile/search" key "profile" foreign "id" template "{{name}}" }) 
+                     @list.template({ key "profile" template "{{name}}" }) 
+                     @view.template({ key "profile" template "{{name}}" })
                      
   username  String   @label("Username")
                      @unique @searchable
@@ -165,26 +165,32 @@ model Auth @label("Auth" "Auth") @suggestion("{{username}}") {
 // ie. company, network, group, organization, etc.
 // to do a company setup, make a company profile, then add members to it.
 
-model Connection {
+model Connection @label("Connection" "Connections") @template("{{owner.name}} - {{member.name}}") {
   ownerId  String   @label("Owner")
-                    @id @relation("Profile" "id") 
+                    @id
+                    @field.relation({ href "/admin/profile/search" key "owner" foreign "id" template "{{name}}" }) 
+                    @filter.relation({ href "/admin/profile/search" key "owner" foreign "id" template "{{name}}" }) 
                     @is.required
-                    @list.relation("Profile" "id" "name") 
-                    @view.relation("Profile" "id" "name")
+                    @list.template({ key "owner" template "{{name}}" }) 
+                    @view.template({ key "owner" template "{{name}}" })
   
   memberId String   @label("Member")
-                    @id @relation("Profile" "id") 
+                    @id
+                    @field.relation({ href "/admin/profile/search" key "member" foreign "id" template "{{name}}" }) 
+                    @filter.relation({ href "/admin/profile/search" key "member" foreign "id" template "{{name}}" }) 
                     @is.required
-                    @list.relation("Profile" "id" "name") 
-                    @view.relation("Profile" "id" "name")
+                    @list.template({ key "member" template "{{name}}" }) 
+                    @view.template({ key "member" template "{{name}}" })
   
-  role     String   @label("Owner")
+  role     String   @label("Role")
                     @default("member")
                     @field.text({ required true })
+                    @filter.text
   
   tags     String[] @label("Tags") 
-                    @field.tags
-                    @view.tags
+                    @field.taglist
+                    @list.taglist
+                    @view.taglist
   
   active   Boolean  @label("Active") 
                     @default(true) 

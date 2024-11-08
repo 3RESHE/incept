@@ -4,7 +4,7 @@ import type Registry from './Registry';
 import Mustache from 'mustache';
 import Attributes from './Attributes';
 import Column from './Column';
-import { camelize, capitalize, dasherize } from './helpers';
+import { camelize, capitalize, dasherize, generators } from './helpers';
 
 export default class Fieldset {
   //stores the registry
@@ -37,6 +37,22 @@ export default class Fieldset {
    */
   public get dash() {
     return dasherize(this.name);
+  }
+
+  /**
+   * Returns the default values
+   */
+  public get defaults() {
+    const defaults: Record<string, any> = {};
+    for (const column of this.columns.values()) {
+      if (column.default === undefined 
+        || generators.includes(column.default)
+      ) {
+        continue;
+      }
+      defaults[column.name] = column.default;
+    }
+    return defaults;
   }
 
   /**
@@ -113,10 +129,10 @@ export default class Fieldset {
   }
 
   /**
-   * Returns the fieldset @suggestion
+   * Returns the fieldset @template
    */
-  public get suggestion() {
-    return this.attributes.suggestion;
+  public get template() {
+    return this.attributes.template;
   }
 
   /**
@@ -160,19 +176,12 @@ export default class Fieldset {
   }
 
   /**
-   * Renders a suggestion given the data
+   * Renders a template given the data
    */
-  public suggest(data: Record<string, any>) {
-    if (!this.suggestion) {
+  public render(data: Record<string, any>) {
+    if (!this.template) {
       return '';
     }
-    return Mustache.render(this.suggestion, data);
-  }
-
-  /**
-   * Binds the data to the template
-   */
-  public render(template: string, data: Record<string, any>) {
-    return Mustache.render(template, { config: this, data });
+    return Mustache.render(this.template, data);
   }
 }

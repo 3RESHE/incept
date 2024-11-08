@@ -15,6 +15,7 @@ module.exports = {
   ],
   access: {
     ADMIN: [
+      'general',
       'profile-create',
       'profile-detail',
       'profile-search',
@@ -37,6 +38,7 @@ module.exports = {
       'connection-update'
     ],
     USER: [
+      'general',
       'profile-create',
       'profile-detail',
       'profile-search',
@@ -59,6 +61,7 @@ module.exports = {
       'connection-update'
     ],
     GUEST: [
+      'general',
       'profile-create',
       'profile-detail',
       'profile-search',

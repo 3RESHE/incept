@@ -39,7 +39,7 @@ export default function generate(directory: Directory, registry: Registry) {
     });
     // export default async function ProfileSearch(req: Request, res: Response) {
     source.addFunction({
-      name: 'ProfileSearch',
+      name: `Admin${model.name}Search`,
       isAsync: true,
       isDefaultExport: true,
       parameters: [
@@ -58,7 +58,7 @@ export default function generate(directory: Directory, registry: Registry) {
         //get the renderer
         const { render } = project.get<InkPlugin>('template');
         //prep error page
-        const error = '@stackpress/incept-admin/theme/error';
+        const error = '@stackpress/incept-admin/dist/components/error';
         //get authorization
         const authorization = session.authorize(req, res, [ '${model.dash}-search' ]);
         //if not authorized
@@ -88,10 +88,12 @@ export default function generate(directory: Directory, registry: Registry) {
         );
         //if successfully searched
         if (response.code === 200) {
+          if (req.query.has('json')) {
+            res.mimetype = 'text/json';
+            res.body = JSON.stringify(response, null, 2);
+            return;
+          }
           //render the search page
-          const ids = model.${model.camel}.config.ids.map(
-            column => \`{{data.\${column.name}}}\`
-          ).join('/');
           res.mimetype = 'text/html';
           res.body = await render('@stackpress/.incept/${model.name}/admin/search', { 
             q,
@@ -101,14 +103,7 @@ export default function generate(directory: Directory, registry: Registry) {
             skip, 
             take, 
             settings,
-            ...response,
-            results: (response.results || []).map(data => ({
-              ...data,
-              _view: model.${model.camel}.config.render(
-                \`\${config.admin.root}/${model.dash}/detail/\${ids}\`, 
-                data
-              )
-            }))
+            ...response
           });
           return;
         }
