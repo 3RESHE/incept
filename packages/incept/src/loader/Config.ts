@@ -1,8 +1,8 @@
 import type { ConfigLoaderOptions } from '../types';
 
-import Exception from '@stackpress/types/dist/Exception';
 import NodeFS from '@stackpress/types/dist/filesystem/NodeFS';
 import FileLoader from '@stackpress/types/dist/filesystem/FileLoader';
+import Exception from '../Exception';
 
 export default class ConfigLoader extends FileLoader {
   /**

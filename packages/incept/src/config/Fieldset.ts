@@ -87,8 +87,7 @@ export default class Fieldset {
    * Returns the icon
    */
   public get icon() {
-    const icon = this.attributes.icon as string[];
-    return icon[0] || null;
+    return this.attributes.icon;
   }
 
   /**

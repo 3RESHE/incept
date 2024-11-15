@@ -36,6 +36,16 @@ export default function generate(directory: Directory, registry: Registry) {
       defaultImport: `* as ${fieldset.camel}`
     });
   }
+  //import schema from './schema';
+  source.addImportDeclaration({ 
+    moduleSpecifier: './schema', 
+    defaultImport: 'schema' 
+  });
+  //import * as store from './store';
+  source.addImportDeclaration({ 
+    moduleSpecifier: './store', 
+    defaultImport: 'store' 
+  });
   //export function make(config: Record<string, any>) {};
   source.addFunction({
     name: 'make',
@@ -50,7 +60,9 @@ export default function generate(directory: Directory, registry: Registry) {
         fieldset: {
           ${Array.from(registry.fieldset.values()).map(fieldset => fieldset.camel).join(',\n  ')}
         },
-        project: new Project(config)
+        project: new Project(config),
+        store: store,
+        schema: schema
       };
     `.trim()
   });

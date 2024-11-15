@@ -167,7 +167,7 @@ export default class Attributes extends Map<string, unknown> {
   public get icon() {
     const icon = this.get('icon');
     if (Array.isArray(icon)) {
-      return icon[0];
+      return icon[0] as string;
     }
     return undefined;
   }

@@ -1,6 +1,6 @@
 import type Request from '@stackpress/ingest/dist/payload/Request';
 import type Response from '@stackpress/ingest/dist/payload/Response';
-import type Session from '@stackpress/incept-session/dist/Session';
+import type Session from '@stackpress/incept-user/dist/Session';
 import type { InkPlugin } from '@stackpress/incept-ink/dist/types';
 
 import client from '@stackpress/incept/client';

@@ -1,4 +1,4 @@
-import Exception from './Exception';
+import Exception from '@stackpress/incept/dist/Exception';
 
 /**
  * Wraps any errors or exceptions in a reponse payload. 
@@ -8,7 +8,8 @@ import Exception from './Exception';
  * Example: `await prisma.create().catch(errorToResponse)`
  */
 export function toErrorResponse(e: Error|Exception, code = 400) {
-  if (!(e instanceof Exception)) {
+  //@ts-ignore Property 'toResponse' does not exist on type 'Error'.
+  if (typeof e.toResponse !== 'function') {
     e = Exception.upgrade(e, code);
   }
   const error = e as Exception;

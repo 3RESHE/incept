@@ -46,11 +46,17 @@ export default function generate(
       moduleSpecifier: 'drizzle-orm',
       namedImports: [ 'SQL' ]
     });
-    //import type { ResponsePayload, SearchParams } from '@stackpress/incept-drizzle/dist/types';
+    //import type { SearchParams } from '@stackpress/incept-drizzle/dist/types';
     source.addImportDeclaration({
       isTypeOnly: true,
       moduleSpecifier: '@stackpress/incept-drizzle/dist/types',
-      namedImports: [ 'ResponsePayload', 'SearchParams' ]
+      namedImports: [ 'SearchParams' ]
+    });
+    //import type { Payload } from '@stackpress/incept/dist/types';
+    source.addImportDeclaration({
+      isTypeOnly: true,
+      moduleSpecifier: '@stackpress/incept/dist/types',
+      namedImports: [ 'Payload' ]
     });
     //import type { ProfileModel, ProfileExtended, ProfileInput } from './types';
     source.addImportDeclaration({
@@ -75,9 +81,9 @@ export default function generate(
         model.searchables.length > 0 ? [ 'or', 'ilike' ]: []
       )
     });
-    //import Exception from '@stackpress/incept/dist/config/Exception';
+    //import Exception from '@stackpress/incept/dist/Exception';
     source.addImportDeclaration({
-      moduleSpecifier: '@stackpress/incept/dist/config/Exception',
+      moduleSpecifier: '@stackpress/incept/dist/Exception',
       defaultImport: 'Exception'
     });
     //import { toResponse, toErrorResponse } from '@stackpress/incept-drizzle/dist/helpers';

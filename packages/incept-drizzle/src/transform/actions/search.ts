@@ -113,8 +113,8 @@ export function body(model: Model) {
     //main table
     const ${model.camel} = core.alias(schema.${model.camel}, '${model.lower}');
     //selectors
-    const select = db.select().from(${model.camel}).offset(skip).limit(take);
-    const total = db.select({ total: count() }).from(${model.camel});
+    const select = tx.select().from(${model.camel}).offset(skip).limit(take);
+    const total = tx.select({ total: count() }).from(${model.camel});
     ${model.relations.length > 0 ? `//relations
       ${model.relations.map(column => {
         const camel = camelize(column.type);
@@ -276,17 +276,24 @@ export function body(model: Model) {
 };
 
 export default function generate(source: SourceFile, model: Model) {
+  //export type SearchTransaction = { insert: Function }
+  source.addTypeAlias({
+    isExported: true,
+    name: 'SearchTransaction',
+    type: 'Record<string, any> & { select: Function }'
+  });
   //export async function action(
   //  query: SearchParams
-  //): Promise<ResponsePayload<ProfileExtended[]>>
+  //): Promise<Payload<ProfileExtended[]>>
   source.addFunction({
     isExported: true,
     name: 'search',
     isAsync: true,
     parameters: [
-      { name: 'query', type: 'SearchParams' }
+      { name: 'query', type: 'SearchParams' },
+      { name: 'tx', type: 'SearchTransaction', initializer: 'db' }
     ],
-    returnType: `Promise<ResponsePayload<${model.title}Extended[]>>`,
+    returnType: `Promise<Payload<${model.title}Extended[]>>`,
     statements: body(model)
   });
 };

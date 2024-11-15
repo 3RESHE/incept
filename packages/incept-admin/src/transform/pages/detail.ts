@@ -20,10 +20,10 @@ export default function generate(directory: Directory, registry: Registry) {
       moduleSpecifier: '@stackpress/ingest/dist/payload/Response',
       defaultImport: 'Response'
     });
-    // import type Session from '@stackpress/incept-session/dist/Session';
+    // import type Session from '@stackpress/incept-user/dist/Session';
     source.addImportDeclaration({
       isTypeOnly: true,
-      moduleSpecifier: '@stackpress/incept-session/dist/Session',
+      moduleSpecifier: '@stackpress/incept-user/dist/Session',
       defaultImport: 'Session'
     });
     // import type { InkPlugin } from '@stackpress/incept-ink/dist/types';

@@ -6,7 +6,7 @@ import Exception from '@stackpress/types/dist/Exception';
  * Exceptions are used to give more information
  * of an error that has occured
  */
-export default class DrizzleException extends Exception {
+export default class InceptException extends Exception {
   /**
    * Return a new trace with source code snippet
    */

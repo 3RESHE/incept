@@ -21,9 +21,9 @@ export const typemap: Record<string, string> = {
 };
 
 export function body(model: Model) {
-  return model.active ? formatCode(`
-    return await db.update(schema.${model.camel})
-      .set({ ${model.active.name}: true })
+  return formatCode(`
+    return await tx.update(schema.${model.camel})
+      .set({ ${model.active?.name}: true })
       .where(${model.ids.length > 1
         ? `sql\`${model.ids.map(id => `${id.name} = \${${id.name}}`).join(' AND ')}\``
         : `eq(schema.${model.camel}.${model.ids[0].name}, ${model.ids[0].name})`
@@ -31,30 +31,30 @@ export function body(model: Model) {
       .returning()
       .then(toResponse)
       .catch(toErrorResponse);
-  `) : formatCode(`
-    return await db.delete(schema.${model.camel})
-      .where(${model.ids.length > 1
-        ? `sql\`${model.ids.map(id => `${id.name} = \${${id.name}}`).join(' AND ')}\``
-        : `eq(schema.${model.camel}.${model.ids[0].name}, ${model.ids[0].name})`
-      })
-      .returning()
-      .then(toResponse)
-      .catch(toErrorResponse);
-  `)
+  `);
 };
 
 export default function generate(source: SourceFile, model: Model) {
+  //export type RestoreTransaction = { insert: Function }
+  source.addTypeAlias({
+    isExported: true,
+    name: 'RestoreTransaction',
+    type: 'Record<string, any> & { update: Function }'
+  });
   //export async function restore(
   //  id: string,
-  //): Promise<ResponsePayload<Profile>>
+  //): Promise<Payload<Profile>>
   source.addFunction({
     isExported: true,
     name: 'restore',
     isAsync: true,
-    parameters: model.ids.map(
-      column => ({ name: column.name, type: typemap[column.type] })
-    ),
-    returnType: `Promise<ResponsePayload<${model.title}>>`,
+    parameters: [
+      ...model.ids.map(
+        column => ({ name: column.name, type: typemap[column.type] })
+      ),
+      { name: 'tx', type: 'RestoreTransaction', initializer: 'db' }
+    ],
+    returnType: `Promise<Payload<${model.title}>>`,
     statements: body(model)
   });
 };

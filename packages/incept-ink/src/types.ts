@@ -1,6 +1,6 @@
 import type { InkCompiler } from '@stackpress/ink/dist/types';
+import type { MethodRouter } from '@stackpress/incept/dist/types';
 import type RefreshServer from '@stackpress/ink-dev/dist/RefreshServer';
-
 export type Renderer = (filePath: string, props?: Record<string, unknown>) => Promise<string>;
 
 export type InkPlugin = {
@@ -9,13 +9,11 @@ export type InkPlugin = {
   render: Renderer
 };
 
-export type AllRouter = { all: (route: string, entry: string) => void };
-
 export type InkDevRouteConfig = {
   buildRoute?: string,
   socketRoute?: string,
   entryPath: string,
-  router: AllRouter
+  router: MethodRouter
 };
 
 export type InkDevEntryConfig = {

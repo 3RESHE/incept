@@ -74,6 +74,16 @@ export default function generate({ config, schema, cli }: PluginWithCLIProps) {
     moduleSpecifier: './config.json', 
     defaultImport: 'config' 
   });
+  //import * as store from './store';
+  source.addImportDeclaration({ 
+    moduleSpecifier: './store', 
+    defaultImport: 'store' 
+  });
+  //import schema from './schema';
+  source.addImportDeclaration({ 
+    moduleSpecifier: './schema', 
+    defaultImport: 'schema' 
+  });
   //import registry from './registry';
   source.addImportDeclaration({ 
     moduleSpecifier: './registry', 
@@ -86,7 +96,7 @@ export default function generate({ config, schema, cli }: PluginWithCLIProps) {
   });
   //export { schema, registry };
   source.addExportDeclaration({ 
-    namedExports: ['schema', 'registry'] 
+    namedExports: [ 'store', 'schema', 'registry' ] 
   });
   //export default client;
   source.addStatements(`export default client;`);

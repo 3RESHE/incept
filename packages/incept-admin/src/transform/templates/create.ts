@@ -42,7 +42,7 @@ const template = `
   const links = { search: \`\${settings.root}/{{lower}}/search\` };
   const crumbs = [
     { icon: 'home', label: 'Home', href: settings.root },
-    { icon: 'user', label: _('{{plural}}'), href: links.search },
+    { icon: '{{icon}}', label: _('{{plural}}'), href: links.search },
     { icon: 'plus', label: title }
   ];
 </script>
@@ -80,8 +80,26 @@ export default function generate(directory: Directory, registry: Registry) {
     if (!fs.existsSync(path.dirname(file))) {
       fs.mkdirSync(path.dirname(file), { recursive: true });
     }
+    const defaults = model.defaults;
+    // Json: 'string'
+    // Object: 'string'
+    // Hash: 'string'
+    const hash = [ 'Json', 'Object', 'Hash' ];
+    Array.from(model.columns.values()).filter(
+      column => column.multiple || hash.includes(column.type)
+    ).map(column => column.name).forEach(name => {
+      if (typeof defaults[name] === 'string') {
+        try {
+          const json = JSON.parse(defaults[name]);
+          if (Array.isArray(json) || (json && typeof json === 'object')) {
+            defaults[name] = json;
+          }
+        } catch(e) {}
+      }
+    });
     const source = render(template, { 
-      defaults: JSON.stringify(model.defaults),
+      icon: model.icon || '',
+      defaults: JSON.stringify(defaults),
       lower: model.lower, 
       singular: model.singular,
       plural: model.plural 

@@ -1,14 +1,16 @@
 {
-  "name": "@stackpress/incept-session",
-  "version": "0.1.22",
+  "name": "@stackpress/incept-user",
+  "version": "0.1.23",
   "license": "MIT",
-  "description": "This package is a session interface that enables auth to be used in an Incept app.",
+  "description": "This package is a user interface that enables auth to be used in an Incept app.",
   "author": "Chris <chris@stackpress.io>",
   "homepage": "https://github.com/stackpress/incept",
   "bugs": "https://github.com/stackpress/incept/issues",
   "repository": "stackpress/incept",
   "scripts": {
-    "build": "tsc"
+    "build": "yarn build:ts && yarn build:ink",
+    "build:ts": "tsc",
+    "build:ink": "copyfiles -u 1 ./src/**/*.ink ./src/**/**/*.ink ./dist"
   },
   "main": "index.js",
   "files": [
@@ -22,11 +24,13 @@
     "tsconfig.json"
   ],
   "dependencies": {
-    "@stackpress/incept": "0.1.22",
-    "@stackpress/ingest": "0.1.22"
+    "@stackpress/incept": "0.1.23",
+    "@stackpress/ingest": "0.1.23"
   },
   "devDependencies": {
     "@types/node": "22.7.5",
+    "copyfiles": "2.4.1",
+    "rimraf": "6.0.1",
     "ts-node": "10.9.2",
     "typescript": "5.6.2"
   }

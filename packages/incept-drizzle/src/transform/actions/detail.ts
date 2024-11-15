@@ -26,7 +26,7 @@ export function body(model: Model) {
     return search({
       filter: { ${model.active.name}: -1, ${ids.map(id => `${id}`).join(', ')} },
       take: 1
-    }).then(response => ({
+    }, tx).then(response => ({
       ...response,
       results: response.results?.[0] || null
     }));
@@ -42,17 +42,26 @@ export function body(model: Model) {
 };
 
 export default function generate(source: SourceFile, model: Model) {
+  //export type DetailTransaction = { insert: Function }
+  source.addTypeAlias({
+    isExported: true,
+    name: 'DetailTransaction',
+    type: 'Record<string, any> & { select: Function }'
+  });
   //export async function detail(
   //  id: string,
-  //): Promise<ResponsePayload<Profile>>
+  //): Promise<Payload<Profile>>
   source.addFunction({
     isExported: true,
     name: 'detail',
     isAsync: true,
-    parameters: model.ids.map(
-      column => ({ name: column.name, type: typemap[column.type] })
-    ),
-    returnType: `Promise<ResponsePayload<${model.title}Extended|null>>`,
+    parameters: [ 
+      ...model.ids.map(
+        column => ({ name: column.name, type: typemap[column.type] })
+      ), 
+      { name: 'tx', type: 'DetailTransaction', initializer: 'db' }
+    ],
+    returnType: `Promise<Payload<${model.title}Extended|null>>`,
     statements: body(model)
   });
 };

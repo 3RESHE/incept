@@ -15,10 +15,10 @@
     "build:drizzle": "yarn --cwd packages/incept-drizzle build",
     "build:ink": "yarn --cwd packages/incept-ink build",
     "build:client": "yarn --cwd packages/incept-client build",
-    "build:plugins": "yarn build:i18n && yarn build:session && yarn build:admin",
+    "build:plugins": "yarn build:i18n && yarn build:user && yarn build:admin",
     "build:i18n": "yarn --cwd packages/incept-i18n build",
-    "build:session": "yarn --cwd packages/incept-session build",
     "build:admin": "yarn --cwd packages/incept-admin build",
+    "build:user": "yarn --cwd packages/incept-user build",
     "push": "yarn --cwd example push",
     "migrate": "yarn --cwd example migrate",
     "studio": "yarn --cwd example studio"

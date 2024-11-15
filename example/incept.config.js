@@ -11,7 +11,7 @@ module.exports = {
     '@stackpress/incept-client',
     //plugins
     '@stackpress/incept-i18n', 
-    '@stackpress/incept-session'
+    '@stackpress/incept-user'
   ],
   access: {
     ADMIN: [
@@ -75,6 +75,20 @@ module.exports = {
       'auth-remove',
       'auth-restore',
       'auth-update',
+  
+      'address-create',
+      'address-detail',
+      'address-search',
+      'address-remove',
+      'address-restore',
+      'address-update',
+  
+      'file-create',
+      'file-detail',
+      'file-search',
+      'file-remove',
+      'file-restore',
+      'file-update',
 
       'connection-create',
       'connection-detail',
@@ -106,16 +120,28 @@ module.exports = {
     root: '/admin',
     menu: [
       {
-        name: 'Auths',
-        icon: 'lock',
-        path: '/admin/auth/search',
-        match: '/admin/auth'
-      },
-      {
         name: 'Profiles',
         icon: 'user',
         path: '/admin/profile/search',
         match: '/admin/profile'
+      },
+      {
+        name: 'Files',
+        icon: 'file',
+        path: '/admin/file/search',
+        match: '/admin/file'
+      },
+      {
+        name: 'Addresses',
+        icon: 'map-marker',
+        path: '/admin/address/search',
+        match: '/admin/address'
+      },
+      {
+        name: 'Auths',
+        icon: 'lock',
+        path: '/admin/auth/search',
+        match: '/admin/auth'
       },
       {
         name: 'Connections',

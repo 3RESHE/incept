@@ -1,22 +1,16 @@
 //--------------------------------------------------------------------//
 // User System
 
-enum Type {
-  PERSON "person"
-  COMPANY "company"
-}
-
-enum Role {
-  ADMIN "admin"
-  USER "user"
-}
-
 //A profile can be a person, organization, or any other type of entity.
 //Profiles can be authenticated or added from various sources. That's 
 //why we call it profile instead of user and company indicating it's 
 //just a general information of an entity.
 
-model Profile @label("Profile" "Profiles") @template("{{name}}") {
+model Profile 
+  @label("Profile" "Profiles") 
+  @template("{{name}}") 
+  @icon("user") 
+{
   id          String    @label("ID") 
                         @id @default("cuid()")
                         @list.overflow({ length 10 hellip true })
@@ -31,11 +25,7 @@ model Profile @label("Profile" "Profiles") @template("{{name}}") {
                         @field.url
                         @list.image(20 20) @view.image(100 100)
   
-  description String?   @label("Description") 
-                        @field.textarea
-                        @list.hide @view.text
-  
-  type        Type      @label("Type") 
+  type        String    @label("Type") 
                         @default("person") 
                         @filter.text
                         @field.text({ required true })
@@ -43,17 +33,8 @@ model Profile @label("Profile" "Profiles") @template("{{name}}") {
                         @view.text({ lower true })
   
   roles       String[]  @label("Roles") 
-                        @field.textlist
+                        @field.textlist({ add "Add Role" })
                         @list.hide @view.taglist
-  
-  address     Address   @label("Address") 
-                        @field.fieldset
-                        @list.hide @view.metadata
-
-  files       File[]    @label("Files")
-                        @default("[]")
-                        @field.fieldset
-                        @list.hide @view.table
   
   tags        String[]  @label("Tags") 
                         @default("[]")
@@ -62,7 +43,7 @@ model Profile @label("Profile" "Profiles") @template("{{name}}") {
   
   references  Hash?     @label("References") 
                         @default("{}")
-                        @field.metadata
+                        @field.metadata({ add "Add Reference" })
                         @list.hide @view.metadata
   
   active      Boolean   @label("Active") 
@@ -82,13 +63,19 @@ model Profile @label("Profile" "Profiles") @template("{{name}}") {
                         @list.date("m d, Y h:iA") 
                         @view.date("m d, Y h:iA")
   
-  auth        Auth?        
+  auth        Auth?      
+  files       File[]   
+  addresses   Address[] 
   connections Connection[] 
   memberships Connection[] 
 }
 
 //Auth is used to authenticate a profile and create a session.
-model Auth @label("Auth" "Auth") @template("{{username}}") {
+model Auth 
+  @label("Auth" "Auth") 
+  @template("{{token}}") 
+  @icon("lock") 
+{
   id        String   @label("ID") 
                      @id @default("cuid()")
                      @list.overflow({ length 10 hellip true })
@@ -100,42 +87,29 @@ model Auth @label("Auth" "Auth") @template("{{username}}") {
                      @list.template({ key "profile" template "{{name}}" }) 
                      @view.template({ key "profile" template "{{name}}" })
                      
-  username  String   @label("Username")
+  type      String   @label("Type") 
+                     @default("username") 
+                     @field.text({ required true })
+                     @is.required
+                     @list.text @view.text
+  
+  token     String   @label("Token")
                      @unique @searchable
                      @field.text({ required true })
                      @is.required @is.cge(5)
                      @filter.text
                      @list.text @view.text
   
-  email     String?  @label("Email Address")
-                     @unique @searchable 
-                     @field.email
-                     @is.email
-                     @filter.email
-                     @list.text @view.email
-  
-  phone     String?  @label("Phone Number")
-                     @unique @searchable 
-                     @field.text
-                     @is.pattern("/^\+[0-9]{0,3} [0-9]+$/")
-                     @filter.phone
-                     @list.text @view.phone
-  
-  password  String   @label("Password") 
+  secret    String   @label("Secret") 
                      @field.password({ required true })
                      @is.required
                      @list.hide @view.hide
   
-  twofa     String?  @label("2FA") 
-                     @field.text
-                     @list.hide @view.hide
+  verified  Boolean  @label("Verified") 
+                     @default(false) 
+                     @field.switch @list.yesno @view.yesno
   
-  verified  Integer  @label("Verified") 
-                     @default(0) //0=unverified, 1=email, 2=phone, 3=both
-                     @min(0) @max(3) @step(1)
-                     @field.input({ type "number" min "0" max "3" step "1" })
-  
-  lastLogin Datetime @label("Last Logged In") 
+  consumed  Datetime @label("Consumed") 
                      @default("now()")
                      @list.date("m d, Y h:iA") 
                      @view.date("m d, Y h:iA")
@@ -165,7 +139,11 @@ model Auth @label("Auth" "Auth") @template("{{username}}") {
 // ie. company, network, group, organization, etc.
 // to do a company setup, make a company profile, then add members to it.
 
-model Connection @label("Connection" "Connections") @template("{{owner.name}} - {{member.name}}") {
+model Connection 
+  @label("Connection" "Connections") 
+  @template("{{owner.name}} - {{member.name}}") 
+  @icon("users") 
+{
   ownerId  String   @label("Owner")
                     @id
                     @field.relation({ href "/admin/profile/search" key "owner" foreign "id" template "{{name}}" }) 
@@ -214,30 +192,77 @@ model Connection @label("Connection" "Connections") @template("{{owner.name}} - 
 //--------------------------------------------------------------------//
 // File System
 
-type File {
+model File 
+  @label("File" "Files") 
+  @template("{{name}}") 
+  @icon("file") 
+{
   //FIELDS:
-  name      String   @label("Name") 
-                     @searchable
-                     @field.text
-                     @is.required
-                     @list.text @view.text
+  id          String   @label("ID") 
+                       @id @default("cuid()")
+                       @list.overflow({ length 10 hellip true })
   
-  url       String   @label("URL")
-                     @searchable
-                     @field.url
-                     @is.required
-                     @view.link
+  profileId   String   @label("Profile") 
+                       @field.relation({ href "/admin/profile/search" key "profile" foreign "id" template "{{name}}" }) 
+                       @is.required
+                       @filter.relation({ href "/admin/profile/search" key "profile" foreign "id" template "{{name}}" }) 
+                       @list.template({ key "profile" template "{{name}}" }) 
+                       @view.template({ key "profile" template "{{name}}" })
+
+  name        String   @label("Name") 
+                       @searchable
+                       @field.text
+                       @is.required
+                       @list.text @view.text
   
-  tags      String[] @label("Tags") 
-                     @field.taglist
-                     @view.taglist
+  url         String   @label("URL")
+                       @searchable
+                       @field.url
+                       @is.required
+                       @view.link
+  
+  tags        String[] @label("Tags") 
+                       @field.taglist
+                       @view.taglist
+  
+  active      Boolean  @label("Active") 
+                       @default(true) 
+                       @filter.switch
+                       @list.yesno @view.yesno
+  
+  created     Datetime @label("Created") 
+                       @default("now()") @sortable
+                       @list.date("m d, Y h:iA") 
+                       @view.date("m d, Y h:iA")
+  
+  updated     Datetime @label("Updated") 
+                       @default("now()") @timestamp @sortable
+                       @list.date("m d, Y h:iA") 
+                       @view.date("m d, Y h:iA")
+  
+  profile   Profile  @relation({ local "profileId" foreign "id" })
 }
 
 //--------------------------------------------------------------------//
 // Address System
 
-type Address {
-  name         String   @label("Name") 
+model Address 
+  @label("Address" "Addresses") 
+  @template("{{label}}") 
+  @icon("map-marker") 
+{
+  id          String    @label("ID") 
+                        @id @default("cuid()")
+                        @list.overflow({ length 10 hellip true })
+  
+  profileId   String    @label("Profile") 
+                        @field.relation({ href "/admin/profile/search" key "profile" foreign "id" template "{{name}}" }) 
+                        @is.required
+                        @filter.relation({ href "/admin/profile/search" key "profile" foreign "id" template "{{name}}" }) 
+                        @list.template({ key "profile" template "{{name}}" }) 
+                        @view.template({ key "profile" template "{{name}}" })
+
+  label       String    @label("Name") 
                         @field.text
                         @is.required
                         @list.text @view.text
@@ -302,4 +327,21 @@ type Address {
   
   latitude     Float?   @label("Latitude")
   longitude    Float?   @label("Longitude")
+  
+  active       Boolean  @label("Active") 
+                        @default(true) 
+                        @filter.switch
+                        @list.yesno @view.yesno
+  
+  created      Datetime @label("Created") 
+                        @default("now()") @sortable
+                        @list.date("m d, Y h:iA") 
+                        @view.date("m d, Y h:iA")
+  
+  updated      Datetime @label("Updated") 
+                        @default("now()") @timestamp @sortable
+                        @list.date("m d, Y h:iA") 
+                        @view.date("m d, Y h:iA")
+  
+  profile   Profile  @relation({ local "profileId" foreign "id" })
 }

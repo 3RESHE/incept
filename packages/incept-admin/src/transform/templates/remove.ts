@@ -48,7 +48,7 @@ const template = `
   };
   const crumbs = [
     { icon: 'home', label: 'Home', href: settings.root },
-    { icon: 'user', label: _('{{plural}}'), href: links.search },
+    { icon: '{{icon}}', label: _('{{plural}}'), href: links.search },
     { label: detail || _('{{singular}} Detail'), href: links.detail },
     { icon: 'trash', label: title }
   ];
@@ -99,6 +99,7 @@ export default function generate(directory: Directory, registry: Registry) {
       fs.mkdirSync(path.dirname(file), { recursive: true });
     }
     const source = render(template, { 
+      icon: model.icon || '',
       ids: model.ids.map(column => `\${results.${column.name}}`).join('/'),
       template: model.template,
       lower: model.lower, 

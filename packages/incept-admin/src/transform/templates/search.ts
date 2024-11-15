@@ -52,7 +52,7 @@ const template = `
   const links = { create: \`\${settings.root}/{{lower}}/create\` };
   const crumbs = [
     { icon: 'home', label: 'Home', href: settings.root },
-    { icon: 'user', label: title }
+    { icon: '{{icon}}', label: title }
   ];
   const page = (page: number) => {
     window.location.search = addQueryParam(
@@ -152,6 +152,7 @@ export default function generate(directory: Directory, registry: Registry) {
       fs.mkdirSync(path.dirname(file), { recursive: true });
     }
     const source = render(template, { 
+      icon: model.icon || '',
       ids: model.ids.map(column => `{{${column.name}}}`).join('/'),
       lower: model.lower, 
       plural: model.plural 

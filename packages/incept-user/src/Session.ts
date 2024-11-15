@@ -4,20 +4,25 @@ import type { JwtPayload } from 'jsonwebtoken';
 import type { PermissionList, SessionData } from './types';
 
 import jwt from 'jsonwebtoken';
-import Exception from '@stackpress/incept/dist/config/Exception';
+import Exception from '@stackpress/incept/dist/Exception';
 
 /**
  * Used to get session data from tokens and check permissions
  */
 export default class Session {
   public access: PermissionList;
-  protected seed: string;
+  protected _seed: string;
+  protected _expires = 0;
+
+  public set expires(value: number) {
+    this._expires = value;
+  }
 
   /**
    * Need seed to verify tokens and access for roles 
    */
   public constructor(seed: string, access: PermissionList) {
-    this.seed = seed;
+    this._seed = seed;
     this.access = access;
   }
 
@@ -29,7 +34,7 @@ export default class Session {
     res: Response, 
     permits: string[] = []
   ) {
-    const token = this.fromAuthorization(req);
+    const token = this.token(req);
     const permissions = this.permits(token || '');
     
     if (token) {
@@ -73,9 +78,21 @@ export default class Session {
   }
 
   /**
+   * Creates a new session token
+   */
+  public create(data: SessionData) {
+    if (!this._expires) {
+      return jwt.sign(data, this._seed);  
+    }
+    return jwt.sign(data, this._seed, {
+      expiresIn: this._expires
+    });
+  }
+
+  /**
    * Gets token from request authorization header
    */
-  public fromAuthorization(req: Request) {
+  public token(req: Request) {
     const authorization = req.headers.get('Authorization') as string;
     if (authorization) {
       const [ , token ] = authorization.split(' ');
@@ -93,7 +110,7 @@ export default class Session {
     }
     let response: JwtPayload|string;
     try {
-      response = jwt.verify(token, this.seed);
+      response = jwt.verify(token, this._seed);
     } catch (error) {
       return null;
     }

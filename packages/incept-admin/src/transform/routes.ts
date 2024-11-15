@@ -8,24 +8,24 @@ export default function generate(directory: Directory, registry: Registry) {
     const ids = model.ids.map(column => `:${column.name}`).join('/')
     const file = `${model.name}/admin/routes.ts`;
     const source = directory.createSourceFile(file, '', { overwrite: true });
-    //import type { AllRouter } from '@stackpress/incept-ingest/dist/types';
+    //import type { MethodRouter } from '@stackpress/incept/dist/types';
     source.addImportDeclaration({
       isTypeOnly: true,
-      moduleSpecifier: '@stackpress/incept-ingest/dist/types',
-      namedImports: [ 'AllRouter' ]
+      moduleSpecifier: '@stackpress/incept/dist/types',
+      namedImports: [ 'MethodRouter' ]
     });
     //import path from 'path';
     source.addImportDeclaration({
       moduleSpecifier: 'path',
       defaultImport: 'path'
     });
-    //export default function route(root: string, router: AllRouter) {}
+    //export default function route(root: string, router: MethodRouter) {}
     source.addFunction({
       isDefaultExport: true,
       name: 'route',
       parameters: [
         { name: 'root', type: 'string' },
-        { name: 'router', type: 'AllRouter' }
+        { name: 'router', type: 'MethodRouter' }
       ],
       statements: `
         router.all(\`\${root}/${model.dash}/search\`, path.resolve(__dirname, 'search'));

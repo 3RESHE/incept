@@ -40,7 +40,7 @@ export function body(model: Model, config: Config) {
       );
     }
     //action and return response
-    return await db.insert(schema.${model.camel}).values({
+    return await tx.insert(schema.${model.camel}).values({
       ${model.assertions.map(column => {
         if (column.multiple) {
           return engine === 'sqlite' 
@@ -69,17 +69,24 @@ export default function generate(
   model: Model,
   config: Config
 ) {
+  //export type CreateTransaction = { insert: Function }
+  source.addTypeAlias({
+    isExported: true,
+    name: 'CreateTransaction',
+    type: 'Record<string, any> & { insert: Function }'
+  });
   //export default async function create(
   //  data: ProfileInput
-  //): Promise<ResponsePayload<Profile>>
+  //): Promise<Payload<Profile>>
   source.addFunction({
     isExported: true,
     name: 'create',
     isAsync: true,
     parameters: [
-      { name: 'input', type: `${model.title}Input` }
+      { name: 'input', type: `${model.title}Input` },
+      { name: 'tx', type: 'CreateTransaction', initializer: 'db' }
     ],
-    returnType: `Promise<ResponsePayload<${model.title}>>`,
+    returnType: `Promise<Payload<${model.title}>>`,
     statements: body(model, config)
   });
 };

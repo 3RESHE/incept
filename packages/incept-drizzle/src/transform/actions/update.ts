@@ -55,7 +55,7 @@ export function body(model: Model, config: Config) {
       );
     }
     //action and return response
-    return await db.update(schema.${model.camel}).set({
+    return await tx.update(schema.${model.camel}).set({
       ${model.assertions.map(column => {
         if (column.multiple) {
           return engine === 'sqlite' 
@@ -87,10 +87,16 @@ export default function generate(
   model: Model,
   config: Config
 ) {
+  //export type SearchTransaction = { insert: Function }
+  source.addTypeAlias({
+    isExported: true,
+    name: 'UpdateTransaction',
+    type: 'Record<string, any> & { update: Function }'
+  });
   //export async function action(
   //  id: string,
   //  data: ProfileInput
-  //): Promise<ResponsePayload<Profile>>
+  //): Promise<Payload<Profile>>
   source.addFunction({
     isExported: true,
     name: 'update',
@@ -99,9 +105,10 @@ export default function generate(
       ...model.ids.map(
         column => ({ name: column.name, type: typemap[column.type] })
       ),
-      { name: 'input', type: `Partial<${model.title}Input>` }
+      { name: 'input', type: `Partial<${model.title}Input>` },
+      { name: 'tx', type: 'UpdateTransaction', initializer: 'db' }
     ],
-    returnType: `Promise<ResponsePayload<${model.title}>>`,
+    returnType: `Promise<Payload<${model.title}>>`,
     statements: body(model, config)
   });
 };
