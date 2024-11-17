@@ -1,1 +1,1 @@
-module.exports = require('./dist/incept');
+module.exports = require('./dist/plugin');
