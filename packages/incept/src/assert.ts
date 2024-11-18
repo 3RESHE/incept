@@ -157,7 +157,7 @@ export function integer(value: any) {
 export function object(value: any) {
   return value !== null 
     && !Array.isArray(value) 
-    && value.constructor.name === 'Object';
+    && value?.constructor?.name === 'Object';
 };
 
 export function array(values: any[], validator: string, ...args: any[]) {

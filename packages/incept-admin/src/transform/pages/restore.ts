@@ -86,20 +86,14 @@ export default function generate(directory: Directory, registry: Registry) {
             //if successfully restored
             if (response.code === 200) {
               //redirect
-              res.code = 302;
-              res.status = 'Found';
-              res.headers.set(
-                'Location', 
+              return res.redirect(
                 \`\${config.admin.root}/${model.dash}/detail/${
                   model.ids.map((_, i) => `\${id${i + 1}}`).join('/')
                 }\`
               );
-              return;
             }
             //not restored, render error page
-            res.mimetype = 'text/html';
-            res.body = await render(error, { ...response, settings });
-            return;
+            return res.setHTML(await render(error, { ...response, settings }));
           }
           //not confirmed, fetch the data using the id
           const response = await model.${model.camel}.action.detail(${
@@ -108,25 +102,20 @@ export default function generate(directory: Directory, registry: Registry) {
           //if successfully fetched
           if (response.code === 200) {
             //render the restore page
-            res.mimetype = 'text/html';
-            res.body = await render(
+            return res.setHTML(await render(
               '@stackpress/.incept/${model.name}/admin/restore', 
               { ...response, settings }
-            );
-            return;
+            ));
           }
           //it did not fetch, render error page
-          res.mimetype = 'text/html';
-          res.body = await render(error, { ...response, settings });
-          return;
+          return res.setHTML(await render(error, { ...response, settings }));
         }
         //no id was found, render error page (404)
-        res.mimetype = 'text/html';
-        res.body = await render(error, { 
+        res.setHTML(await render(error, { 
           code: 404, 
           status: 'Not Found',
           settings 
-        });
+        }));
       `
     });
   }

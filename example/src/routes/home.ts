@@ -23,6 +23,5 @@ export default async function ProfileCreate(req: Request, res: Response) {
   //general settings
   const settings = { session: authorization };
   //show form
-  res.mimetype = 'text/html';
-  res.body = await render('@/templates/home', { settings });
+  res.setHTML(await render('@/templates/home', { settings }));
 };

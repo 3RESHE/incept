@@ -4,7 +4,6 @@ module.exports = {
   plugins: [
     //transformers
     '@stackpress/incept-types',
-    '@stackpress/incept-assert',
     '@stackpress/incept-drizzle',
     '@stackpress/incept-ink',
     '@stackpress/incept-admin',

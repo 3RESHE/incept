@@ -84,30 +84,23 @@ export default function generate(directory: Directory, registry: Registry) {
           //if successfully fetched
           if (response.code === 200) {
             if (req.query.has('json')) {
-              res.mimetype = 'text/json';
-              res.body = JSON.stringify(response, null, 2)
-              return;
+              return res.setJSON(response);
             }
             //render the detail page
-            res.mimetype = 'text/html';
-            res.body = await render(
+            return res.setHTML(await render(
               '@stackpress/.incept/${model.name}/admin/detail', 
               { ...response, settings }
-            );
-            return;
+            ));
           }
           //it did not fetch, render error page
-          res.mimetype = 'text/html';
-          res.body = await render(error, { ...response, settings });
-          return;
+          return res.setHTML(await render(error, { ...response, settings }));
         }
         //no id was found, render error page (404)
-        res.mimetype = 'text/html';
-        res.body = await render(error, { 
+        res.setHTML(await render(error, { 
           code: 404, 
           status: 'Not Found',
           settings
-        });
+        }));
       `
     });
   }

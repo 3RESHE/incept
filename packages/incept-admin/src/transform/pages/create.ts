@@ -77,13 +77,9 @@ export default function generate(directory: Directory, registry: Registry) {
           //if successfully created
           if (response.code === 200) {
             //redirect
-            res.code = 302;
-            res.status = 'Found';
-            res.headers.set(
-              'Location', 
+            return res.redirect(
               \`\${config.admin.root}/${model.dash}/detail/\${response.results?.id}\`
             );
-            return;
           }
           //it did not create...
           //set the errors
@@ -91,21 +87,16 @@ export default function generate(directory: Directory, registry: Registry) {
             res.errors.set(response.errors);
           }
           //recall the create form
-          res.code = response.code as number;
-          res.status = response.status as string;
-          res.mimetype = 'text/html';
-          res.body = await render(
+          return res.setHTML(await render(
             '@stackpress/.incept/${model.name}/admin/create', 
             { ...response, input, settings }
-          );
-          return;
+          ), response.code as number);
         }
         //show form
-        res.mimetype = 'text/html';
-        res.body = await render(
+        return res.setHTML(await render(
           '@stackpress/.incept/${model.name}/admin/create', 
           { settings }
-        );
+        ));
       `
     });
   }

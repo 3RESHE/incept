@@ -93,7 +93,6 @@ export default function generate(
         'toResponse', 
         'toErrorResponse',
         ...[
-          ...model.assertions, 
           ...model.filters, 
           ...model.spans
         ].filter(
@@ -106,16 +105,16 @@ export default function generate(
       ]
     });
 
-    //import * as assert from './assert';
-    source.addImportDeclaration({
-      moduleSpecifier: './assert',
-      defaultImport: '* as assert'
-    });
-
     //import { db, schema } from '../store';
     source.addImportDeclaration({
       moduleSpecifier: '../store',
       namedImports: [ 'db', 'schema', 'core' ]
+    });
+
+    //import config from './config';
+    source.addImportDeclaration({
+      moduleSpecifier: `./config`,
+      defaultImport: 'config'
     });
 
     generateCreate(source, model, config);

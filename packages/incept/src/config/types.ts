@@ -57,7 +57,14 @@ export type ColumnRelation = {
   key: Column, 
   type: number 
 };
+
 export type ColumnRelationLink = { 
   parent: ColumnRelation,
   child: ColumnRelation
+};
+
+export type SerialOptions = {
+  bool?: boolean,
+  date?: boolean,
+  object?: boolean
 };

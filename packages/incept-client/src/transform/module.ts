@@ -17,11 +17,6 @@ export default function generate(project: Directory, registry: Registry) {
     });
     //export type * from './module/[name]/types';
     source.addExportDeclaration({ moduleSpecifier: `./types` });
-    //import * as assert from './assert';
-    source.addImportDeclaration({
-      moduleSpecifier: `./assert`,
-      defaultImport: '* as assert'
-    });
     //import * as action from './actions';
     source.addImportDeclaration({
       moduleSpecifier: `./actions`,
@@ -37,9 +32,9 @@ export default function generate(project: Directory, registry: Registry) {
       moduleSpecifier: `./config`,
       defaultImport: 'config'
     });
-    //export { config, schema, assert, action };
+    //export { config, schema, action };
     source.addExportDeclaration({ 
-      namedExports: [ 'config', 'schema', 'assert', 'action' ] 
+      namedExports: [ 'config', 'schema', 'action' ] 
     });
   }
   
@@ -54,18 +49,12 @@ export default function generate(project: Directory, registry: Registry) {
     });
     //export type * from './module/[name]/types';
     source.addExportDeclaration({ moduleSpecifier: `./types` });
-    //import * as assert from './assert';
-    source.addImportDeclaration({
-      isTypeOnly: true,
-      moduleSpecifier: `./assert`,
-      defaultImport: '* as assert'
-    });
     //import config from './config';
     source.addImportDeclaration({
       moduleSpecifier: `./config`,
       defaultImport: 'config'
     });
-    //export { config, assert };
-    source.addExportDeclaration({ namedExports: [ 'config', 'assert' ] });
+    //export { config };
+    source.addExportDeclaration({ namedExports: [ 'config' ] });
   }
 }

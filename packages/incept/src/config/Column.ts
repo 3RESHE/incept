@@ -1,9 +1,10 @@
-import type { ColumnInfo, EnumConfig } from './types';
+import type { ColumnInfo, EnumConfig, SerialOptions } from './types';
 import type Fieldset from './Fieldset';
 
 import Attributes from './Attributes';
+import assert from '../assert';
 
-export const toValidator: Record<string, string> = {
+export const typemap: Record<string, string> = {
   String: 'string',
   Text: 'string',
   Number: 'number',
@@ -59,19 +60,19 @@ export default class Column {
     // String, Text,    Number, Integer, 
     // Float,  Boolean, Date,   Datetime, 
     // Time,   Json,    Object, Hash
-    for (const type in toValidator) {
+    for (const type in typemap) {
       if (this.type === type) {
         if (this.multiple) {
           if (!assertions.find(v => v.method === 'array')) {
             assertions.unshift({ 
               method: 'array', 
-              args: [ toValidator[type] ], 
+              args: [ typemap[type] ], 
               message: 'Invalid format'
             });
           }
-        } else if (!assertions.find(v => v.method === toValidator[type])) {
+        } else if (!assertions.find(v => v.method === typemap[type])) {
           assertions.unshift({ 
-            method: toValidator[type], 
+            method: typemap[type], 
             args: [], 
             message: 'Invalid format'
           });
@@ -432,11 +433,205 @@ export default class Column {
       Object.entries(info.attributes)
     );
   }
+
+  /**
+   * Returns error message if the value is invalid
+   */
+  public assert(value: any, strict = true) {
+    for (const assertion of this.assertions) {
+      const { method, args, message } = assertion;
+      const novalue = value === null 
+        || typeof value === 'undefined'
+        || value === '';
+      //if assertion method is not 
+      //a function ie. unique, etc.
+      if (typeof assert[method] !== 'function'
+        //if not strict and value is '', null or undefined
+        || (!strict && novalue)
+        //if strict and no value, but there is a default
+        || (strict && novalue && this.default)
+        //if the assertion is `required` and not in strict mode
+        || (method === 'required' && !strict)
+        //if the assertion is `required` and in 
+        //strict mode, but there is a default
+        || (method === 'required' && strict && this.default)
+      ) {
+        //we should skip this check for others
+        continue;
+      
+      }
+      //now we can assert
+      if (!assert[method](value, ...args)) {
+        return message;
+      }
+    }
+    return null;
+  }
   
   /**
    * Returns a column attribute
    */
   public attribute(name: string) {
     return this.attributes.get(name);
+  }
+
+  /**
+   * Serializes a value to be inserted into the database
+   */
+  public serialize(
+    value: any, 
+    options: SerialOptions = {}
+  ): string|number|boolean|Date|null|undefined {
+    const { bool = true, date = true, object = false } = options;
+    //if value is null or undefined and not required
+    if (!this.required && (
+      value === null || typeof value === 'undefined'
+    )) {
+      return value;
+    //if value is null or undefined and required
+    } else if (typeof value === 'undefined') {
+      return value;
+    //if fieldset or multiple
+    } else if (this.fieldset || this.multiple) {
+      //there's no need to recursive serialize
+      return object ? value: JSON.stringify(value);
+    //if type is in the typemap
+    } else if (this.type in typemap) {
+      //string, number, integer, float, boolean, date, object
+      const type = typemap[this.type];
+      //if type is a number
+      if ([ 'number', 'integer', 'float' ].includes(type)) {
+        const serialized = Number(value);
+        return !isNaN(serialized) ? serialized : 0;
+      //if type is a boolean
+      } else if (type === 'boolean') {
+        if (value === 'false') {
+          return bool ? false: 0;
+        } else if (value === 'true') {
+          return bool ? true: 1;
+        }
+        return bool ? Boolean(value): Number(Boolean(value));
+      //if type is a date
+      } else if (type === 'date') {
+        if (value instanceof Date) {
+          return date ? value: [
+            value.toISOString().split('T')[0],
+            value.toTimeString().split(' ')[0]
+          ].join(' ');
+        } else if (typeof value === 'number') {
+          const stamp = new Date(value);
+          return date? stamp: [
+            stamp.toISOString().split('T')[0],
+            stamp.toTimeString().split(' ')[0]
+          ].join(' ');
+        }
+        let stamp = new Date(value as unknown as string);
+        if (isNaN(stamp.getTime())) {
+          stamp = new Date(0);
+        }
+        return date ? stamp : [
+          stamp.toISOString().split('T')[0],
+          stamp.toTimeString().split(' ')[0]
+        ].join(' ');
+      //if type is an object
+      } else if (type === 'object') {
+        //if value is a string
+        if (typeof value === 'string') {
+          try { //to see if it's a valid JSON string
+            if (object) {
+              return JSON.parse(value);
+            }
+            //if value can be parsed as JSON
+            JSON.parse(value);
+            //then it's already JSON serialized
+            return value;
+          //let JSON serialize the value
+          } catch (e) {}
+        }
+        //let JSON serialize the value
+        return object ? value: JSON.stringify(value);
+      }
+      //it shouldn't reach here, but if it does...
+      return value?.toString() || value;
+    //allow: string|number|null|undefined
+    } else if (value === null 
+      || typeof value === 'string'
+      || typeof value === 'number'
+      || typeof value === 'undefined'
+    ) {
+      return value as string|number|null|undefined;
+    //if value is a boolean
+    } else if (typeof value === 'boolean') {
+      return bool ? value: Number(value);
+    //if value is a date
+    } else if (value instanceof Date) {
+      return date ? value: [
+        value.toISOString().split('T')[0],
+        value.toTimeString().split(' ')[0]
+      ].join(' ');
+    }
+    //try to get the string value
+    return object ? value : (value?.toString() || value);
+  }
+
+  /**
+   * Unserializes a value coming from the database
+   */
+  public unserialize(value: any, options: SerialOptions = {}) {
+    const { bool = true, date = true } = options;
+    //if value is null or undefined
+    if (value === null || typeof value === 'undefined') {
+      return value;
+    //if type is in the typemap
+    } else if (this.type in typemap) {
+      //string, number, integer, float, boolean, date, object
+      const type = typemap[this.type];
+      if ([ 'number', 'integer', 'float' ].includes(type)) {
+        const serialized = Number(value);
+        return !isNaN(serialized) ? serialized : 0;
+      } else if (type === 'boolean') {
+        return bool ? Boolean(value): Number(Boolean(value));
+      } else if (type === 'date') {
+        if (value instanceof Date) {
+          return date ? value: [
+            value.toISOString().split('T')[0],
+            value.toTimeString().split(' ')[0]
+          ].join(' ');
+        } else if (typeof value === 'number') {
+          const stamp = new Date(value);
+          return date? stamp: [
+            stamp.toISOString().split('T')[0],
+            stamp.toTimeString().split(' ')[0]
+          ].join(' ');
+        }
+        let stamp = new Date(value as unknown as string);
+        if (isNaN(stamp.getTime())) {
+          stamp = new Date(0);
+        }
+        return date ? stamp : [
+          stamp.toISOString().split('T')[0],
+          stamp.toTimeString().split(' ')[0]
+        ].join(' ');
+      //if type is an object
+      } else if (type === 'object') {
+        //if value is a string
+        if (typeof value === 'string') {
+          try { //to parse the value
+            return JSON.parse(value);
+          } catch (e) {}
+        }
+        return value;
+      }
+    //if fieldset or multiple
+    } else if (this.fieldset || this.multiple) {
+      if (typeof value === 'string') {
+        try {
+          return JSON.parse(value);
+        } catch (e) {
+          return this.multiple ? []: {};
+        }
+      }
+    }
+    return value;
   }
 }

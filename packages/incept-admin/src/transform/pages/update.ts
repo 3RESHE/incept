@@ -94,15 +94,11 @@ export default function generate(directory: Directory, registry: Registry) {
             //if successfully updated
             if (response.code === 200) {
               //redirect
-              res.code = 302;
-              res.status = 'Found';
-              res.headers.set(
-                'Location', 
+              return res.redirect(
                 \`\${config.admin.root}/${model.dash}/detail/${
                   model.ids.map((_, i) => `\${id${i + 1}}`).join('/')
                 }\`
               );
-              return;
             }
             //it did not update...
             //set the errors
@@ -110,14 +106,10 @@ export default function generate(directory: Directory, registry: Registry) {
               res.errors.set(response.errors);
             }
             //recall the update form
-            res.code = response.code as number;
-            res.status = response.status as string;
-            res.mimetype = 'text/html';
-            res.body = await render(
+            return res.setHTML(await render(
               '@stackpress/.incept/${model.name}/admin/update', 
               { ...response, settings, input }
-            );
-            return;
+            ), response.code as number);
           }
           //not submitted, fetch the data using the id
           const response = await model.${model.camel}.action.detail(${
@@ -127,25 +119,20 @@ export default function generate(directory: Directory, registry: Registry) {
           if (response.code === 200) {
             //render the update page
             const input: Record<string, any> = { ...(response.results || {}) };
-            res.mimetype = 'text/html';
-            res.body = await render(
+            return res.setHTML(await render(
               '@stackpress/.incept/${model.name}/admin/update', 
               { ...response, settings, input }
-            );
-            return;
+            ));
           }
           //it did not fetch, render error page
-          res.mimetype = 'text/html';
-          res.body = await render(error, { ...response, settings });
-          return;
+          return res.setHTML(await render(error, { ...response, settings }));
         }
         //no id was found, render error page (404)
-        res.mimetype = 'text/html';
-        res.body = await render(error, { 
+        res.setHTML(await render(error, { 
           code: 404, 
           status: 'Not Found',
           settings
-        });
+        }));
       `
     });
   }

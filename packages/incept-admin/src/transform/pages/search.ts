@@ -89,27 +89,25 @@ export default function generate(directory: Directory, registry: Registry) {
         //if successfully searched
         if (response.code === 200) {
           if (req.query.has('json')) {
-            res.mimetype = 'text/json';
-            res.body = JSON.stringify(response, null, 2);
-            return;
+            return res.setJSON(response);
           }
           //render the search page
-          res.mimetype = 'text/html';
-          res.body = await render('@stackpress/.incept/${model.name}/admin/search', { 
-            q,
-            filter, 
-            span, 
-            sort, 
-            skip, 
-            take, 
-            settings,
-            ...response
-          });
-          return;
+          return res.setHTML(await render(
+            '@stackpress/.incept/${model.name}/admin/search', 
+            { 
+              q,
+              filter, 
+              span, 
+              sort, 
+              skip, 
+              take, 
+              settings,
+              ...response
+            }
+          ));
         }
         //it did not search, render error page
-        res.mimetype = 'text/html';
-        res.body = await render(error, { ...response, settings});
+        res.setHTML(await render(error, { ...response, settings}));
       `
     });
   }

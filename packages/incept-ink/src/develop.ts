@@ -32,18 +32,15 @@ export function entry(config: InkDevEntryConfig) {
       //get asset
       const { type, content } = await compiler.asset(filename);
       //send response
-      res.mimetype = type;
-      res.body = content;
+      return res.setBody(type, content);
     } else if (req.url.pathname === '/dev.js') {
-      res.code = 200;
-      res.mimetype = 'text/javascript';
       const script = compiler.fs.readFileSync(
         require.resolve('@stackpress/ink-dev/client.js'),
         'utf-8'
       );
       const id = 'InkAPI.BUILD_ID';
       const start = `;ink_dev.default(${id}, {path: '${socketRoute}'});`;
-      res.body = script + start; 
+      return res.setBody('text/javascript', script + start);
     } else if (req.url.pathname === socketRoute) {
       res.stop();
       const response = res.resource as SR;

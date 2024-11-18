@@ -1,4 +1,5 @@
-import type { ColumnInfo } from './types';
+import type { NestedObject } from '@stackpress/types';
+import type { ColumnInfo, SerialOptions } from './types';
 import type Registry from './Registry';
 
 import Mustache from 'mustache';
@@ -168,10 +169,48 @@ export default class Fieldset {
   }
 
   /**
+   * Asserts the values
+   */
+  public assert(values: Record<string, any>, strict = true) {
+    const errors: NestedObject<string|string[]> = {};
+    for (const column of this.columns.values()) {
+      if (column.fieldset) {
+        const assertions = column.fieldset.assert(
+          values[column.name], 
+          strict
+        );
+        if (assertions) {
+          errors[column.name] = assertions;
+        }
+        continue;
+      }
+      const value = column.unserialize(values[column.name]);
+      const message = column.assert(value, strict);
+      if (typeof message === 'string') {
+        errors[column.name] = message;
+      }
+    }
+    return Object.keys(errors).length > 0 ? errors : null;
+  }
+
+  /**
    * Returns a column by name
    */
   public column(name: string) {
     return this.columns.get(name);
+  }
+
+  /**
+   * Removes values that are not columns
+   */
+  public filter(values: Record<string, any>) {
+    const filtered: Record<string, any> = {};
+    for (const [ name, value ] of Object.entries(values)) {
+      if (this.columns.has(name)) {
+        filtered[name] = value;
+      }
+    }
+    return filtered;
   }
 
   /**
@@ -182,5 +221,36 @@ export default class Fieldset {
       return '';
     }
     return Mustache.render(this.template, data);
+  }
+
+  /**
+   * Serializes values to be inserted into the database
+   */
+  public serialize(values: Record<string, any>, options: SerialOptions) {
+    const serialized: Record<string, string|number|boolean|Date|null|undefined> = {};
+    for (const [ name, value ] of Object.entries(values)) {
+      const column = this.columns.get(name);
+      if (!column) {
+        continue;
+      }
+      serialized[name] = column.serialize(value, options);
+    }
+    return serialized;
+  }
+
+  /**
+   * Unserializes a value coming from the database
+   */
+  public unserialize(values: Record<string, any>, options: SerialOptions) {
+    const unserialized: Record<string, any> = {};
+    for (const [ name, value ] of Object.entries(values)) {
+      const column = this.columns.get(name);
+      if (!column) {
+        unserialized[name] = value;
+        continue;
+      }
+      unserialized[name] = column.unserialize(value, options);
+    }
+    return unserialized;
   }
 }
