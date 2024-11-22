@@ -3,7 +3,11 @@
 //why we call it profile instead of user and company indicating it's 
 //just a general information of an entity.
 
-model Profile @label("Profile" "Profiles") @template("{{name}}") {
+model Profile
+  @label("Profile" "Profiles") 
+  @template("{{name}}") 
+  @icon("user") 
+{
   id          String    @label("ID") 
                         @id @default("cuid()")
                         @list.overflow({ length 10 hellip true })
@@ -26,7 +30,7 @@ model Profile @label("Profile" "Profiles") @template("{{name}}") {
                         @view.text({ lower true })
   
   roles       String[]  @label("Roles") 
-                        @field.textlist
+                        @field.textlist({ add "Add Role" })
                         @list.hide @view.taglist
   
   tags        String[]  @label("Tags") 
@@ -36,13 +40,13 @@ model Profile @label("Profile" "Profiles") @template("{{name}}") {
   
   references  Hash?     @label("References") 
                         @default("{}")
-                        @field.metadata
+                        @field.metadata({ add "Add Reference" })
                         @list.hide @view.metadata
   
   active      Boolean   @label("Active") 
                         @default(true) @active
                         @filter.switch
-                        @list.yesno @view.yesno
+                        @list.hide @view.yesno
   
   created     Datetime  @label("Created") 
                         @default("now()") @sortable
@@ -60,7 +64,11 @@ model Profile @label("Profile" "Profiles") @template("{{name}}") {
 }
 
 //Auth is used to authenticate a profile and create a session.
-model Auth @label("Auth" "Auth") @template("{{token}}") {
+model Auth 
+  @label("Auth" "Auth") 
+  @template("{{token}}") 
+  @icon("lock") 
+{
   id        String   @label("ID") 
                      @id @default("cuid()")
                      @list.overflow({ length 10 hellip true })
@@ -74,7 +82,7 @@ model Auth @label("Auth" "Auth") @template("{{token}}") {
                      
   type      String   @label("Type") 
                      @default("username") 
-                     @field.text({ required true })
+                     @field.text({ required true }) @filter.text
                      @is.required
                      @list.text @view.text
   
@@ -82,7 +90,6 @@ model Auth @label("Auth" "Auth") @template("{{token}}") {
                      @unique @searchable
                      @field.text({ required true })
                      @is.required @is.cge(5)
-                     @filter.text
                      @list.text @view.text
   
   secret    String   @label("Secret") 
@@ -92,17 +99,18 @@ model Auth @label("Auth" "Auth") @template("{{token}}") {
   
   verified  Boolean  @label("Verified") 
                      @default(false) 
-                     @field.switch @list.yesno @view.yesno
+                     @field.switch @filter.switch 
+                     @list.yesno @view.yesno
   
-  consumed  Datetime @label("Consumed") 
-                     @default("now()")
+  consumed  Datetime @label("Last Used") 
+                     @default("now()") @sortable
                      @list.date("m d, Y h:iA") 
                      @view.date("m d, Y h:iA")
   
   active    Boolean  @label("Active") 
                      @default(true) @active
                      @filter.switch
-                     @list.yesno @view.yesno
+                     @list.hide @view.yesno
   
   created   Datetime @label("Created") 
                      @default("now()") @sortable

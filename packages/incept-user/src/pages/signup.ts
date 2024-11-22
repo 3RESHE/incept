@@ -12,6 +12,8 @@ export default async function SignupPage(req: Request, res: Response) {
   const redirect = req.query.get('redirect') || '/auth/signin';
   //bootstrap plugins
   await project.bootstrap();
+  //get the project config
+  const config = project.config.get<Record<string, string>>('auth');
   //get the session
   const session = project.get<Session>('session');
   //get the renderer
@@ -25,7 +27,7 @@ export default async function SignupPage(req: Request, res: Response) {
     if (response.code !== 200) {
       return res.setHTML(await render(
         '@stackpress/incept-user/dist/templates/signup', 
-        { ...response, input }
+        { ...response, input, config }
       ));
     }
     return res.redirect(redirect);
@@ -34,6 +36,7 @@ export default async function SignupPage(req: Request, res: Response) {
   }
 
   return res.setHTML(await render(
-    '@stackpress/incept-user/dist/templates/signup'
+    '@stackpress/incept-user/dist/templates/signup',
+    { config }
   ));
 };

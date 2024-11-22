@@ -12,6 +12,23 @@ module.exports = {
     '@stackpress/incept-i18n', 
     '@stackpress/incept-user'
   ],
+  auth: {
+    name: 'Incept',
+    logo: '/images/incept-logo-long.png',
+    '2fa': {},
+    captcha: {},
+    username: true,
+    email: true,
+    phone: true,
+    password: {
+      min: 8,
+      max: 32,
+      upper: true,
+      lower: true,
+      number: true,
+      special: true
+    }
+  },
   access: {
     ADMIN: [
       'general',

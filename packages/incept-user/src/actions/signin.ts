@@ -5,7 +5,7 @@ export type SigninInput = {
   username?: string,
   email?: string,
   phone?: string,
-  password: string
+  secret: string
 };
 
 export type SigninType = 'username' | 'email' | 'phone';
@@ -23,7 +23,7 @@ export default async function signin(
     return { ...response, results } as Payload<AuthExtended>;
   } else if (!results) {
     return { code: 404, status: 'Not Found' };
-  } else if (input.password !== results.secret) {
+  } else if (String(input.secret) !== String(results.secret)) {
     return { code: 401, status: 'Unauthorized' };
   }
   //update consumed

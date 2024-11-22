@@ -440,25 +440,20 @@ export default class Column {
   public assert(value: any, strict = true) {
     for (const assertion of this.assertions) {
       const { method, args, message } = assertion;
-      const novalue = value === null 
+      const hasDefault = typeof this.default !== 'undefined';
+      const hasNoValue = value === null 
         || typeof value === 'undefined'
         || value === '';
       //if assertion method is not 
       //a function ie. unique, etc.
       if (typeof assert[method] !== 'function'
-        //if not strict and value is '', null or undefined
-        || (!strict && novalue)
+        //if not strict and required or no value
+        || (!strict && (method === 'required' || hasNoValue))
         //if strict and no value, but there is a default
-        || (strict && novalue && this.default)
-        //if the assertion is `required` and not in strict mode
-        || (method === 'required' && !strict)
-        //if the assertion is `required` and in 
-        //strict mode, but there is a default
-        || (method === 'required' && strict && this.default)
+        || (strict && hasNoValue && (!this.required || hasDefault))
       ) {
         //we should skip this check for others
         continue;
-      
       }
       //now we can assert
       if (!assert[method](value, ...args)) {

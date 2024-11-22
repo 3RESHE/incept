@@ -1,4 +1,5 @@
 <link rel="import" type="template" href="@stackpress/incept-admin/dist/components/head.ink" name="html-head" />
+<link rel="import" type="component" href="@stackpress/ink-ui/element/icon.ink" name="element-icon" />
 <link rel="import" type="component" href="@stackpress/ink-ui/form/control.ink" name="form-control" />
 <link rel="import" type="component" href="@stackpress/ink-ui/form/button.ink" name="form-button" />
 <link rel="import" type="component" href="@stackpress/ink-ui/field/input.ink" name="field-input" />
@@ -18,7 +19,8 @@
     code = 200, 
     status = 'OK', 
     errors = {}, 
-    input = {}
+    input = {},
+    config = {}
   } = props('document');
 
   const url = '/auth/signup';
@@ -27,9 +29,20 @@
 <html>
   <html-head />
   <body class="relative dark bg-t-0 tx-t-1 tx-arial scroll-auto">
-    <blank-app {code} {status} {errors}>
-      <main class="flex flex-col flex-center">
-        <form method="post">
+    <blank-app {code} {status} {errors} class="flex flex-col flex-center">
+      <if true={config.logo}>
+        <img height="50" alt={config.name} src={config.logo} class="block mx-auto mb-10" />
+      <elif true={config.name} />
+        <h2 class="mb-10 tx-5xl tx-center">
+          {config.name}
+        </h2>
+      </if>
+      <section class="bg-t-1 b-solid b-t-3 b-1 w-360">
+        <header class="flex flex-center-y p-10 bg-t-2">
+          <element-icon name="user" />
+          <h3 class="ml-5 tx-upper tx-normal tx-md">{_('Sign Up')}</h3>
+        </header>
+        <form method="post" class="px-10">
           <form-control class="pt-20 relative z-6" label="Name" error={errors.name}>
             <field-input 
               class="block" 
@@ -67,13 +80,20 @@
             />
           </form-control>
           <form-control class="pt-20 relative z-4" label="Password" error={errors.password}>
-            <field-password class="block" name="password" required />
+            <field-password class="block" name="secret" required />
           </form-control>
-          <form-button class="mt-20" type="submit" primary lg>
+          <form-button class="mt-20 w-full tx-center" type="submit" primary lg>
             {_('Submit')}
           </form-button>
         </form>
-      </main>
+        <footer class="tx-center px-10 pt-10 pb-20">
+          <hr class="my-15 b-t-0 b-solid" />
+          <span>{_('Already have an account?')}</span>
+          <a class="tx-info" href="/auth/signin">
+            {_('Sign In')}
+          </a>
+        </footer>
+      </section>
     </blank-app>
   </body>
 </html>

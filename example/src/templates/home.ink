@@ -1,4 +1,4 @@
-<link rel="import" type="template" href="@stackpress/incept-admin/theme/head.ink" name="html-head" />
+<link rel="import" type="template" href="@stackpress/incept-admin/dist/components/head.ink" name="html-head" />
 <link rel="import" type="component" href="@stackpress/ink-ui/field/autocomplete.ink" name="field-autocomplete" />
 <style>
   @ink theme;

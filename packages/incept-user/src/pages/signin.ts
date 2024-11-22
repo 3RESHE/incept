@@ -16,6 +16,8 @@ export default async function SignInPage(req: Request, res: Response) {
   const redirect = req.query.get('redirect') || '/';
   //bootstrap plugins
   await project.bootstrap();
+  //get the project config
+  const config = project.config.get<Record<string, string>>('auth');
   //get the session
   const session = project.get<Session>('session');
   //get the renderer
@@ -29,7 +31,7 @@ export default async function SignInPage(req: Request, res: Response) {
     if (response.code !== 200) {
       return res.setHTML(await render(
         '@stackpress/incept-user/dist/templates/signin', 
-        { ...response, type, input }
+        { ...response, type, input, config }
       ));
     }
     const results = response.results as AuthExtended;
@@ -48,6 +50,6 @@ export default async function SignInPage(req: Request, res: Response) {
 
   return res.setHTML(await render(
     '@stackpress/incept-user/dist/templates/signin',
-    { type }
+    { type, config }
   ));
 };

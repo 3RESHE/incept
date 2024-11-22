@@ -1,6 +1,6 @@
 {
   "name": "@stackpress/incept-i18n",
-  "version": "0.1.25",
+  "version": "0.1.26",
   "license": "MIT",
   "description": "This package is a translation interface that enables many languages to be used in an Incept app.",
   "author": "Chris <chris@stackpress.io>",
@@ -24,7 +24,7 @@
     "tsconfig.json"
   ],
   "dependencies": {
-    "@stackpress/incept": "0.1.25"
+    "@stackpress/incept": "0.1.26"
   },
   "devDependencies": {
     "@types/node": "22.7.5",

@@ -1,5 +1,6 @@
 import type { Payload } from '@stackpress/incept';
 
+import { email } from '@stackpress/incept/dist/assert';
 import client, { Profile, Auth } from '@stackpress/incept/client';
 
 export type SignupInput = {
@@ -7,13 +8,17 @@ export type SignupInput = {
   username?: string,
   email?: string,
   phone?: string,
-  password: string
+  secret: string
 };
+
+export type ProfileAuth = Profile & { auth: Record<string, Auth> };
 
 /**
  * Signup action
  */
-export default async function signup(input: SignupInput): Promise<Payload<Auth>> {
+export default async function signup(
+  input: SignupInput
+): Promise<Payload<ProfileAuth>> {
   //validate input
   const errors = assert(input);
   //if there are errors
@@ -28,33 +33,53 @@ export default async function signup(input: SignupInput): Promise<Payload<Auth>>
   });
   //if error, return response
   if (response.code !== 200) {
-    return { ...response } as Payload<Auth>;
+    return response as Payload<ProfileAuth>;
   }
-  const profile = response.results as Profile;
+  const results = response.results as Profile & { 
+    auth: Record<string, Auth> 
+  };
+  results.auth = {};
   //if email
   if (input.email) {
-    return await client.model.auth.action.create({
-      profileId: profile.id,
+    const auth = await client.model.auth.action.create({
+      profileId: results.id,
       type: 'email',
-      token: input.email,
-      secret: input.password
+      token: String(input.email),
+      secret: String(input.secret)
     });
+    if (auth.code !== 200) {
+      return auth as unknown as Payload<ProfileAuth>;
+    }
+    results.auth.email = auth.results as Auth;
+  } 
   //if phone
-  } else if (input.phone) {
-    return await client.model.auth.action.create({
-      profileId: profile.id,
+  if (input.phone) {
+    const auth = await client.model.auth.action.create({
+      profileId: results.id,
       type: 'phone',
-      token: input.phone,
-      secret: input.password
+      token: String(input.phone),
+      secret: String(input.secret)
     });
+    if (auth.code !== 200) {
+      return auth as unknown as Payload<ProfileAuth>;
+    }
+    results.auth.phone = auth.results as Auth;
   }
-  //by default, username
-  return await client.model.auth.action.create({
-    profileId: profile.id,
-    type: 'username',
-    token: input.username as string,
-    secret: input.password
-  });
+  //if username
+  if (input.username) {
+    const auth = await client.model.auth.action.create({
+      profileId: results.id,
+      type: 'username',
+      token: String(input.username),
+      secret: String(input.secret)
+    });
+    if (auth.code !== 200) {
+      return auth as unknown as Payload<ProfileAuth>;
+    }
+    results.auth.username = auth.results as Auth;
+  }
+
+  return { ...response, results };
 }
 
 /**
@@ -67,9 +92,11 @@ export function assert(input: SignupInput) {
   }
   if (!input.username && !input.email && !input.phone) {
     errors.type = 'Username, email, or phone is required';
+  } else if (input.email && !email(input.email)) {
+    errors.email = 'Invalid email';
   }
-  if (!input.password) {
-    errors.password = 'Password is required';
+  if (!input.secret) {
+    errors.secret = 'Password is required';
   }
   return Object.keys(errors).length ? errors : null;
 };
