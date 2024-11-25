@@ -28,10 +28,10 @@
     "@stackpress/ingest": "0.2.6"
   },
   "devDependencies": {
-    "@types/node": "22.7.5",
+    "@types/node": "22.9.3",
     "copyfiles": "2.4.1",
     "rimraf": "6.0.1",
     "ts-node": "10.9.2",
-    "typescript": "5.6.2"
+    "typescript": "5.7.2"
   }
 }

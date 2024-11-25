@@ -13,30 +13,30 @@
     "@paralleldrive/cuid2": "2.2.2",
     "@stackpress/incept": "0.2.6",
     "@stackpress/ingest": "0.2.6",
-    "better-sqlite3": "11.3.0",
-    "cookie": "1.0.0",
-    "drizzle-orm": "0.36.1",
-    "ethers": "6.13.3",
+    "better-sqlite3": "11.5.0",
+    "cookie": "1.0.2",
+    "drizzle-orm": "0.36.4",
+    "ethers": "6.13.4",
     "js-cookie": "3.0.5",
     "jsonwebtoken": "9.0.2",
     "mustache": "4.2.0",
-    "mysql2": "3.11.3",
-    "pg": "8.13.0"
+    "mysql2": "3.11.4",
+    "pg": "8.13.1"
   },
   "devDependencies": {
-    "@electric-sql/pglite": "0.2.12",
+    "@electric-sql/pglite": "0.2.13",
     "@stackpress/ingest-vercel": "0.2.6",
     "@stackpress/ink": "0.2.6",
     "@stackpress/ink-css": "0.2.6",
     "@stackpress/ink-dev": "0.2.6",
     "@stackpress/ink-ui": "0.2.6",
-    "@types/js-cookie": "3.0.5",
+    "@types/js-cookie": "3.0.6",
     "@types/jsonwebtoken": "9.0.7",
-    "@types/better-sqlite3": "7.6.9",
-    "@types/node": "22.7.5",
-    "dotenv-cli": "7.4.2",
-    "drizzle-kit": "0.28.0",
+    "@types/better-sqlite3": "7.6.12",
+    "@types/node": "22.9.3",
+    "dotenv-cli": "7.4.4",
+    "drizzle-kit": "0.28.1",
     "ts-node": "10.9.2",
-    "typescript": "5.6.2"
+    "typescript": "5.7.2"
   }
 }
