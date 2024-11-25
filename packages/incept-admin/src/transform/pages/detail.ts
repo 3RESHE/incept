@@ -8,16 +8,16 @@ export default function generate(directory: Directory, registry: Registry) {
     const file = `${model.name}/admin/detail.ts`;
     const source = directory.createSourceFile(file, '', { overwrite: true });
   
-    // import type Request from '@stackpress/ingest/dist/payload/Request';
+    // import type Request from '@stackpress/ingest/dist/Request';
     source.addImportDeclaration({
       isTypeOnly: true,
-      moduleSpecifier: '@stackpress/ingest/dist/payload/Request',
+      moduleSpecifier: '@stackpress/ingest/dist/Request',
       defaultImport: 'Request'
     });
-    // import type Response from '@stackpress/ingest/dist/payload/Response';
+    // import type Response from '@stackpress/ingest/dist/Response';
     source.addImportDeclaration({
       isTypeOnly: true,
-      moduleSpecifier: '@stackpress/ingest/dist/payload/Response',
+      moduleSpecifier: '@stackpress/ingest/dist/Response',
       defaultImport: 'Response'
     });
     // import type Session from '@stackpress/incept-user/dist/Session';
@@ -39,7 +39,7 @@ export default function generate(directory: Directory, registry: Registry) {
     });
     // export default async function ProfileDetail(req: Request, res: Response) {
     source.addFunction({
-      name: `Admin${model.name}Detail`,
+      name: `Admin${model.title}Detail`,
       isAsync: true,
       isDefaultExport: true,
       parameters: [
@@ -54,9 +54,9 @@ export default function generate(directory: Directory, registry: Registry) {
         //get the project config
         const config = project.config.get<Record<string, any>>();
         //get the session
-        const session = project.get<Session>('session');
+        const session = project.plugin<Session>('session');
         //get the renderer
-        const { render } = project.get<InkPlugin>('template');
+        const { render } = project.plugin<InkPlugin>('template');
         //prep error page
         const error = '@stackpress/incept-admin/dist/components/error';
         //get authorization
@@ -66,7 +66,7 @@ export default function generate(directory: Directory, registry: Registry) {
         //general settings
         const settings = { ...config.admin, session: authorization };
         //get url params
-        const { params } = req.ctxFromRoute(
+        const { params } = req.fromRoute(
           \`\${config.admin.root}/${model.dash}/detail/${
             model.ids.map(column => `:${column.name}`).join('/')
           }\`

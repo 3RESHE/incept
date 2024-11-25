@@ -76,8 +76,8 @@ export default class ConfigLoader extends FileLoader {
    * Resolves the path name to a path that can be required
    */
   public resolve(pathname = this.cwd) {
-    //use the loader to resolve
-    const file = super.resolve(pathname, this.cwd, [
+    //get the absolute path
+    return super.resolve(pathname, this.cwd, [
       '/incept.config.js', 
       '/incept.config.json', 
       '/incept.js', 
@@ -86,6 +86,5 @@ export default class ConfigLoader extends FileLoader {
       '.js', 
       '.json', 
     ]);
-    return file;
   }
 }

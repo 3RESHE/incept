@@ -1,5 +1,5 @@
-import type Request from '@stackpress/ingest/dist/payload/Request';
-import type Response from '@stackpress/ingest/dist/payload/Response';
+import type Request from '@stackpress/ingest/dist/Request';
+import type Response from '@stackpress/ingest/dist/Response';
 import type { JwtPayload } from 'jsonwebtoken';
 import type { PermissionList, SessionData } from './types';
 

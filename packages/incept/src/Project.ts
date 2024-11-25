@@ -58,7 +58,7 @@ export default class Project extends EventEmitter<Record<string, any[]>> {
   /**
    * Gets the plugin by name
    */
-  public get<T = Record<string, any> | undefined>(name: string) {
+  public plugin<T = Record<string, any> | undefined>(name: string) {
     return this.plugins.get(name) as T;
   }
 

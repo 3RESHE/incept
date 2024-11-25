@@ -8,16 +8,16 @@ export default function generate(directory: Directory, registry: Registry) {
     const file = `${model.name}/admin/create.ts`;
     const source = directory.createSourceFile(file, '', { overwrite: true });
   
-    // import type Request from '@stackpress/ingest/dist/payload/Request';
+    // import type Request from '@stackpress/ingest/dist/Request';
     source.addImportDeclaration({
       isTypeOnly: true,
-      moduleSpecifier: '@stackpress/ingest/dist/payload/Request',
+      moduleSpecifier: '@stackpress/ingest/dist/Request',
       defaultImport: 'Request'
     });
-    // import type Response from '@stackpress/ingest/dist/payload/Response';
+    // import type Response from '@stackpress/ingest/dist/Response';
     source.addImportDeclaration({
       isTypeOnly: true,
-      moduleSpecifier: '@stackpress/ingest/dist/payload/Response',
+      moduleSpecifier: '@stackpress/ingest/dist/Response',
       defaultImport: 'Response'
     });
     // import type Session from '@stackpress/incept-user/dist/Session';
@@ -36,7 +36,7 @@ export default function generate(directory: Directory, registry: Registry) {
     source.addImportDeclaration({
       isTypeOnly: true,
       moduleSpecifier: '../types',
-      namedImports: [ 'ProfileInput' ]
+      namedImports: [ `${model.title}Input` ]
     });
     // import client from '../../client';
     source.addImportDeclaration({
@@ -45,7 +45,7 @@ export default function generate(directory: Directory, registry: Registry) {
     });
     // export default async function ProfileCreate(req: Request, res: Response) {  
     source.addFunction({
-      name: `Admin${model.name}Create`,
+      name: `Admin${model.title}Create`,
       isAsync: true,
       isDefaultExport: true,
       parameters: [
@@ -60,9 +60,9 @@ export default function generate(directory: Directory, registry: Registry) {
         //get the project config
         const config = project.config.get<Record<string, any>>();
         //get the session
-        const session = project.get<Session>('session');
+        const session = project.plugin<Session>('session');
         //get the renderer
-        const { render } = project.get<InkPlugin>('template');
+        const { render } = project.plugin<InkPlugin>('template');
         //get authorization
         const authorization = session.authorize(req, res, [ '${model.dash}-create' ]);
         //if not authorized

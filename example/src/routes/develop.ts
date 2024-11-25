@@ -1,6 +1,6 @@
-import type { IM, SR } from '@stackpress/ingest/dist/http';
-import type Request from '@stackpress/ingest/dist/payload/Request';
-import type Response from '@stackpress/ingest/dist/payload/Response';
+import type { IM, SR } from '@stackpress/ingest/dist/types';
+import type Request from '@stackpress/ingest/dist/Request';
+import type Response from '@stackpress/ingest/dist/Response';
 import type { InkPlugin } from '@stackpress/incept-ink/dist/types';
 
 import { entry } from '@stackpress/incept-ink/dist/develop';
@@ -15,7 +15,7 @@ export default async function Develop(req: Request<IM>, res: Response<SR>) {
     socketRoute: string
   }>('template', 'config', 'dev');
   //get ink config
-  const { compiler, refresh } = project.get<InkPlugin>('ink');
+  const { compiler, refresh } = project.plugin<InkPlugin>('ink');
   //get the route
   const route = entry({
     buildRoute: buildRoute,

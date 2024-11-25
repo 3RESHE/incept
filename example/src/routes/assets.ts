@@ -1,6 +1,6 @@
-import type { IM, SR } from '@stackpress/ingest/dist/http';
-import type Request from '@stackpress/ingest/dist/payload/Request';
-import type Response from '@stackpress/ingest/dist/payload/Response';
+import type { IM, SR } from '@stackpress/ingest/dist/types';
+import type Request from '@stackpress/ingest/dist/Request';
+import type Response from '@stackpress/ingest/dist/Response';
 
 import fs from 'fs';
 import path from 'path';

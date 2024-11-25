@@ -1,5 +1,5 @@
-import type Request from '@stackpress/ingest/dist/payload/Request';
-import type Response from '@stackpress/ingest/dist/payload/Response';
+import type Request from '@stackpress/ingest/dist/Request';
+import type Response from '@stackpress/ingest/dist/Response';
 
 export default async function SignIn(req: Request, res: Response) {
   //set session

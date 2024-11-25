@@ -1,6 +1,6 @@
-import type { IM, SR } from '@stackpress/ingest/dist/http';
-import type Request from '@stackpress/ingest/dist/payload/Request';
-import type Response from '@stackpress/ingest/dist/payload/Response';
+import type { IM, SR } from '@stackpress/ingest/dist/types';
+import type Request from '@stackpress/ingest/dist/Request';
+import type Response from '@stackpress/ingest/dist/Response';
 import type { InkDevEntryConfig, InkDevRouteConfig } from './types';
 
 export function route(config: InkDevRouteConfig) {
@@ -27,7 +27,7 @@ export function entry(config: InkDevEntryConfig) {
   return async function InkDevelop(req: Request<IM>, res: Response<SR>) {
     if (req.url.pathname.startsWith(`${buildRoute}/`)) {
       //get filename ie. abc123.js
-      const { params } = req.ctxFromRoute(`${buildRoute}/:build`);
+      const { params } = req.fromRoute(`${buildRoute}/:build`);
       const filename = params.get('build') as string;
       //get asset
       const { type, content } = await compiler.asset(filename);
