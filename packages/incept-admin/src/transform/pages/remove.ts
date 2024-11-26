@@ -8,11 +8,11 @@ export default function generate(directory: Directory, registry: Registry) {
     const file = `${model.name}/admin/remove.ts`;
     const source = directory.createSourceFile(file, '', { overwrite: true });
   
-    // import type Request from '@stackpress/ingest/dist/Request';
+    // import type Context from '@stackpress/ingest/dist/Context';
     source.addImportDeclaration({
       isTypeOnly: true,
-      moduleSpecifier: '@stackpress/ingest/dist/Request',
-      defaultImport: 'Request'
+      moduleSpecifier: '@stackpress/ingest/dist/Context',
+      defaultImport: 'Context'
     });
     // import type Response from '@stackpress/ingest/dist/Response';
     source.addImportDeclaration({
@@ -37,13 +37,13 @@ export default function generate(directory: Directory, registry: Registry) {
       moduleSpecifier: '../../client',
       defaultImport: 'client'
     });
-    // export default async function ProfileRemove(req: Request, res: Response) {
+    // export default async function ProfileRemove(req: Context, res: Response) {
     source.addFunction({
       name: `Admin${model.title}Remove`,
       isAsync: true,
       isDefaultExport: true,
       parameters: [
-        { name: 'req', type: 'Request' }, 
+        { name: 'req', type: 'Context' }, 
         { name: 'res', type: 'Response' }
       ],
       statements: `
@@ -52,7 +52,7 @@ export default function generate(directory: Directory, registry: Registry) {
         //bootstrap plugins
         await project.bootstrap();
         //get the project config
-        const config = project.config.get<Record<string, any>>();
+        const config = project.config<Record<string, any>>();
         //get the session
         const session = project.plugin<Session>('session');
         //get the renderer
@@ -65,20 +65,14 @@ export default function generate(directory: Directory, registry: Registry) {
         if (!authorization) return;
         //general settings
         const settings = { ...config.admin, session: authorization };
-        //get url params
-        const { params } = req.fromRoute(
-          \`\${config.admin.root}/${model.dash}/remove/${
-            model.ids.map(column => `:${column.name}`).join('/')
-          }\`
-        );
         //get id from url params
         ${model.ids.map(
-          (column, i) => `const id${i + 1} = params.get('${column.name}');`
+          (column, i) => `const id${i + 1} = req.data('${column.name}');`
         ).join('\n        ')}
         //if there is an id
         if (${model.ids.map((_, i) => `id${i + 1}`).join(' && ')}) {
           //if confirmed
-          if (req.query.get<string>('confirmed')) {
+          if (req.query<string>('confirmed')) {
             //remove the row with the id
             const response = await model.${model.camel}.action.remove(${
               model.ids.map((_, i) => `id${i + 1}`).join(', ')

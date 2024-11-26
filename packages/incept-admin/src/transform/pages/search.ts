@@ -8,11 +8,11 @@ export default function generate(directory: Directory, registry: Registry) {
     const file = `${model.name}/admin/search.ts`;
     const source = directory.createSourceFile(file, '', { overwrite: true });
   
-    // import type Request from '@stackpress/ingest/dist/Request';
+    // import type Context from '@stackpress/ingest/dist/Context';
     source.addImportDeclaration({
       isTypeOnly: true,
-      moduleSpecifier: '@stackpress/ingest/dist/Request',
-      defaultImport: 'Request'
+      moduleSpecifier: '@stackpress/ingest/dist/Context',
+      defaultImport: 'Context'
     });
     // import type Response from '@stackpress/ingest/dist/Response';
     source.addImportDeclaration({
@@ -37,13 +37,13 @@ export default function generate(directory: Directory, registry: Registry) {
       moduleSpecifier: '../../client',
       defaultImport: 'client'
     });
-    // export default async function ProfileSearch(req: Request, res: Response) {
+    // export default async function ProfileSearch(req: Context, res: Response) {
     source.addFunction({
       name: `Admin${model.title}Search`,
       isAsync: true,
       isDefaultExport: true,
       parameters: [
-        { name: 'req', type: 'Request' }, 
+        { name: 'req', type: 'Context' }, 
         { name: 'res', type: 'Response' }
       ],
       statements: `
@@ -52,7 +52,7 @@ export default function generate(directory: Directory, registry: Registry) {
         //bootstrap plugins
         await project.bootstrap();
         //get the project config
-        const config = project.config.get<Record<string, any>>();
+        const config = project.config<Record<string, any>>();
         //get the session
         const session = project.plugin<Session>('session');
         //get the renderer
@@ -66,7 +66,7 @@ export default function generate(directory: Directory, registry: Registry) {
         //general settings
         const settings = { ...config.admin, session: authorization };
         //extract filters from url query
-        let { q, filter, span, sort, skip, take } = req.query.get() as Record<string, unknown> & {
+        let { q, filter, span, sort, skip, take } = req.data() as Record<string, unknown> & {
           q?: string,
           filter?: Record<string, string|number|boolean>,
           span?: Record<string, (string|number|null|undefined)[]>,

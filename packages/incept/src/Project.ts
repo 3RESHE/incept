@@ -1,5 +1,9 @@
-import ReadonlyNest from '@stackpress/types/dist/readonly/Nest';
+import type { CallableMap, CallableNest } from '@stackpress/types';
+
 import EventEmitter from '@stackpress/types/dist/EventEmitter';
+
+import { nest } from '@stackpress/types/dist/Nest';
+import { map } from '@stackpress/types/dist/helpers';
 import PluginLoader from './loader/Plugin';
 
 export default class Project extends EventEmitter<Record<string, any[]>> {
@@ -12,11 +16,11 @@ export default class Project extends EventEmitter<Record<string, any[]>> {
   }
 
   //config
-  public readonly config: ReadonlyNest;
+  public readonly config: CallableNest;
   //plugin loader
   public readonly loader: PluginLoader;
   //list of plugins
-  public readonly plugins = new Map<string, Record<string, any>>();
+  public readonly plugins: CallableMap;
 
   /**
    * The current working directory
@@ -30,7 +34,8 @@ export default class Project extends EventEmitter<Record<string, any[]>> {
    */
   public constructor(config: Record<string, any> = {}) {
     super();
-    this.config = new ReadonlyNest(config);
+    this.config = nest(config);
+    this.plugins = map<string, Record<string, any>>();
     this.loader = new PluginLoader({
       cwd: config.cwd || process.cwd(),
       plugins: config.plugins || []
