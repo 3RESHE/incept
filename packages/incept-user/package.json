@@ -1,6 +1,6 @@
 {
   "name": "@stackpress/incept-user",
-  "version": "0.2.10",
+  "version": "0.2.14",
   "license": "MIT",
   "description": "This package is a user interface that enables auth to be used in an Incept app.",
   "author": "Chris <chris@stackpress.io>",
@@ -15,8 +15,7 @@
   "main": "index.js",
   "files": [
     "dist",
-    "incept.js",
-    "incept.d.ts",
+    "incept.client.js",
     "index.js",
     "index.d.ts",
     "LICENSE",
@@ -24,8 +23,8 @@
     "tsconfig.json"
   ],
   "dependencies": {
-    "@stackpress/incept": "0.2.10",
-    "@stackpress/ingest": "0.2.10"
+    "@stackpress/incept": "0.2.14",
+    "@stackpress/ingest": "0.2.14"
   },
   "devDependencies": {
     "@types/node": "22.9.3",

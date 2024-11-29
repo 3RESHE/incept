@@ -1,7 +1,9 @@
 const path = require('path');
 const environment = process.env.SERVER_ENV || 'development';
+
 module.exports = {
-  plugins: [
+  plugins: [ 
+    process.cwd(),
     //transformers
     '@stackpress/incept-types',
     '@stackpress/incept-drizzle',
@@ -12,6 +14,14 @@ module.exports = {
     '@stackpress/incept-i18n', 
     '@stackpress/incept-user'
   ],
+  server: {
+    cwd: process.cwd(),
+    mode: environment,
+    bodySize: 0
+  },
+  cookie: { 
+    path: '/' 
+  },
   auth: {
     name: 'Incept',
     logo: '/images/incept-logo-long.png',
@@ -113,9 +123,6 @@ module.exports = {
       'connection-restore',
       'connection-update'
     ]
-  },
-  server: {
-    minify: false
   },
   template: {
     engine: 'ink',

@@ -1,6 +1,6 @@
 {
   "name": "@stackpress/incept-client",
-  "version": "0.2.10",
+  "version": "0.2.14",
   "license": "MIT",
   "description": "The main Idea generator for Incept",
   "author": "Chris <chris@stackpress.io>",
@@ -12,8 +12,7 @@
   },
   "files": [
     "dist",
-    "incept.js",
-    "incept.d.ts",
+    "incept.build.js",
     "LICENSE",
     "README.md",
     "tsconfig.json"
@@ -21,7 +20,7 @@
   "dependencies": {
     "@stackpress/idea-parser": "0.2.10",
     "@stackpress/idea-transformer": "0.2.10",
-    "@stackpress/incept": "0.2.10",
+    "@stackpress/incept": "0.2.14",
     "ts-morph": "24.0.0"
   },
   "devDependencies": {

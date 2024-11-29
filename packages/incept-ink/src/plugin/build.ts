@@ -17,6 +17,6 @@ export default function plugin(builder: Builder) {
     }
     //add this plugin generator to the schema
     //so it can be part of the transformation
-    transformer.schema.plugin['@stackpress/incept-drizzle/dist/transform'] = {};
+    transformer.schema.plugin['@stackpress/incept-ink/dist/transform'] = {};
   });
 };

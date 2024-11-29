@@ -1,5 +1,5 @@
 import type FileSystem from '@stackpress/types/dist/filesystem/FileSystem';
-
+import type Factory from '@stackpress/ingest-vercel/dist/Factory';
 export type Payload<T = any> = {
   code: number,
   status: string, 
@@ -27,3 +27,5 @@ export type PluginLoaderOptions = ConfigLoaderOptions & {
   modules?: string, 
   plugins?: string[]
 };
+
+export type BuildFactory = Factory;

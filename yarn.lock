@@ -636,19 +636,19 @@
     "@stackpress/idea-parser" "0.2.10"
     "@stackpress/types" "0.2.10"
 
-"@stackpress/ingest-vercel@0.2.10":
-  version "0.2.10"
-  resolved "https://registry.yarnpkg.com/@stackpress/ingest-vercel/-/ingest-vercel-0.2.10.tgz#29c8d53425acdbf30d15387b7145b308e9260d0e"
-  integrity sha512-cpd0PlfaVLSzm3yfJv+b2uth5wyAUxmbah7BDRK5zJ6oLcmcFwtIL0yN2z5pXd9D3K3wC1ytU5tggmsCpovHAw==
+"@stackpress/ingest-vercel@0.2.14":
+  version "0.2.14"
+  resolved "https://registry.yarnpkg.com/@stackpress/ingest-vercel/-/ingest-vercel-0.2.14.tgz#f3d7f1a1894e1bca105660a43aef5b419956e9f0"
+  integrity sha512-EZfUpYLsb1zarEGK55bZQRc/6QMoeAKsxtKX/Fz+xtT1U3KI25qgANZMcBzh380NB0yFQRpmYKZ59xuUAwSspQ==
   dependencies:
-    "@stackpress/ingest" "0.2.10"
+    "@stackpress/ingest" "0.2.14"
 
-"@stackpress/ingest@0.2.10":
-  version "0.2.10"
-  resolved "https://registry.yarnpkg.com/@stackpress/ingest/-/ingest-0.2.10.tgz#1fb5b1eaa3d4670e27d079f704d10fdd3f5d57e9"
-  integrity sha512-6h3AGe/R9FvxzeIPgzUdyfUddwDhyBLLTbJoUhy5q3XOwLSoaAlFQZ49EPSLqdPH09R8HwKb9YQpSSkQgFLejQ==
+"@stackpress/ingest@0.2.14":
+  version "0.2.14"
+  resolved "https://registry.yarnpkg.com/@stackpress/ingest/-/ingest-0.2.14.tgz#7fd50bed778bd1ffbeaf853605627ff5815ed64a"
+  integrity sha512-ZgnEB++XZBV+HiBYp+02Wc1MeKnEmB6REkQ5Y5hr+Q++ASUo8yBf7tSWmmAaxbPT9E/oI8WeyUUO4ax1prP2iA==
   dependencies:
-    "@stackpress/types" "0.2.10"
+    "@stackpress/types" "0.2.11"
     cookie "1.0.2"
     esbuild "0.24.0"
     ts-morph "24.0.0"
@@ -702,6 +702,13 @@
   version "0.2.10"
   resolved "https://registry.yarnpkg.com/@stackpress/types/-/types-0.2.10.tgz#3fc0aa03c1825c24569e2803ef572f652c912f56"
   integrity sha512-PI4GAUC+kQDpwMWgWpEQEIIrOBDfXGo+GueG0hV7baG+/RPECegYFw+iFe2rij+Ulf8tw6Hf8chSslZPZDRltw==
+  dependencies:
+    "@inquirer/prompts" "7.1.0"
+
+"@stackpress/types@0.2.11":
+  version "0.2.11"
+  resolved "https://registry.yarnpkg.com/@stackpress/types/-/types-0.2.11.tgz#fc3d8b61fa17fe435467f465da122a1b186dd4f1"
+  integrity sha512-qpygvVQW7JmXOD+INyvYEwr7fPsGSSloQpM5/BP6aHHQrReLg6TOJEUJefITKc91Tvijh3oRA7PYEMKzY034NQ==
   dependencies:
     "@inquirer/prompts" "7.1.0"
 

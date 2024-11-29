@@ -1,6 +1,6 @@
 {
   "name": "@stackpress/incept-drizzle",
-  "version": "0.2.10",
+  "version": "0.2.14",
   "license": "MIT",
   "description": "This package generates store, schema and actions based on models and fieldsets in an Incept client.",
   "author": "Chris <chris@stackpress.io>",
@@ -13,8 +13,7 @@
   "main": "index.js",
   "files": [
     "dist",
-    "incept.js",
-    "incept.d.ts",
+    "incept.build.js",
     "index.js",
     "index.d.ts",
     "LICENSE",
@@ -23,8 +22,8 @@
   ],
   "dependencies": {
     "@stackpress/idea-transformer": "0.2.10",
-    "@stackpress/incept": "0.2.10",
-    "@stackpress/types": "0.2.10",
+    "@stackpress/incept": "0.2.14",
+    "@stackpress/types": "0.2.11",
     "ts-morph": "24.0.0"
   },
   "devDependencies": {

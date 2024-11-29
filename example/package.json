@@ -11,8 +11,8 @@
   },
   "dependencies": {
     "@paralleldrive/cuid2": "2.2.2",
-    "@stackpress/incept": "0.2.10",
-    "@stackpress/ingest": "0.2.10",
+    "@stackpress/incept": "0.2.14",
+    "@stackpress/ingest-vercel": "0.2.14",
     "better-sqlite3": "11.5.0",
     "cookie": "1.0.2",
     "drizzle-orm": "0.36.4",
@@ -25,7 +25,6 @@
   },
   "devDependencies": {
     "@electric-sql/pglite": "0.2.13",
-    "@stackpress/ingest-vercel": "0.2.10",
     "@stackpress/ink": "0.2.10",
     "@stackpress/ink-css": "0.2.10",
     "@stackpress/ink-dev": "0.2.10",
