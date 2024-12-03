@@ -1,6 +1,6 @@
 {
   "name": "@stackpress/incept-admin",
-  "version": "0.2.14",
+  "version": "0.3.6",
   "license": "MIT",
   "description": "This package manages the theme of the admin in an Incept app.",
   "author": "Chris <chris@stackpress.io>",
@@ -22,9 +22,9 @@
     "tsconfig.json"
   ],
   "dependencies": {
-    "@stackpress/idea-transformer": "0.2.10",
-    "@stackpress/incept": "0.2.14",
-    "@stackpress/ink": "0.2.10",
+    "@stackpress/idea-transformer": "0.3.6",
+    "@stackpress/incept": "0.3.6",
+    "@stackpress/ink": "0.3.6",
     "ts-morph": "24.0.0"
   },
   "devDependencies": {

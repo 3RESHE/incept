@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "private": true,
   "scripts": {
+    "build": "tsc",
     "incept": "dotenv -e .env.local -- incept transform",
     "dev": "dotenv -e .env.local -- ts-node src/server.ts",
     "push": "dotenv -e .env.local -- drizzle-kit push",
@@ -11,8 +12,8 @@
   },
   "dependencies": {
     "@paralleldrive/cuid2": "2.2.2",
-    "@stackpress/incept": "0.2.14",
-    "@stackpress/ingest-vercel": "0.2.14",
+    "@stackpress/incept": "0.3.6",
+    "@stackpress/ingest": "0.3.6",
     "better-sqlite3": "11.5.0",
     "cookie": "1.0.2",
     "drizzle-orm": "0.36.4",
@@ -25,10 +26,10 @@
   },
   "devDependencies": {
     "@electric-sql/pglite": "0.2.13",
-    "@stackpress/ink": "0.2.10",
-    "@stackpress/ink-css": "0.2.10",
-    "@stackpress/ink-dev": "0.2.10",
-    "@stackpress/ink-ui": "0.2.10",
+    "@stackpress/ink": "0.3.6",
+    "@stackpress/ink-css": "0.3.6",
+    "@stackpress/ink-dev": "0.3.6",
+    "@stackpress/ink-ui": "0.3.6",
     "@types/js-cookie": "3.0.6",
     "@types/jsonwebtoken": "9.0.7",
     "@types/better-sqlite3": "7.6.12",

@@ -1,5 +1,5 @@
 import type { Factory } from '@stackpress/incept';
-import Session from './Session';
+import Session from '../Session';
 
 type ProjectConfig = { access: Record<string, string[]> };
 

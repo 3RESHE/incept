@@ -8,8 +8,8 @@ import Registry from '@stackpress/incept/dist/config/Registry';
 import generateConfig from './config';
 import generateModule from './module';
 import generateRegistry from './registry';
-import generateClient from './client';
-import generateRoutes from './routes';
+import generateBuild from './plugin/build';
+import generateClient from './plugin/client';
 
 /**
  * This is the The params comes form the cli
@@ -54,8 +54,8 @@ export default function generate({ config, schema, cli }: PluginWithCLIProps) {
   generateConfig(directory, schema);
   generateModule(directory, registry);
   generateRegistry(directory, registry);
+  generateBuild(directory, registry);
   generateClient(directory, registry);
-  generateRoutes(directory, registry);
   
   //-----------------------------//
   // 5. index.ts

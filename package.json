@@ -18,6 +18,7 @@
     "build:i18n": "yarn --cwd packages/incept-i18n build",
     "build:admin": "yarn --cwd packages/incept-admin build",
     "build:user": "yarn --cwd packages/incept-user build",
+    "build:example": "yarn --cwd example build",
     "push": "yarn --cwd example push",
     "migrate": "yarn --cwd example migrate",
     "studio": "yarn --cwd example studio"

@@ -24,8 +24,8 @@ import type { Payload } from './types';
 
 import Exception from './Exception';
 import Terminal from './Terminal';
-import build from './build';
-import client from './client';
+import * as buildtime from './buildtime';
+import * as runtime from './runtime';
 import assert from './assert';
 
 export type { 
@@ -52,6 +52,6 @@ export {
   Exception, 
   Terminal,
   assert,
-  build,
-  client
+  buildtime,
+  runtime
 };

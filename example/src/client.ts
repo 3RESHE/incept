@@ -1,11 +1,19 @@
 import type { Config } from './config';
 
-import { client, Context, Response } from '@stackpress/incept';
+import { runtime } from '@stackpress/incept';
 import { config } from './config';
 
-export default async function bootstrap(req: Context, res: Response) {
-  //bootstrap a new client
-  return await client<Config>({
-    plugins: config.plugins
-  });
+export type { Config };
+export { config };
+
+export default async function bootstrap() {
+  //make a new client
+  const client = runtime.make<Config>({ plugins: config.plugins });
+  //add the config
+  client.config.set(config);
+  //load the plugins
+  await client.bootstrap();
+  //load the plugin routes
+  await client.emit('request', client.request(), client.response());
+  return client;
 };
