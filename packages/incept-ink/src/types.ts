@@ -6,9 +6,13 @@ export type Renderer = (
   props?: Record<string, unknown>
 ) => Promise<string>;
 
-export type TemplatePlugin = {
+export type InkPlugin = {
   compiler: InkCompiler,
   refresh: RefreshServer,
+  render: Renderer
+};
+
+export type TemplatePlugin = {
   render: Renderer
 };
 

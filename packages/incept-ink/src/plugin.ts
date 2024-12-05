@@ -11,7 +11,7 @@ import ink, { cache } from '@stackpress/ink/compiler';
 import { plugin as css } from '@stackpress/ink-css';
 //local
 import type {
-  TemplatePlugin,
+  InkPlugin,
   TemplateConfig, 
   TemplateDevConfig, 
   TemplateEngineConfig
@@ -73,10 +73,7 @@ export default function plugin(server: Server<Config>) {
     if (environment !== 'development') {
       return;
     }
-    const { 
-      compiler, 
-      refresh 
-    } = server.plugin<TemplatePlugin>('template');
+    const { compiler, refresh } = server.plugin<InkPlugin>('ink');
     const {
       buildRoute = '/build/client', 
       socketRoute = '/__ink_dev__'
@@ -112,6 +109,7 @@ export default function plugin(server: Server<Config>) {
         res.setBody(type, content);
       }
     );
+    refresh.watch();
   });
   //on idea, generate components
   server.on('idea', req => {
