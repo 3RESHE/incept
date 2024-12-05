@@ -1,10 +1,12 @@
+//modules
+import type { JwtPayload } from 'jsonwebtoken';
+import jwt from 'jsonwebtoken';
+//stackpress
 import type Request from '@stackpress/ingest/dist/Request';
 import type Response from '@stackpress/ingest/dist/Response';
-import type { JwtPayload } from 'jsonwebtoken';
-import type { PermissionList, SessionData } from './types';
-
-import jwt from 'jsonwebtoken';
 import Exception from '@stackpress/incept/dist/Exception';
+//local
+import type { PermissionList, SessionData } from './types';
 
 /**
  * Used to get session data from tokens and check permissions

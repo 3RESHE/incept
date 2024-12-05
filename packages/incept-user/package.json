@@ -26,7 +26,8 @@
   ],
   "dependencies": {
     "@stackpress/incept": "0.3.10",
-    "@stackpress/ingest": "0.3.10"
+    "@stackpress/ingest": "0.3.10",
+    "jsonwebtoken": "9.0.2"
   },
   "devDependencies": {
     "@types/node": "22.9.3",

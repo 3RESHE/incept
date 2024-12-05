@@ -78,6 +78,16 @@ export function generateModel(source: SourceFile, model: Model) {
       namedImports: enums
     });
   }
+  for (const column of model.relations) {
+    const relation = column.relation;
+    if (!relation) continue;
+    const model = relation?.parent.model;
+    //import type { Profile } from '../Profile/types'
+    source.addImportDeclaration({
+      moduleSpecifier: `../${model.name}/types`,
+      namedImports: [ model.title ]
+    });
+  }
   for (const column of model.fieldsets.values()) {
     //import {} from '../Address/types'
     source.addImportDeclaration({

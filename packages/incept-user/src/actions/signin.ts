@@ -1,27 +1,17 @@
-import type { 
-  SuccessResponse,
-  ResponseStatus
-} from '@stackpress/types/dist/types';
-import type { AuthExtended } from '@stackpress/incept/client';
-
-export type SigninInput = {
-  username?: string,
-  email?: string,
-  phone?: string,
-  secret: string
-};
-
-export type SigninType = 'username' | 'email' | 'phone';
+//stackpress
+import type { StatusResponse } from '@stackpress/types/dist/types';
+//common
+import type { AuthExtended, SigninType, SigninInput } from '../types';
 
 export default async function signin(
   type: SigninType, 
   input: SigninInput
-): Promise<SuccessResponse<AuthExtended> | ResponseStatus> {
+): Promise<Partial<StatusResponse<AuthExtended>>> {
   let client;
   try {
     client = await import('@stackpress/incept/client');
   } catch (error) {
-    return { code: 500, status: 'Internal Server Error' } as ResponseStatus;
+    return { code: 500, status: 'Internal Server Error' };
   }
   
   //get form body
@@ -30,11 +20,11 @@ export default async function signin(
   });
   const results = response.results?.[0] as AuthExtended;
   if (response.code !== 200) {
-    return { ...response, results } as SuccessResponse<AuthExtended>;
+    return { ...response, results };
   } else if (!results) {
-    return { code: 404, status: 'Not Found' } as ResponseStatus;
+    return { code: 404, status: 'Not Found' };
   } else if (String(input.secret) !== String(results.secret)) {
-    return { code: 401, status: 'Unauthorized' } as ResponseStatus;
+    return { code: 401, status: 'Unauthorized' };
   }
   //update consumed
   await client.model.auth.action.update(results.id, {
@@ -45,5 +35,5 @@ export default async function signin(
     status: 'OK',
     results: results,
     total: 1
-  } as SuccessResponse<AuthExtended>;
+  };
 };

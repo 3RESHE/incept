@@ -1,14 +1,15 @@
-//types
-import type { PluginWithCLIProps } from '@stackpress/idea-transformer';
-//project
+//modules
 import path from 'path';
 import { 
   Project, 
   IndentationText, 
   VariableDeclarationKind 
 } from 'ts-morph';
+//schema
 import Registry from '../schema/Registry';
-//generators
+//common
+import type { PluginWithProject } from '../types';
+//local
 import generateConfig from './config';
 import generateRegistry from './registry';
 
@@ -71,9 +72,12 @@ import generateRegistry from './registry';
 /**
  * This is the The params comes form the cli
  */
-export default function generate({ config, schema, cli }: PluginWithCLIProps) {
+export default function generate(props: PluginWithProject) {
   //-----------------------------//
   // 1. Config
+  //extract props
+  const { config, schema, cli } = props;
+  //get client directory
   const client = path.resolve(
     cli.transformer.loader.modules(), 
     '@stackpress/.incept'
@@ -86,25 +90,28 @@ export default function generate({ config, schema, cli }: PluginWithCLIProps) {
   
   //-----------------------------//
   // 3. Project
-  //set up the ts-morph project
-  const project = new Project({
-    tsConfigFilePath: path.resolve(__dirname, '../../tsconfig.json'),
-    skipAddingFilesFromTsConfig: true,
-    compilerOptions: {
-      outDir: client,
-      // Generates corresponding '.d.ts' file.
-      declaration: true, 
-      // Generates a sourcemap for each corresponding '.d.ts' file.
-      declarationMap: true, 
-      // Generates corresponding '.map' file.
-      sourceMap: true, 
-    },
-    manipulationSettings: {
-      indentationText: IndentationText.TwoSpaces
-    }
-  });
+  //if no project in the props
+  if (!props.project) {
+    //set up the ts-morph project
+    props.project = new Project({
+      tsConfigFilePath: path.resolve(__dirname, '../../tsconfig.json'),
+      skipAddingFilesFromTsConfig: true,
+      compilerOptions: {
+        outDir: client,
+        // Generates corresponding '.d.ts' file.
+        declaration: true, 
+        // Generates a sourcemap for each corresponding '.d.ts' file.
+        declarationMap: true, 
+        // Generates corresponding '.map' file.
+        sourceMap: true, 
+      },
+      manipulationSettings: {
+        indentationText: IndentationText.TwoSpaces
+      }
+    });
+  }
   //create the asserts directory if not exists
-  const directory = project.createDirectory(client);
+  const directory = props.project.createDirectory(client);
   
   //-----------------------------//
   // 4. Generators
@@ -120,8 +127,8 @@ export default function generate({ config, schema, cli }: PluginWithCLIProps) {
   for (const model of registry.model.values()) {
     const filepath = `${model.name}/index.ts`;
     //load profile/index.ts if it exists, if not create it
-    const source = project.getSourceFile(filepath) 
-      || project.createSourceFile(filepath, '', { overwrite: true });
+    const source = directory.getSourceFile(filepath) 
+      || directory.createSourceFile(filepath, '', { overwrite: true });
     //import config from './config';
     source.addImportDeclaration({
       moduleSpecifier: `./config`,
@@ -136,8 +143,8 @@ export default function generate({ config, schema, cli }: PluginWithCLIProps) {
   for (const fieldset of registry.fieldset.values()) {
     const filepath = `${fieldset.name}/index.ts`;
     //load profile/index.ts if it exists, if not create it
-    const source = project.getSourceFile(filepath) 
-      || project.createSourceFile(filepath, '', { overwrite: true });
+    const source = directory.getSourceFile(filepath) 
+      || directory.createSourceFile(filepath, '', { overwrite: true });
     //import config from './config';
     source.addImportDeclaration({
       moduleSpecifier: `./config`,
@@ -206,9 +213,9 @@ export default function generate({ config, schema, cli }: PluginWithCLIProps) {
   // 8. Save
   //if you want ts, tsx files
   if (lang === 'ts') {
-    project.saveSync();
+    props.project.saveSync();
   //if you want js, d.ts files
   } else {
-    project.emit();
+    props.project.emit();
   }
 }

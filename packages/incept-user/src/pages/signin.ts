@@ -3,7 +3,7 @@ import type Response from '@stackpress/ingest/dist/Response';
 import type { ServerRequest } from '@stackpress/ingest/dist/types';
 import type { TemplatePlugin } from '@stackpress/incept-ink/dist/types';
 //actions
-import type  { SigninType } from '../actions/signin';
+import type  { SigninType } from '../types';
 //common
 import type { AuthConfig, SessionPlugin } from '../types';
 

@@ -4,13 +4,13 @@
   "private": true,
   "plugins": [
     "./src/plugin",
-    "@stackpress/incept/dist/plugin",
-    "@stackpress/incept-types/dist/plugin",
-    "@stackpress/incept-drizzle/dist/plugin",
-    "@stackpress/incept-ink/dist/plugin",
-    "@stackpress/incept-admin/dist/plugin",
-    "@stackpress/incept-i18n/dist/plugin",
-    "@stackpress/incept-user/dist/plugin"
+    "@stackpress/incept",
+    "@stackpress/incept-types",
+    "@stackpress/incept-drizzle",
+    "@stackpress/incept-ink",
+    "@stackpress/incept-admin",
+    "@stackpress/incept-i18n",
+    "@stackpress/incept-user"
   ],
   "scripts": {
     "build": "tsc",
@@ -19,7 +19,8 @@
     "dev": "dotenv -e .env.local -- ts-node src/scripts/serve.ts",
     "push": "dotenv -e .env.local -- drizzle-kit push",
     "migrate": "dotenv -e .env.local -- drizzle-kit generate",
-    "studio": "dotenv -e .env.local -- drizzle-kit studio --verbose"
+    "studio": "dotenv -e .env.local -- drizzle-kit studio --verbose",
+    "postinstall": "yarn generate"
   },
   "dependencies": {
     "@paralleldrive/cuid2": "2.2.2",

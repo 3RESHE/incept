@@ -1,30 +1,27 @@
-import type { Payload } from '@stackpress/incept';
-
+//stackpress
+import type { StatusResponse } from '@stackpress/types/dist/types';
 import { email } from '@stackpress/incept/dist/assert';
-import client, { Profile, Auth } from '@stackpress/incept/client';
-
-export type SignupInput = {
-  name: string,
-  username?: string,
-  email?: string,
-  phone?: string,
-  secret: string
-};
-
-export type ProfileAuth = Profile & { auth: Record<string, Auth> };
+//common
+import type { ProfileAuth, SignupInput, Profile, Auth } from '../types';
 
 /**
  * Signup action
  */
 export default async function signup(
   input: SignupInput
-): Promise<Payload<ProfileAuth>> {
+): Promise<Partial<StatusResponse<ProfileAuth>>> {
+  let client;
+  try {
+    client = await import('@stackpress/incept/client');
+  } catch (error) {
+    return { code: 500, status: 'Internal Server Error' };
+  }
   //validate input
   const errors = assert(input);
   //if there are errors
   if (errors) {
     //return the errors
-    return { code: 400, status: 'Invalid Parameters', errors };
+    return { code: 400, error: 'Invalid Parameters', errors };
   }
   //create profile
   const response = await client.model.profile.action.create({
@@ -33,7 +30,7 @@ export default async function signup(
   });
   //if error, return response
   if (response.code !== 200) {
-    return response as Payload<ProfileAuth>;
+    return response;
   }
   const results = response.results as Profile & { 
     auth: Record<string, Auth> 
@@ -48,7 +45,7 @@ export default async function signup(
       secret: String(input.secret)
     });
     if (auth.code !== 200) {
-      return auth as unknown as Payload<ProfileAuth>;
+      return auth;
     }
     results.auth.email = auth.results as Auth;
   } 
@@ -61,7 +58,7 @@ export default async function signup(
       secret: String(input.secret)
     });
     if (auth.code !== 200) {
-      return auth as unknown as Payload<ProfileAuth>;
+      return auth;
     }
     results.auth.phone = auth.results as Auth;
   }
@@ -74,7 +71,7 @@ export default async function signup(
       secret: String(input.secret)
     });
     if (auth.code !== 200) {
-      return auth as unknown as Payload<ProfileAuth>;
+      return auth;
     }
     results.auth.username = auth.results as Auth;
   }

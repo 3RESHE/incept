@@ -2,9 +2,7 @@
 import path from 'node:path';
 import { Project, IndentationText } from 'ts-morph';
 //stackpress
-import type { 
-  PluginWithCLIProps 
-} from '@stackpress/idea-transformer/dist/types';
+import type { PluginWithProject } from '@stackpress/incept/dist/types';
 import Registry from '@stackpress/incept/dist/schema/Registry';
 //local
 import enumGenerator from './enums';
@@ -27,9 +25,12 @@ import typeGenerator from './types';
 /**
  * This is the The params comes form the cli
  */
-export default function generate({ config, schema, cli }: PluginWithCLIProps) {
+export default function generate(props: PluginWithProject) {
   //-----------------------------//
   // 1. Config
+  //extract props
+  const { config, schema, cli } = props;
+  //get client directory
   const client = path.resolve(
     cli.transformer.loader.modules(), 
     '@stackpress/.incept'
@@ -43,25 +44,28 @@ export default function generate({ config, schema, cli }: PluginWithCLIProps) {
 
   //-----------------------------//
   // 3. Project
-  //set up the ts-morph project
-  const project = new Project({
-    tsConfigFilePath: path.resolve(__dirname, '../../tsconfig.json'),
-    skipAddingFilesFromTsConfig: true,
-    compilerOptions: {
-      outDir: client,
-      // Generates corresponding '.d.ts' file.
-      declaration: true, 
-      // Generates a sourcemap for each corresponding '.d.ts' file.
-      declarationMap: true, 
-      // Generates corresponding '.map' file.
-      sourceMap: true, 
-    },
-    manipulationSettings: {
-      indentationText: IndentationText.TwoSpaces
-    }
-  });
+  //if no project in the props
+  if (!props.project) {
+    //set up the ts-morph project
+    props.project = new Project({
+      tsConfigFilePath: path.resolve(__dirname, '../../tsconfig.json'),
+      skipAddingFilesFromTsConfig: true,
+      compilerOptions: {
+        outDir: client,
+        // Generates corresponding '.d.ts' file.
+        declaration: true, 
+        // Generates a sourcemap for each corresponding '.d.ts' file.
+        declarationMap: true, 
+        // Generates corresponding '.map' file.
+        sourceMap: true, 
+      },
+      manipulationSettings: {
+        indentationText: IndentationText.TwoSpaces
+      }
+    });
+  }
   //create the asserts directory if not exists
-  const directory = project.createDirectory(client);
+  const directory = props.project.createDirectory(client);
 
   //-----------------------------//
   // 4. Generators
@@ -104,18 +108,14 @@ export default function generate({ config, schema, cli }: PluginWithCLIProps) {
     isTypeOnly: true,
     moduleSpecifier: './types'
   });
-  //export * from './enums';
-  source.addExportDeclaration({ 
-    moduleSpecifier: './enums' 
-  });
 
   //-----------------------------//
   // 6. Save
   //if you want ts, tsx files
   if (lang === 'ts') {
-    project.saveSync();
+    props.project.saveSync();
   //if you want js, d.ts files
   } else {
-    project.emit();
+    props.project.emit();
   }
 };

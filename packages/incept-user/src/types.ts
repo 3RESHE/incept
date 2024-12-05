@@ -30,3 +30,74 @@ export type AuthConfig = {
     }
   }
 };
+
+export type SignupInput = {
+  name: string,
+  username?: string,
+  email?: string,
+  phone?: string,
+  secret: string
+};
+
+export type SigninInput = {
+  username?: string,
+  email?: string,
+  phone?: string,
+  secret: string
+};
+
+export type SigninType = 'username' | 'email' | 'phone';
+export type ProfileAuth = Profile & { auth: Record<string, Auth> };
+
+export type Profile = {
+  id: string;
+  name: string;
+  image?: string;
+  type: string;
+  roles: string[];
+  tags: string[];
+  references?: Record<string, string | number | boolean | null>;
+  active: boolean;
+  created: Date;
+  updated: Date;
+};
+export type ProfileExtended = Profile;
+export type ProfileInput = {
+  id?: string;
+  name: string;
+  image?: string;
+  type?: string;
+  roles: string[];
+  tags?: string[];
+  references?: Record<string, string | number | boolean | null>;
+  active?: boolean;
+  created?: Date;
+  updated?: Date;
+};
+export type Auth = {
+  id: string;
+  profileId: string;
+  type: string;
+  token: string;
+  secret: string;
+  verified: boolean;
+  consumed: Date;
+  active: boolean;
+  created: Date;
+  updated: Date;
+};
+export type AuthExtended = Auth & {
+  profile: Profile;
+};
+export type AuthInput = {
+  id?: string;
+  profileId: string;
+  type?: string;
+  token: string;
+  secret: string;
+  verified?: boolean;
+  consumed?: Date;
+  active?: boolean;
+  created?: Date;
+  updated?: Date;
+};

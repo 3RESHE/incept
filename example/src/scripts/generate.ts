@@ -1,19 +1,12 @@
-//modules
-import path from 'path';
 //stackpress
-import { Transformer } from '@stackpress/idea-transformer';
+import Terminal from '@stackpress/incept/dist/Terminal';
 //common
 import make from '../server';
 
 async function transform() {
   const server = await make();
-  const transformer = new Transformer(
-    path.join(server.loader.cwd, 'schema.idea')
-  );
-  await server.call('idea', { transformer });
-  transformer.transform({
-    cli: { transformer, cwd: server.loader.cwd }
-  });
+  const terminal = new Terminal([ 'transform' ], server);
+  await terminal.run();
 };
 
 transform().catch(console.error);
