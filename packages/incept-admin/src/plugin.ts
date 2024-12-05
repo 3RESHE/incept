@@ -7,12 +7,16 @@ import type Server from '@stackpress/ingest/dist/Server';
  * This interface is intended for the Incept library.
  */
 export default function plugin(server: Server) {
-  try {
-    const route = server.loader.require('@stackpress/.incept/admin');
-    if (typeof route === 'function') {
-      route(server);
-    }
-  } catch(e) {}
+  //on listen, add admin routes
+  server.on('listen', req => {
+    const server = req.context;
+    try {
+      const route = server.loader.require('@stackpress/.incept/admin');
+      if (typeof route === 'function') {
+        route(server);
+      }
+    } catch(e) {}
+  });
   //generate some code in the client folder
   server.on('idea', req => {
     //get the transformer from the request

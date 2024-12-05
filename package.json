@@ -6,7 +6,8 @@
   ],
   "scripts": {
     "dev": "yarn --cwd example dev",
-    "incept": "yarn --cwd example incept",
+    "event": "yarn --cwd example emit",
+    "generate": "yarn --cwd example generate",
     "build": "yarn build:incept && yarn build:generators && yarn build:plugins",
     "build:incept": "yarn --cwd packages/incept build",
     "build:generators": "yarn build:types && yarn build:drizzle && yarn build:ink",

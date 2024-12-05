@@ -22,10 +22,10 @@
     "tsconfig.json"
   ],
   "dependencies": {
-    "@stackpress/idea-transformer": "0.3.6",
+    "@stackpress/idea-transformer": "0.3.10",
     "@stackpress/incept": "0.3.10",
-    "@stackpress/ingest": "0.3.9",
-    "@stackpress/ink": "0.3.6",
+    "@stackpress/ingest": "0.3.10",
+    "@stackpress/ink": "0.3.10",
     "ts-morph": "24.0.0"
   },
   "devDependencies": {

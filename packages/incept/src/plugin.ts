@@ -7,12 +7,16 @@ import type Server from '@stackpress/ingest/dist/Server';
  * This interface is intended for the Incept library.
  */
 export default function plugin(server: Server) {
-  try {
-    const client = server.loader.require('@stackpress/.incept');
-    if (typeof client === 'function') {
-      client(server);
-    }
-  } catch(e) {}
+  //on config, register the client as a plugin
+  server.on('config', req => {
+    const server = req.context;
+    try {
+      const client = server.loader.require('@stackpress/.incept');
+      if (typeof client === 'function') {
+        client(server);
+      }
+    } catch(e) {}
+  }, 10);
   //generate some code in the client folder
   server.on('idea', req => {
     //get the transformer from the request
@@ -23,6 +27,6 @@ export default function plugin(server: Server) {
     }
     //add this plugin generator to the schema
     //so it can be part of the transformation
-    transformer.schema.plugin['@stackpress/incept-client/dist/transform'] = {};
+    transformer.schema.plugin['@stackpress/incept/dist/transform'] = {};
   });
 };

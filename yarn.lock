@@ -648,57 +648,57 @@
     tslib "^2.6.2"
     webcrypto-core "^1.8.0"
 
-"@stackpress/idea-parser@0.3.6":
-  version "0.3.6"
-  resolved "https://registry.yarnpkg.com/@stackpress/idea-parser/-/idea-parser-0.3.6.tgz#463acc63575b47483cac838fdce318197d080f80"
-  integrity sha512-lvuZO1/y6B7VjDB8Lssfmoxb44M6abGw+JXxfPYO7Qu5FcYdjemzrkvcgdu1+0xRIbMFjtoNMEUnoYd8kSV2qw==
+"@stackpress/idea-parser@0.3.10":
+  version "0.3.10"
+  resolved "https://registry.yarnpkg.com/@stackpress/idea-parser/-/idea-parser-0.3.10.tgz#fc783e7f2b9abdc4a7b820eb3c7dea15d833c316"
+  integrity sha512-hnj1DaLjv5IoH+R5WKz3ErlwtbnDSBwZ7I7Gt5htmqdjkHpZkQ15dknUEKkjPpaFP4kwqTufSjCqYebJBssI4A==
   dependencies:
-    "@stackpress/types" "0.3.6"
+    "@stackpress/types" "0.3.10"
 
-"@stackpress/idea-transformer@0.3.6":
-  version "0.3.6"
-  resolved "https://registry.yarnpkg.com/@stackpress/idea-transformer/-/idea-transformer-0.3.6.tgz#5a3dbef9ca627d11be29731c53ec9ab59ad5ecb7"
-  integrity sha512-WMe/jcS3n9SDtEmXkgcJ0sdrkAPV0al9SnKcatsW1x+1bLkMrSF8jBhW4ZFlvH2T8RNrmbpYZ/+fbPGsXotE6A==
+"@stackpress/idea-transformer@0.3.10":
+  version "0.3.10"
+  resolved "https://registry.yarnpkg.com/@stackpress/idea-transformer/-/idea-transformer-0.3.10.tgz#5c79b3e863c596072f0ca6bce3720138e871b4d3"
+  integrity sha512-KBlHjYhAsyhfJBFfRF6Z9q2HcqoYL+4bhBdNe5tVTMdLoyMMdd1KizSxLZ9ju9nv4UB68mTLc0Om1jYP7PQcrg==
   dependencies:
-    "@stackpress/idea-parser" "0.3.6"
-    "@stackpress/types" "0.3.6"
+    "@stackpress/idea-parser" "0.3.10"
+    "@stackpress/types" "0.3.10"
 
-"@stackpress/ingest@0.3.9":
-  version "0.3.9"
-  resolved "https://registry.yarnpkg.com/@stackpress/ingest/-/ingest-0.3.9.tgz#4bde656f41841d1eb26e17eeea29535aae2e461b"
-  integrity sha512-KkMk15WVYILTnB/2BPyN81y/MD2gFdjgIW1CFzfI2w/zTsGQ/Pua4cNv+gQoKySKzUII2E6MTZQB6+6vGAY1Ig==
+"@stackpress/ingest@0.3.10":
+  version "0.3.10"
+  resolved "https://registry.yarnpkg.com/@stackpress/ingest/-/ingest-0.3.10.tgz#972d8de76e6b5778b2166923bdedc9a336a49b37"
+  integrity sha512-mC4+HgalyKSNyi0x9VWYUFHxbv+4T443/Q7qh4IIMm2CbiJsi/fSTHQhza8WpeWoQrDBiPcwzWN/XTvGAQy8ag==
   dependencies:
-    "@stackpress/types" "0.3.7"
+    "@stackpress/types" "0.3.10"
     "@whatwg-node/server" "0.6.7"
     cookie "1.0.2"
 
-"@stackpress/ink-css@0.3.6":
-  version "0.3.6"
-  resolved "https://registry.yarnpkg.com/@stackpress/ink-css/-/ink-css-0.3.6.tgz#09c1a7df563916df9a19d324ea7e84a1963a1ee2"
-  integrity sha512-0S0ReFtuZeeTtL7S011muXWQZgTXBqmUfr2aXZsFHAOwiwu8gWD+JBjF1wK5XUmowM2aEWV4RxWpD4zyJhYpKg==
+"@stackpress/ink-css@0.3.10":
+  version "0.3.10"
+  resolved "https://registry.yarnpkg.com/@stackpress/ink-css/-/ink-css-0.3.10.tgz#51c261906a9f33d2f57f05c0f87d046dd19723a2"
+  integrity sha512-9UpwiWpmXI7u2gM1o+K2Aq1Zjwrt/fd3gt0N8j9JyU4lQIzaGD3alx9YcWZCC4iY4iQOfxtnGbNV++QhqbT5iw==
   dependencies:
-    "@stackpress/ink" "0.3.6"
+    "@stackpress/ink" "0.3.10"
 
-"@stackpress/ink-dev@0.3.6":
-  version "0.3.6"
-  resolved "https://registry.yarnpkg.com/@stackpress/ink-dev/-/ink-dev-0.3.6.tgz#39b98ef31c43749ef68d8db0796465f39d6f9486"
-  integrity sha512-KkwnQBTVWKPcFZSBnCZTGrKpxE1zHGoo8uLgjgZoUgKElvDgv8e9WA+0LS0kP66fCtQL0O6wMTr87i3yyQPzsA==
+"@stackpress/ink-dev@0.3.10":
+  version "0.3.10"
+  resolved "https://registry.yarnpkg.com/@stackpress/ink-dev/-/ink-dev-0.3.10.tgz#c9827664104defe552154b4598e85162aa49b826"
+  integrity sha512-G3Bfvk+jOuaA8SOiqX4Zr8cKmPj9OwfDEUr6EgOzeG7NDX178eeQhyIearQr86uDHCs5heYqnP05BQ8oFsn/+w==
   dependencies:
-    "@stackpress/ink" "0.3.6"
+    "@stackpress/ink" "0.3.10"
     chokidar "4.0.1"
     esbuild "0.24.0"
 
-"@stackpress/ink-ui@0.3.6":
-  version "0.3.6"
-  resolved "https://registry.yarnpkg.com/@stackpress/ink-ui/-/ink-ui-0.3.6.tgz#02b82e30cce9181ff1531e34589d26ac474330ba"
-  integrity sha512-Olt0HOEtlU0Oywf97HwR2IAWh3n3zvaH56WFLogYu4DvgyvffiWPv06cOi/B6vATdSpmNoflQ3p6OjWPeb3D2w==
+"@stackpress/ink-ui@0.3.10":
+  version "0.3.10"
+  resolved "https://registry.yarnpkg.com/@stackpress/ink-ui/-/ink-ui-0.3.10.tgz#733d59a98468aeae85be51472665f12eee17edbf"
+  integrity sha512-FfHooQkMhRsjS0FmeBuh6z5zOXiC4rpkaMiqOti0kq7543+cdIzucr7sZhjBxIlC1v+xSLknxeCYjZOzowr9kA==
   dependencies:
     "@editorjs/editorjs" "2.30.6"
     "@editorjs/header" "2.8.7"
     "@editorjs/image" "2.9.3"
     "@editorjs/list" "1.10.0"
     "@editorjs/paragraph" "2.11.6"
-    "@stackpress/ink" "0.3.6"
+    "@stackpress/ink" "0.3.10"
     codemirror "5.65.17"
     dayjs "1.11.13"
     dompurify "3.1.6"
@@ -707,27 +707,20 @@
     prismjs "1.29.0"
     suneditor "2.47.0"
 
-"@stackpress/ink@0.3.6":
-  version "0.3.6"
-  resolved "https://registry.yarnpkg.com/@stackpress/ink/-/ink-0.3.6.tgz#95b627b39cf4da0559c81b6c8d7861c730ffb5d2"
-  integrity sha512-9+065/5Ktl5/tME8E/D05h8H7HpY8/TkxvLdE7oO3qDQnj8Xjz8xbzgXPsZ/Gxs/4tylcxKtaVtMYVoDFHHxaQ==
+"@stackpress/ink@0.3.10":
+  version "0.3.10"
+  resolved "https://registry.yarnpkg.com/@stackpress/ink/-/ink-0.3.10.tgz#6328b1054914c2b942c610c18c4591ec8cf01afe"
+  integrity sha512-3ej8Zc+YcRxV5xoiwBNYhLkoVcXrVit688Tjoo3/xIpRT1Mae4JKmFC2f8Av1rm10EIduO19AIYhSS+NGYjiVg==
   dependencies:
-    "@stackpress/types" "0.3.6"
+    "@stackpress/types" "0.3.10"
     esbuild "0.24.0"
     ts-morph "24.0.0"
     typescript "5.7.2"
 
-"@stackpress/types@0.3.6":
-  version "0.3.6"
-  resolved "https://registry.yarnpkg.com/@stackpress/types/-/types-0.3.6.tgz#fcab1c387befe3fda4ec74b791e5862f999eb9bc"
-  integrity sha512-fAuTlbjofTOxMo0YBu4p0Z9T3j+zMTkg8qoSQMLs78oveQZj0P93ZjpIXucWOQNLsLaPj64Wxgu3N5ChCevpQw==
-  dependencies:
-    "@inquirer/prompts" "7.1.0"
-
-"@stackpress/types@0.3.7":
-  version "0.3.7"
-  resolved "https://registry.yarnpkg.com/@stackpress/types/-/types-0.3.7.tgz#0cee8ea90f9610a94ce0288f67fdd0d16acf8be7"
-  integrity sha512-ENjiUtxpACc99T22NCgdd+6WogFerIdPGVBMr0rcht7YOQ4x2rmF2hoUIR4Gt1yVui9Mq9xHlHeuMjoHMLgqQw==
+"@stackpress/types@0.3.10":
+  version "0.3.10"
+  resolved "https://registry.yarnpkg.com/@stackpress/types/-/types-0.3.10.tgz#b1779e15deed108c34779b6ff40b7ff5573358f5"
+  integrity sha512-7Zl/LrMlI8wlLJCLzdqz+kHwVLOlN/WkrqebCJC1mz0mkqf6flLlHXExLQcT1cxk9/Oqa539o4BR9GX+svIdZw==
   dependencies:
     "@inquirer/prompts" "7.1.0"
 

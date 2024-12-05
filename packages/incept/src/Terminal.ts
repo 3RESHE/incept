@@ -31,6 +31,8 @@ export default class InceptTerminal extends IdeaTerminal {
    */
   public async bootstrap() {
     await this.server.bootstrap();
+    await this.server.call('config');
+    await this.server.call('listen');
     return this;
   }
 
@@ -38,7 +40,7 @@ export default class InceptTerminal extends IdeaTerminal {
    * Runs the command
    */
   public async run() {
-    if (this._command === 'transform') {
+    if (this.command === 'transform') {
       const request = this.server.request({ 
         data: { transformer: this.transformer } 
       });
@@ -47,6 +49,6 @@ export default class InceptTerminal extends IdeaTerminal {
     }
     const request = this.server.request({ data: this.params });
     const response = this.server.response();
-    return await this.server.emit(this._command, request, response);
+    return await this.server.emit(this.command, request, response);
   }
 }
