@@ -1,31 +1,20 @@
-import type FileSystem from '@stackpress/types/dist/filesystem/FileSystem';
-import type Factory from '@stackpress/ingest-vercel/dist/Factory';
-export type Payload<T = any> = {
-  code: number,
-  status: string, 
-  errors?: Record<string, any>,
-  results?: T,
-  total?: number
+//stackpress
+import type { SchemaConfig } from '@stackpress/idea-parser';
+import type { CookieOptions } from '@stackpress/ingest/dist/types';
+//local
+import type Registry from './schema/Registry';
+
+export type ServerConfig = {
+  server: { 
+    cwd: string, 
+    mode: string, 
+    routes: string, 
+    bodySize: number 
+  },
+  cookie: CookieOptions
 };
 
-export type MethodName = 'all'
-  | 'get'   | 'post'    |'put'
-  | 'delete'| 'patch'   |'options'
-  | 'head'  | 'connect' |'trace';
-
-export type MethodRouter = Record<
-  MethodName, 
-  (route: string, entry: string) => void
->;
-
-export type ConfigLoaderOptions = {
-  cwd?: string,
-  fs?: FileSystem
+export type ClientPlugin = {
+  config: SchemaConfig,
+  registry: Registry
 };
-
-export type PluginLoaderOptions = ConfigLoaderOptions & {
-  modules?: string, 
-  plugins?: string[]
-};
-
-export type BuildFactory = Factory;

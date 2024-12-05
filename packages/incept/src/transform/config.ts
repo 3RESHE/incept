@@ -1,9 +1,9 @@
-//types
+//modules
 import type { Directory } from 'ts-morph';
-import type { SchemaConfig } from '@stackpress/idea-parser';
-//project
 import fs from 'fs';
 import path from 'path';
+//stackpress
+import type { SchemaConfig } from '@stackpress/idea-parser';
 
 /**
  * This is the The params comes form the cli

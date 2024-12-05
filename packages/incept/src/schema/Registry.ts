@@ -1,8 +1,12 @@
-import type { EnumConfig, SchemaConfig } from './types';
-
+//stackpress
+import type { 
+  EnumConfig, 
+  SchemaConfig 
+} from '@stackpress/idea-parser/dist/types';
+import { isHash } from '@stackpress/ingest/dist/helpers';
+//local
 import Fieldset from './Fieldset';
 import Model from './Model';
-import { isHash } from './helpers';
 
 export default class Registry {
   /**

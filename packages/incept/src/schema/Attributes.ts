@@ -1,4 +1,7 @@
-import type { Data, Assertion, Component, Relation } from './types';
+//stackpress
+import type { Data } from '@stackpress/idea-parser';
+//local
+import type { Assertion, Component, Relation } from './types';
 
 export default class Attributes extends Map<string, unknown> {
   /**

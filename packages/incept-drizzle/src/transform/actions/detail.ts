@@ -1,8 +1,8 @@
-//types
+//modules
 import type { SourceFile } from 'ts-morph';
-import type Model from '@stackpress/incept/dist/config/Model';
-//helpers
-import { formatCode } from '@stackpress/incept/dist/config/helpers';
+//stackpress
+import type Model from '@stackpress/incept/dist/schema/Model';
+import { formatCode } from '@stackpress/incept/dist/schema/helpers';
 
 //map from column types to sql types and helpers
 export const typemap: Record<string, string> = {

@@ -1,10 +1,10 @@
-//types
+//modules
 import type { SourceFile } from 'ts-morph';
-import type { Config } from '../types';
-//project
 import { VariableDeclarationKind } from 'ts-morph';
-//helpers
-import { formatCode } from '@stackpress/incept/dist/config/helpers';
+//stackpress
+import { formatCode } from '@stackpress/incept/dist/schema/helpers';
+//common
+import type { Config } from '../types';
 
 export default function generate(source: SourceFile, config: Config) {
   //import { PGlite } from '@electric-sql/pglite';

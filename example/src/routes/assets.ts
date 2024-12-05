@@ -1,10 +1,10 @@
-import type Context from '@stackpress/ingest/dist/Context';
+import type { ServerRequest } from '@stackpress/ingest/dist/types';
 import type Response from '@stackpress/ingest/dist/Response';
 
 import fs from 'fs';
 import path from 'path';
 
-export default async function Assets(req: Context, res: Response) {
+export default async function Assets(req: ServerRequest, res: Response) {
   if (res.code || res.status || res.body) return;
   const resource = req.url.pathname.substring(1).replace(/\/\//, '/'); 
   const file = path.resolve(__dirname, '../../public', resource); 

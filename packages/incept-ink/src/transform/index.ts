@@ -1,14 +1,25 @@
-//types
-import type { PluginWithCLIProps } from '@stackpress/idea-transformer';
-//project
+//modules
 import path from 'path';
 import { Project, IndentationText } from 'ts-morph';
-import Registry from '@stackpress/incept/dist/config/Registry';
-//generators
+//stackpress
+import type { PluginWithCLIProps } from '@stackpress/idea-transformer';
+import Registry from '@stackpress/incept/dist/schema/Registry';
+//local
 import generateView from './view';
 import generateForm from './form';
 import generateFilters from './filters';
 import generateTable from './table';
+
+
+/**
+ * @stackpress/.incept (file structure)
+ * - profile/
+ * | - components/
+ * | | - filter.ink
+ * | | - form.ink
+ * | | - table.ink
+ * | | - view.ink
+ */
 
 export default function generate({ config, schema, cli }: PluginWithCLIProps) {
   //-----------------------------//
@@ -48,9 +59,13 @@ export default function generate({ config, schema, cli }: PluginWithCLIProps) {
 
   //-----------------------------//
   // 4. Generators
+  // - profile/components/view.ink
   generateView(directory, registry);
+  // - profile/components/form.ink
   generateForm(directory, registry);
+  // - profile/components/filters.ink
   generateFilters(directory, registry);
+  // - profile/components/table.ink
   generateTable(directory, registry);
 
   //-----------------------------//

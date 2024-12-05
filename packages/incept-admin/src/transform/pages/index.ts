@@ -1,8 +1,8 @@
-//types
+//modules
 import type { Directory } from 'ts-morph';
-import type Registry from '@stackpress/incept/dist/config/Registry';
-
-//generators
+//stackpress
+import type Registry from '@stackpress/incept/dist/schema/Registry';
+//local
 import generateCreate from './create';
 import generateDetail from './detail';
 import generateRemove from './remove';

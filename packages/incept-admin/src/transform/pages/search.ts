@@ -1,6 +1,8 @@
-//types
+//modules
 import type { Directory } from 'ts-morph';
-import type Registry from '@stackpress/incept/dist/config/Registry';
+import { VariableDeclarationKind } from 'ts-morph';
+//stackpress
+import type Registry from '@stackpress/incept/dist/schema/Registry';
 
 export default function generate(directory: Directory, registry: Registry) {
   //loop through models
@@ -8,11 +10,11 @@ export default function generate(directory: Directory, registry: Registry) {
     const file = `${model.name}/admin/search.ts`;
     const source = directory.createSourceFile(file, '', { overwrite: true });
   
-    // import type Context from '@stackpress/ingest/dist/Context';
+    // import type { ServerRequest } from '@stackpress/ingest/dist/types';
     source.addImportDeclaration({
       isTypeOnly: true,
-      moduleSpecifier: '@stackpress/ingest/dist/Context',
-      defaultImport: 'Context'
+      moduleSpecifier: '@stackpress/ingest/dist/types',
+      namedImports: [ 'ServerRequest' ]
     });
     // import type Response from '@stackpress/ingest/dist/Response';
     source.addImportDeclaration({
@@ -20,60 +22,74 @@ export default function generate(directory: Directory, registry: Registry) {
       moduleSpecifier: '@stackpress/ingest/dist/Response',
       defaultImport: 'Response'
     });
-    // import type Session from '@stackpress/incept-user/dist/Session';
+    // import type { SessionPlugin } from '@stackpress/incept-user/dist/types';
     source.addImportDeclaration({
       isTypeOnly: true,
-      moduleSpecifier: '@stackpress/incept-user/dist/Session',
-      defaultImport: 'Session'
+      moduleSpecifier: '@stackpress/incept-user/dist/types',
+      namedImports: [ 'SessionPlugin' ]
     });
-    // import type { InkPlugin } from '@stackpress/incept-ink/dist/types';
+    // import type { TemplatePlugin } from '@stackpress/incept-ink/dist/types';
     source.addImportDeclaration({
       isTypeOnly: true,
       moduleSpecifier: '@stackpress/incept-ink/dist/types',
-      namedImports: [ 'InkPlugin' ]
+      namedImports: [ 'TemplatePlugin' ]
     });
-    // import client from '../../client';
+    // import type { AdminConfig } from '@stackpress/incept-admin/dist/types';
     source.addImportDeclaration({
-      moduleSpecifier: '../../client',
-      defaultImport: 'client'
+      isTypeOnly: true,
+      moduleSpecifier: '@stackpress/incept-admin/dist/types',
+      namedImports: [ 'AdminConfig' ]
     });
-    // export default async function ProfileSearch(req: Context, res: Response) {
+    //const error = '@stackpress/incept-admin/dist/components/error';
+    //const template = '@stackpress/.incept/${model.name}/admin/search';
+    source.addVariableStatement({
+      declarationKind: VariableDeclarationKind.Const,
+      declarations: [
+        {
+          name: 'error',
+          initializer: `'@stackpress/incept-admin/dist/components/error'`
+        },
+        {
+          name: 'template',
+          initializer: `'@stackpress/.incept/${model.name}/admin/search'`
+        }
+      ]
+    });
+    // export default async function ProfileSearch(req: ServerRequest, res: Response) {
     source.addFunction({
       name: `Admin${model.title}Search`,
       isAsync: true,
       isDefaultExport: true,
       parameters: [
-        { name: 'req', type: 'Context' }, 
+        { name: 'req', type: 'ServerRequest' }, 
         { name: 'res', type: 'Response' }
       ],
       statements: `
-        //extract project and model from client
-        const { project, model } = client;
-        //bootstrap plugins
-        await project.bootstrap();
-        //get the project config
-        const config = project.config<Record<string, any>>();
+        //get the server
+        const server = req.context;
+        //get the admin config
+        const admin = server.config<AdminConfig['admin']>('admin') || {};
         //get the session
-        const session = project.plugin<Session>('session');
+        const session = server.plugin<SessionPlugin>('session');
         //get the renderer
-        const { render } = project.plugin<InkPlugin>('template');
-        //prep error page
-        const error = '@stackpress/incept-admin/dist/components/error';
+        const { render } = server.plugin<TemplatePlugin>('template');
         //get authorization
-        const authorization = session.authorize(req, res, [ '${model.dash}-search' ]);
+        const authorization = session.authorize(req, res, [ 
+          '${model.dash}-search' 
+        ]);
         //if not authorized
         if (!authorization) return;
         //general settings
-        const settings = { ...config.admin, session: authorization };
+        const settings = { ...admin, session: authorization };
         //extract filters from url query
-        let { q, filter, span, sort, skip, take } = req.data() as Record<string, unknown> & {
+        let { q, filter, span, sort, skip, take } = req.data<{
           q?: string,
           filter?: Record<string, string|number|boolean>,
           span?: Record<string, (string|number|null|undefined)[]>,
           sort?: Record<string, any>,
           skip?: number,
           take?: number
-        };
+        }>();
 
         if (skip && !isNaN(Number(skip))) {
           skip = Number(skip);
@@ -83,7 +99,8 @@ export default function generate(directory: Directory, registry: Registry) {
           take = Number(take);
         }
         //search using the filters
-        const response = await model.${model.camel}.action.search(
+        const response = await server.call(
+          '${model.dash}-search',
           { q, filter, span, sort, skip, take }
         );
         //if successfully searched
@@ -92,19 +109,16 @@ export default function generate(directory: Directory, registry: Registry) {
             return res.setJSON(response);
           }
           //render the search page
-          return res.setHTML(await render(
-            '@stackpress/.incept/${model.name}/admin/search', 
-            { 
-              q,
-              filter, 
-              span, 
-              sort, 
-              skip, 
-              take, 
-              settings,
-              ...response
-            }
-          ));
+          return res.setHTML(await render(template, { 
+            q,
+            filter, 
+            span, 
+            sort, 
+            skip, 
+            take, 
+            settings,
+            ...response
+          }));
         }
         //it did not search, render error page
         res.setHTML(await render(error, { ...response, settings}));

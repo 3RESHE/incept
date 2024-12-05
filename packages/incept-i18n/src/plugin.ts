@@ -1,6 +1,7 @@
-import type { Factory } from '@stackpress/incept';
+//stackpress
+import type Server from '@stackpress/ingest/dist/Server';
+//local
 import type { Languages } from './types';
-
 import I18N from './I18N';
 
 type ProjectConfig = { languages: Languages };
@@ -8,13 +9,13 @@ type ProjectConfig = { languages: Languages };
 /**
  * This interface is intended for the Incept library.
  */
-export default function plugin(client: Factory<ProjectConfig>) {
+export default function plugin(server: Server<ProjectConfig>) {
   //get the project config
-  const config = client.config.get();
+  const config = server.config.get();
   //make a new i18n
   const i18n = new I18N();
   //load the languages from the project config
   i18n.languages = config.languages || {};
   //add i18n as a project plugin
-  client.register('i18n', i18n);
+  server.register('i18n', i18n);
 };

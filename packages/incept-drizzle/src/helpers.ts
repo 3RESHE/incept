@@ -1,3 +1,4 @@
+//stackpress
 import Exception from '@stackpress/incept/dist/Exception';
 
 /**

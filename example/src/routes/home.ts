@@ -1,21 +1,16 @@
-import type Context from '@stackpress/ingest/dist/Context';
+import type { ServerRequest } from '@stackpress/ingest/dist/types';
 import type Response from '@stackpress/ingest/dist/Response';
-import type Session from '@stackpress/incept-user/dist/Session';
-import type { InkPlugin } from '@stackpress/incept-ink/dist/types';
+import type { SessionPlugin } from '@stackpress/incept-user/dist/types';
+import type { TemplatePlugin } from '@stackpress/incept-ink/dist/types';
 
-import client from '@stackpress/incept/client';
-
-export default async function ProfileCreate(req: Context, res: Response) {  
-  //bootstrap plugins
-  const project = await client.project.bootstrap();
-  //get the project config
-  //const config = project.config.get<Record<string, any>>();
+export default async function ProfileCreate(req: ServerRequest, res: Response) {  
+  const server = req.context;
   //get the session
-  const session = project.plugin<Session>('session');
+  const session = server.plugin<SessionPlugin>('session');
   //get the renderer
-  const { render } = project.plugin<InkPlugin>('template');
+  const { render } = server.plugin<TemplatePlugin>('template');
   //get authorization
-  const authorization = session.authorize(req.request, res, [ 'general' ]);
+  const authorization = session.authorize(req, res, [ 'general' ]);
   //if not authorized
   if (!authorization) return;
   //general settings

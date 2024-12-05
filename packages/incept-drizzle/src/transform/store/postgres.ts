@@ -1,8 +1,8 @@
-//types
+//modules
 import type { SourceFile } from 'ts-morph';
-import type { Config } from '../types';
-//project
 import { VariableDeclarationKind } from 'ts-morph';
+//common
+import type { Config } from '../types';
 
 export default function generate(source: SourceFile, config: Config) {
   //import postgres from 'postgres';

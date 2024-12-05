@@ -1,21 +1,24 @@
-//types
+//modules
 import type { Directory } from 'ts-morph';
-import type Registry from '@stackpress/incept/dist/config/Registry';
+//schema
+import type Registry from '../schema/Registry';
 
 /**
  * This is the The params comes form the cli
  */
 export default function generate(directory: Directory, registry: Registry) {
+  //-----------------------------//
+  // 1. profile/config.ts
   for (const model of registry.model.values()) {
     const filepath = `${model.name}/config.ts`;
     const source = directory.createSourceFile(filepath, '', { overwrite: true });
-    //import type Model from '@stackpress/incept/dist/config/Model';
+    //import type Model from '@stackpress/incept/dist/schema/Model';
     source.addImportDeclaration({
       isTypeOnly: true,
-      moduleSpecifier: '@stackpress/incept/dist/config/Model',
+      moduleSpecifier: '@stackpress/incept/dist/schema/Model',
       defaultImport: 'Model'
     });
-    //import registry from '../../registry';
+    //import registry from '../registry';
     source.addImportDeclaration({
       moduleSpecifier: `../registry`,
       defaultImport: 'registry'
@@ -26,13 +29,15 @@ export default function generate(directory: Directory, registry: Registry) {
     source.addStatements(`export default config;`);
   }
   
+  //-----------------------------//
+  // 2. address/config.ts
   for (const fieldset of registry.fieldset.values()) {
     const filepath = `${fieldset.name}/config.ts`;
     const source = directory.createSourceFile(filepath, '', { overwrite: true });
-    //import type Fieldset from '@stackpress/incept/dist/config/Fieldset';
+    //import type Fieldset from '@stackpress/incept/dist/schema/Fieldset';
     source.addImportDeclaration({
       isTypeOnly: true,
-      moduleSpecifier: '@stackpress/incept/dist/config/Fieldset',
+      moduleSpecifier: '@stackpress/incept/dist/schema/Fieldset',
       defaultImport: 'Fieldset'
     });
     //import registry from '../registry';
@@ -46,15 +51,17 @@ export default function generate(directory: Directory, registry: Registry) {
     source.addStatements(`export default config;`);
   }
 
+  //-----------------------------//
+  // 3. registry.ts
   const source = directory.createSourceFile('registry.ts', '', { overwrite: true });
   //import type { SchemaConfig } from '@stackpress/idea-parser';
   source.addImportDeclaration({
     moduleSpecifier: '@stackpress/idea-parser',
     namedImports: [ 'SchemaConfig' ]
   });
-  //import Registry from '@stackpress/incept/dist/config/Registry';
+  //import Registry from '@stackpress/incept/dist/schema/Registry';
   source.addImportDeclaration({
-    moduleSpecifier: '@stackpress/incept/dist/config/Registry',
+    moduleSpecifier: '@stackpress/incept/dist/schema/Registry',
     defaultImport: 'Registry'
   });
   //import config from './config.json';

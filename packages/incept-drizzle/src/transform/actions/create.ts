@@ -1,9 +1,10 @@
-//types
+//modules
 import type { SourceFile } from 'ts-morph';
-import type Model from '@stackpress/incept/dist/config/Model';
+//stackpress
+import type Model from '@stackpress/incept/dist/schema/Model';
+import { formatCode } from '@stackpress/incept/dist/schema/helpers';
+//common
 import type { Config } from '../types';
-//helpers
-import { formatCode } from '@stackpress/incept/dist/config/helpers';
 
 export function body(model: Model, config: Config) {
   const engine = config.engine.type === 'env' 

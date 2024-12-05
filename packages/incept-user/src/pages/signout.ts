@@ -1,7 +1,8 @@
-import type Context from '@stackpress/ingest/dist/Context';
+//stackpress
 import type Response from '@stackpress/ingest/dist/Response';
+import type { ServerRequest } from '@stackpress/ingest/dist/types';
 
-export default async function SignIn(req: Context, res: Response) {
+export default async function SignIn(req: ServerRequest, res: Response) {
   //set session
   res.session.delete('session');
   //redirect

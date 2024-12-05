@@ -2,18 +2,28 @@
   "name": "incept-example",
   "version": "1.0.0",
   "private": true,
+  "plugins": [
+    "./dist/plugin",
+    "@stackpress/incept/dist/plugin",
+    "@stackpress/incept-types/dist/plugin",
+    "@stackpress/incept-drizzle/dist/plugin",
+    "@stackpress/incept-ink/dist/plugin",
+    "@stackpress/incept-admin/dist/plugin",
+    "@stackpress/incept-i18n/dist/plugin",
+    "@stackpress/incept-user/dist/plugin"
+  ],
   "scripts": {
     "build": "tsc",
     "incept": "dotenv -e .env.local -- incept transform",
-    "dev": "dotenv -e .env.local -- ts-node src/server.ts",
+    "dev": "dotenv -e .env.local -- ts-node src/scripts/server.ts",
     "push": "dotenv -e .env.local -- drizzle-kit push",
     "migrate": "dotenv -e .env.local -- drizzle-kit generate",
     "studio": "dotenv -e .env.local -- drizzle-kit studio --verbose"
   },
   "dependencies": {
     "@paralleldrive/cuid2": "2.2.2",
-    "@stackpress/incept": "0.3.6",
-    "@stackpress/ingest": "0.3.6",
+    "@stackpress/incept": "0.3.10",
+    "@stackpress/ingest": "0.3.9",
     "better-sqlite3": "11.5.0",
     "cookie": "1.0.2",
     "drizzle-orm": "0.36.4",

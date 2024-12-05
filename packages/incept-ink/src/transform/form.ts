@@ -1,11 +1,12 @@
-//types
+//modules
 import type { Directory } from 'ts-morph';
-import type Registry from '@stackpress/incept/dist/config/Registry';
-import type { FormData } from './types';
-
+//stackpress
+import type Registry from '@stackpress/incept/dist/schema/Registry';
 import fs from 'fs';
 import path from 'path';
 import mustache from 'mustache';
+//local
+import type { FormData } from './types';
 import { getFormFields } from './helpers';
 
 export default function generate(directory: Directory, registry: Registry) {

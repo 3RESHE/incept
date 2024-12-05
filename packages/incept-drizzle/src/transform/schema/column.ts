@@ -1,7 +1,8 @@
-//types
-import type Column from '@stackpress/incept/dist/config/Column';
+//stackpress
+import type Column from '@stackpress/incept/dist/schema/Column';
+//common
 import type { Relations } from '../types';
-//columns
+//local
 import postgres from './postgres';
 import mysql from './mysql';
 import sqlite from './sqlite';

@@ -1,10 +1,11 @@
-//types
+//modules
 import type { Directory } from 'ts-morph';
-import type Registry from '@stackpress/incept/dist/config/Registry';
-import type { Config } from '../types';
-//project
 import { VariableDeclarationKind } from 'ts-morph';
-//generators
+//stackpress
+import type Registry from '@stackpress/incept/dist/schema/Registry';
+//common
+import type { Config } from '../types';
+//local
 import generateMysql from './mysql';
 import generateSqlite from './sqlite';
 import generatePostgres from './postgres';

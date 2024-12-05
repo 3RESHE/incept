@@ -1,10 +1,10 @@
-//types
+//modules
 import type { Directory } from 'ts-morph';
-import type Registry from '@stackpress/incept/dist/config/Registry';
-
 import fs from 'fs';
 import path from 'path';
-import { render } from '@stackpress/incept/dist/config/helpers';
+//stackress
+import type Registry from '@stackpress/incept/dist/schema/Registry';
+import { render } from '@stackpress/incept/dist/schema/helpers';
 
 const template = `
 <link rel="import" type="template" href="@stackpress/incept-admin/dist/components/head.ink" name="html-head" />

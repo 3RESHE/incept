@@ -1,6 +1,7 @@
-//types
+//modules
 import type { Directory } from 'ts-morph';
-import type Registry from '@stackpress/incept/dist/config/Registry';
+//stackpress
+import type Registry from '@stackpress/incept/dist/schema/Registry';
 
 export default function generate(directory: Directory, registry: Registry) {
   //loop through models
@@ -8,26 +9,34 @@ export default function generate(directory: Directory, registry: Registry) {
     const ids = model.ids.map(column => `:${column.name}`).join('/')
     const file = `${model.name}/admin/routes.ts`;
     const source = directory.createSourceFile(file, '', { overwrite: true });
-    //import type { MethodRouter } from '@stackpress/incept/dist/types';
+    // import type { AdminConfig } from '@stackpress/incept-admin/dist/types';
     source.addImportDeclaration({
       isTypeOnly: true,
-      moduleSpecifier: '@stackpress/incept/dist/types',
-      namedImports: [ 'MethodRouter' ]
+      moduleSpecifier: '@stackpress/incept-admin/dist/types',
+      namedImports: [ 'AdminConfig' ]
+    });
+    //import type Server from '@stackpress/ingest/dist/Server';
+    source.addImportDeclaration({
+      isTypeOnly: true,
+      moduleSpecifier: '@stackpress/ingest/dist/Server',
+      defaultImport: 'Server'
     });
     //import path from 'path';
     source.addImportDeclaration({
       moduleSpecifier: 'path',
       defaultImport: 'path'
     });
-    //export default function route(root: string, router: MethodRouter) {}
+    //export default function route(router: MethodRouter) {}
     source.addFunction({
       isDefaultExport: true,
-      name: 'route',
+      name: 'routes',
       parameters: [
-        { name: 'root', type: 'string' },
-        { name: 'router', type: 'MethodRouter' }
+        { name: 'server', type: 'Server' }
       ],
       statements: `
+        //get the admin config
+        const admin = server.config<AdminConfig['admin']>('admin') || {};
+        const root = settings.root || '/admin';
         router.all(\`\${root}/${model.dash}/search\`, path.resolve(__dirname, 'search'));
         router.all(\`\${root}/${model.dash}/create\`, path.resolve(__dirname, 'create'));
         router.all(\`\${root}/${model.dash}/detail/${ids}\`, path.resolve(__dirname, 'detail'));
@@ -37,4 +46,29 @@ export default function generate(directory: Directory, registry: Registry) {
       `.trim()
     });
   }
+
+  const source = directory.createSourceFile('admin.ts', '', { 
+    overwrite: true 
+  });
+  //import profileRoutes from './profile/admin/routes';
+  for (const model of registry.model.values()) {
+    source.addImportDeclaration({
+      moduleSpecifier: `./${model.name}/admin/routes`,
+      defaultImport: `${model.camel}Routes`
+    });
+  }
+
+  //export default function route(router: MethodRouter) {}
+  source.addFunction({
+    isDefaultExport: true,
+    name: 'admin',
+    parameters: [
+      { name: 'server', type: 'Server' }
+    ],
+    statements: `
+      ${Array.from(registry.model.values()).map(
+        model => `${model.camel}Routes(server);`
+      ).join('\n')}
+    `.trim()
+  });
 };

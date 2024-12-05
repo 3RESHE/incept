@@ -1,11 +1,14 @@
-//types
+//modules
 import type { Directory } from 'ts-morph';
-import type Model from '@stackpress/incept/dist/config/Model';
-import type Column from '@stackpress/incept/dist/config/Column';
-import type Registry from '@stackpress/incept/dist/config/Registry';
+import { VariableDeclarationKind } from 'ts-morph';
+//stackpress
+import type Model from '@stackpress/incept/dist/schema/Model';
+import type Column from '@stackpress/incept/dist/schema/Column';
+import type Registry from '@stackpress/incept/dist/schema/Registry';
+import { camelize, formatCode } from '@stackpress/incept/dist/schema/helpers';
+//common
 import type { Config, Relations } from '../types';
-//helpers
-import { camelize, formatCode } from '@stackpress/incept/dist/config/helpers';
+//local
 import getColumn from './column';
 
 export default function generate(
@@ -16,7 +19,10 @@ export default function generate(
   const engine = config.engine.type === 'env' 
     ? `process.env.${config.engine.value}` 
     : config.engine.value;
-  //loop through models
+
+  //-----------------------------//
+  // 1. profile/schema.ts
+
   for (const model of registry.model.values()) {
     const source = directory.createSourceFile(
       `${model.name}/schema.ts`, 
@@ -169,6 +175,29 @@ export default function generate(
           ${indexes.join(',\n        ')}
         }))
       `)
+    });
+  }
+
+  //-----------------------------//
+  // 2. schema.ts
+
+  const source = directory.createSourceFile('schema.ts', '', { 
+    overwrite: true 
+  });
+  for (const model of registry.model.values()) {
+    //import ProfileSchema from './Profile/schema';
+    source.addImportDeclaration({
+      moduleSpecifier: `./${model.name}/schema`,
+      defaultImport: `${model.name}Schema`
+    });
+    //export const profile = ProfileSchema;
+    source.addVariableStatement({
+      isExported: true,
+      declarationKind: VariableDeclarationKind.Const,
+      declarations: [{
+        name: model.camel,
+        initializer: `${model.name}Schema`
+      }]
     });
   }
 }

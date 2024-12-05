@@ -1,7 +1,7 @@
-//types
-import type Column from '@stackpress/incept/dist/config/Column';
+//stackpress
+import type Column from '@stackpress/incept/dist/schema/Column';
+//common
 import type { Method, Relations } from '../types';
-//helpers
 import { numdata, attr } from '../helpers';
 
 //map from column types to sql types and helpers

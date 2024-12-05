@@ -1,9 +1,10 @@
-//types
+//modules
 import type { Directory } from 'ts-morph';
-import type Registry from '@stackpress/incept/dist/config/Registry';
+//stackpress
+import type Registry from '@stackpress/incept/dist/schema/Registry';
+//common
 import type { Config } from '../types';
-
-//generators
+//local
 import generateCreate from './create';
 import generateDetail from './detail';
 import generateRemove from './remove';
@@ -51,12 +52,6 @@ export default function generate(
       isTypeOnly: true,
       moduleSpecifier: '@stackpress/incept-drizzle/dist/types',
       namedImports: [ 'SearchParams' ]
-    });
-    //import type { Payload } from '@stackpress/incept/dist/types';
-    source.addImportDeclaration({
-      isTypeOnly: true,
-      moduleSpecifier: '@stackpress/incept/dist/types',
-      namedImports: [ 'Payload' ]
     });
     //import type { ProfileModel, ProfileExtended, ProfileInput } from './types';
     source.addImportDeclaration({

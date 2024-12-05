@@ -1,42 +1,49 @@
-import type Context from '@stackpress/ingest/dist/Context';
+//stackpress
 import type Response from '@stackpress/ingest/dist/Response';
+import type { ServerRequest } from '@stackpress/ingest/dist/types';
+import type { TemplatePlugin } from '@stackpress/incept-ink/dist/types';
+//actions
+import type  { SigninType } from '../actions/signin';
+//common
+import type { AuthConfig, SessionPlugin } from '../types';
 
-import type { InkPlugin } from '@stackpress/incept-ink/dist/types';
-import type  { SigninType, SigninInput } from '../actions/signin';
-import type Session from '../Session';
+const template = '@stackpress/incept-user/dist/templates/signin';
 
-import client, { AuthExtended } from '@stackpress/incept/client';
-import signin from '../actions/signin';
-
-export default async function SignInPage(req: Context, res: Response) {
+export default async function SignInPage(req: ServerRequest, res: Response) {
   //extract project and model from client
-  const { project } = client;
+  const server = req.context;
   // /auth/signin/:type
   const { 
     type = 'username', 
     redirect = '/' 
   } = req.data<{ type: SigninType, redirect: string }>();
-  //bootstrap plugins
-  await project.bootstrap();
-  //get the project config
-  const config = project.config<Record<string, string>>('auth');
+  //get the auth config
+  const config = server.config<AuthConfig['auth']>('auth');
   //get the session
-  const session = project.plugin<Session>('session');
+  const session = server.plugin<SessionPlugin>('session');
   //get the renderer
-  const { render } = project.plugin<InkPlugin>('template');
+  const { render } = server.plugin<TemplatePlugin>('template');
   //get authorization
-  const token = session.token(req.request);
+  const token = session.token(req);
   const me = session.get(token || '');
   if (req.method === 'POST') {
-    const input = req.post.get() as SigninInput;
-    const response = await signin(type, input);
+    const response = await server.call('auth-signin', req);
     if (response.code !== 200) {
-      return res.setHTML(await render(
-        '@stackpress/incept-user/dist/templates/signin', 
-        { ...response, type, input, config }
-      ));
+      return res.setHTML(await render(template, { 
+        ...response, 
+        input: req.data(),
+        type, 
+        config 
+      }));
     }
-    const results = response.results as AuthExtended;
+    const results = response.results as {
+      id: string,
+      profile: {
+        name: string,
+        image: string,
+        roles: string[]
+      }
+    };
     //set session
     res.session.set('session', session.create({
       id: results.id, 
@@ -50,8 +57,5 @@ export default async function SignInPage(req: Context, res: Response) {
     return res.redirect(redirect);
   }
 
-  return res.setHTML(await render(
-    '@stackpress/incept-user/dist/templates/signin',
-    { type, config }
-  ));
+  return res.setHTML(await render(template, { type, config }));
 };

@@ -1,6 +1,8 @@
-import type { ColumnInfo, EnumConfig, SerialOptions } from './types';
+//stackpress
+import type { EnumConfig } from '@stackpress/idea-parser/dist/types';
+//local
+import type { ColumnInfo, SerialOptions } from './types';
 import type Fieldset from './Fieldset';
-
 import Attributes from './Attributes';
 import assert from '../assert';
 

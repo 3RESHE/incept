@@ -1,10 +1,10 @@
-//types
+//modules
 import type { Directory, SourceFile } from 'ts-morph';
-import type Registry from '@stackpress/incept/dist/config/Registry';
-import type Model from '@stackpress/incept/dist/config/Model';
-import type Fieldset from '@stackpress/incept/dist/config/Fieldset';
-//project
-import { formatCode } from '@stackpress/incept/dist/config/helpers';
+//stackpress
+import type Registry from '@stackpress/incept/dist/schema/Registry';
+import type Model from '@stackpress/incept/dist/schema/Model';
+import type Fieldset from '@stackpress/incept/dist/schema/Fieldset';
+import { formatCode } from '@stackpress/incept/dist/schema/helpers';
 
 export const typemap: Record<string, string> = {
   String: 'string',
@@ -25,6 +25,8 @@ export const typemap: Record<string, string> = {
  * This is the The params comes form the cli
  */
 export default function generate(directory: Directory, registry: Registry) {
+  //-----------------------------//
+  // 1. profile/types.ts
   //loop through models
   for (const model of registry.model.values()) {
     const file = `${model.name}/types.ts`;
@@ -32,12 +34,34 @@ export default function generate(directory: Directory, registry: Registry) {
     //generate the model
     generateModel(source, model);
   }
+
+  //-----------------------------//
+  // 2. address/types.ts
   //loop through fieldsets
   for (const fieldset of registry.fieldset.values()) {
     const file = `${fieldset.name}/types.ts`;
     const source = directory.createSourceFile(file, '', { overwrite: true });
     //generate the fieldset
     generateFieldset(source, fieldset);
+  }
+
+  //-----------------------------//
+  // 3. types.ts
+  const source = directory.createSourceFile('types.ts', '', { overwrite: true });
+
+  //export * from './module/profile';
+  for (const model of registry.model.values()) {
+    source.addExportDeclaration({
+      isTypeOnly: true,
+      moduleSpecifier: `./${model.name}/types`
+    });
+  }
+  //export * from './module/profile';
+  for (const fieldset of registry.fieldset.values()) {
+    source.addExportDeclaration({
+      isTypeOnly: true,
+      moduleSpecifier: `./${fieldset.name}/types`
+    });
   }
 };
 

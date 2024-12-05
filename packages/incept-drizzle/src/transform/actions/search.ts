@@ -1,8 +1,8 @@
-//types
+//modules
 import type { SourceFile } from 'ts-morph';
-import type Model from '@stackpress/incept/dist/config/Model';
-//helpers
-import { camelize, formatCode } from '@stackpress/incept/dist/config/helpers';
+//stackpress
+import type Model from '@stackpress/incept/dist/schema/Model';
+import { camelize, formatCode } from '@stackpress/incept/dist/schema/helpers';
 
 const helpers: Record<string, string> = {
   String: 'toSqlString',

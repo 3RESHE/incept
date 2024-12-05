@@ -1,23 +1,31 @@
-//types
-import type { PluginWithCLIProps } from '@stackpress/idea-transformer';
-//project
+//modules
 import path from 'path';
-import { 
-  Project, 
-  IndentationText, 
-  VariableDeclarationKind 
-} from 'ts-morph';
-import Registry from '@stackpress/incept/dist/config/Registry';
-//generators
+import { Project, IndentationText } from 'ts-morph';
+//stackpress
+import type { PluginWithCLIProps } from '@stackpress/idea-transformer';
+import Registry from '@stackpress/incept/dist/schema/Registry';
+import { enval } from '@stackpress/incept/dist/schema/helpers';
+//local
 import generateStore from './store';
 import generateSchema from './schema';
 import generateActions from './actions';
-//helpers
-import { enval } from '@stackpress/incept/dist/config/helpers';
+import generateEvents from './events';
+
+/**
+ * @stackpress/.incept (file structure)
+ * - profile/
+ * | - actions.ts
+ * | - events.ts
+ * | - index.ts
+ * | - schema.ts
+ * - index.ts
+ * - events.ts
+ * - schema.ts
+ * - store.ts
+ */
 
 /**
  * This is the The params comes form the cli
- * TODO: Enums, Unqiue
  */
 export default function generate({ config, schema, cli }: PluginWithCLIProps) {
   //-----------------------------//
@@ -61,32 +69,68 @@ export default function generate({ config, schema, cli }: PluginWithCLIProps) {
 
   //-----------------------------//
   // 4. Generators
-  //at a bare minimum generate the store
+  // - store.ts
   generateStore(directory, registry, { url, engine });
+  // - profile/schema.ts
   generateSchema(directory, registry, { url, engine });
+  // - profile/actions.ts
   generateActions(directory, registry, { url, engine });
+  // - profile/events.ts
+  generateEvents(directory, registry, { url, engine });
 
-  const filepath = `schema.ts`;
-  const source = directory.createSourceFile(filepath, '', { overwrite: true });
+  //-----------------------------//
+  // 5. profile/index.ts
+
   for (const model of registry.model.values()) {
-    //import ProfileSchema from './Profile/schema';
+    const filepath = `${model.name}/index.ts`;
+    //load profile/index.ts if it exists, if not create it
+    const source = directory.getSourceFile(filepath) 
+      || directory.createSourceFile(filepath, '', { overwrite: true });
+    //import * as action from './actions';
     source.addImportDeclaration({
-      moduleSpecifier: `./${model.name}/schema`,
-      defaultImport: `${model.name}Schema`
+      moduleSpecifier: `./actions`,
+      defaultImport: '* as action'
     });
-    //export const profile = ProfileSchema;
-    source.addVariableStatement({
-      isExported: true,
-      declarationKind: VariableDeclarationKind.Const,
-      declarations: [{
-        name: model.camel,
-        initializer: `${model.name}Schema`
-      }]
+    //import events from './events';
+    source.addImportDeclaration({
+      moduleSpecifier: `./events`,
+      defaultImport: 'events'
+    });
+    //import schema from './schema';
+    source.addImportDeclaration({
+      moduleSpecifier: `./schema`,
+      defaultImport: 'schema'
+    });
+    //export type * from './module/[name]/types';
+    source.addExportDeclaration({ moduleSpecifier: `./types` });
+    //export { action, schema, event };
+    source.addExportDeclaration({ 
+      namedExports: [ 'action', 'schema', 'events' ] 
     });
   }
 
   //-----------------------------//
-  // 5. Save
+  // 6. index.ts
+  //load index.ts if it exists, if not create it
+  const source = directory.getSourceFile('index.ts') 
+    || directory.createSourceFile('index.ts', '', { overwrite: true });
+  //import * as schema from './schema';
+  source.addImportDeclaration({ 
+    moduleSpecifier: './schema', 
+    defaultImport: '* as schema' 
+  });
+  //import * as store from './store';
+  source.addImportDeclaration({ 
+    moduleSpecifier: './store', 
+    defaultImport: 'store' 
+  });
+  //export { schema, registry };
+  source.addExportDeclaration({ 
+    namedExports: [ 'schema', 'store' ] 
+  });
+
+  //-----------------------------//
+  // 7. Save
   //if you want ts, tsx files
   if (lang === 'ts') {
     project.saveSync();

@@ -1,6 +1,5 @@
-//types
+//modules
 import type { SourceFile } from 'ts-morph';
-//project
 import { VariableDeclarationKind } from 'ts-morph';
 
 export default function generate(source: SourceFile) {

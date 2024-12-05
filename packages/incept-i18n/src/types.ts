@@ -6,3 +6,10 @@ export type Language = {
 };
 
 export type Languages = Record<string, Language>;
+
+export type LanguageConfig = {
+  languages: Record<string, {
+    label: string,
+    translations: Record<string, string>
+  }>
+};

@@ -1,29 +1,8 @@
-//types
-import type { 
-  Scalar, 
-  Data,
-  EnumConfig,
-  PluginConfig,
-  PropConfig,
-  ColumnConfig,
-  TypeConfig,
-  ModelConfig,
-  FinalSchemaConfig as SchemaConfig
-} from '@stackpress/idea-parser';
+//stackpress
+import type { Data } from '@stackpress/idea-parser';
+//local
 import type Model from './Model';
 import type Column from './Column';
-
-export { 
-  Scalar, 
-  Data,
-  EnumConfig,
-  PluginConfig,
-  PropConfig,
-  ColumnConfig,
-  TypeConfig,
-  ModelConfig,
-  SchemaConfig
-};
 
 export type Assertion = {
   method: string,

@@ -1,24 +1,33 @@
 import type { InkCompiler } from '@stackpress/ink/dist/types';
-import type { MethodRouter } from '@stackpress/incept/dist/types';
 import type RefreshServer from '@stackpress/ink-dev/dist/RefreshServer';
-export type Renderer = (filePath: string, props?: Record<string, unknown>) => Promise<string>;
 
-export type InkPlugin = {
+export type Renderer = (
+  filePath: string, 
+  props?: Record<string, unknown>
+) => Promise<string>;
+
+export type TemplatePlugin = {
   compiler: InkCompiler,
   refresh: RefreshServer,
   render: Renderer
 };
 
-export type InkDevRouteConfig = {
-  buildRoute?: string,
-  socketRoute?: string,
-  entryPath: string,
-  router: MethodRouter
+export type TemplateDevConfig = {
+  buildRoute: string,
+  socketRoute: string
 };
 
-export type InkDevEntryConfig = {
-  buildRoute?: string,
-  socketRoute?: string,
-  compiler: InkCompiler, 
-  refresh: RefreshServer
+export type TemplateEngineConfig = {
+  brand: string,
+  minify: boolean,
+  buildPath: string,
+  cwd: string,
+  dev: TemplateDevConfig
+};
+
+export type TemplateConfig = { 
+  template: {
+    engine: string,
+    config: TemplateEngineConfig
+  }
 };

@@ -1,11 +1,12 @@
+//modules
+import mustache from 'mustache';
+//stackpress
 import type { 
   MouseEvent, 
   KeyboardEvent, 
   AttributeChangeEvent 
 } from '@stackpress/ink/dist/types';
 import type InkComponent from '@stackpress/ink/dist/client/InkComponent';
-
-import mustache from 'mustache';
 import InkRegistry from '@stackpress/ink/dist/client/InkRegistry';
 import signal from '@stackpress/ink/dist/client/signal';
 

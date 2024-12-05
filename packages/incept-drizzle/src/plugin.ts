@@ -1,14 +1,21 @@
-//types
+//stackpress
 import type { CLIProps } from '@stackpress/idea-transformer/dist/types';
 import type Transformer from '@stackpress/idea-transformer/dist/Transformer';
-import type Builder from '@stackpress/ingest/dist/buildtime/Builder';
+import type Server from '@stackpress/ingest/dist/Server';
+import { ServerRouter } from '@stackpress/ingest/dist/Router';
 
 /**
  * This interface is intended for the Incept library.
  */
-export default function plugin(builder: Builder) {
+export default function plugin(server: Server) {
+  try {
+    const emitter = server.loader.require('@stackpress/.incept/events');
+    if (emitter instanceof ServerRouter) {
+      server.use(emitter);
+    }
+  } catch(e) {}
   //generate some code in the client folder
-  builder.on('idea', req => {
+  server.on('idea', req => {
     //get the transformer from the request
     const transformer = req.data<Transformer<CLIProps>>('transformer');
     //if no plugin object exists, create one

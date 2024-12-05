@@ -1,4 +1,6 @@
-import type Column from '@stackpress/incept/dist/config/Column';
+//stackpress
+import type Column from '@stackpress/incept/dist/schema/Column';
+//local
 import type { 
   Link, 
   FormFields, 

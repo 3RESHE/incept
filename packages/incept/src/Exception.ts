@@ -1,5 +1,7 @@
-import fs from 'fs';
-import path from 'path';
+//modules
+import fs from 'node:fs';
+import path from 'node:path';
+//stackpress
 import Exception from '@stackpress/types/dist/Exception';
 
 /**

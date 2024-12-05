@@ -1,6 +1,8 @@
-//types
+//modules
 import type { Directory } from 'ts-morph';
-import type Registry from '@stackpress/incept/dist/config/Registry';
+import { VariableDeclarationKind } from 'ts-morph';
+//stackpress
+import type Registry from '@stackpress/incept/dist/schema/Registry';
 
 export default function generate(directory: Directory, registry: Registry) {
   //loop through models
@@ -8,11 +10,11 @@ export default function generate(directory: Directory, registry: Registry) {
     const file = `${model.name}/admin/update.ts`;
     const source = directory.createSourceFile(file, '', { overwrite: true });
   
-    // import type Context from '@stackpress/ingest/dist/Context';
+    // import type { ServerRequest } from '@stackpress/ingest/dist/types';
     source.addImportDeclaration({
       isTypeOnly: true,
-      moduleSpecifier: '@stackpress/ingest/dist/Context',
-      defaultImport: 'Context'
+      moduleSpecifier: '@stackpress/ingest/dist/types',
+      namedImports: [ 'ServerRequest' ]
     });
     // import type Response from '@stackpress/ingest/dist/Response';
     source.addImportDeclaration({
@@ -20,17 +22,23 @@ export default function generate(directory: Directory, registry: Registry) {
       moduleSpecifier: '@stackpress/ingest/dist/Response',
       defaultImport: 'Response'
     });
-    // import type Session from '@stackpress/incept-user/dist/Session';
+    // import type { SessionPlugin } from '@stackpress/incept-user/dist/types';
     source.addImportDeclaration({
       isTypeOnly: true,
-      moduleSpecifier: '@stackpress/incept-user/dist/Session',
-      defaultImport: 'Session'
+      moduleSpecifier: '@stackpress/incept-user/dist/types',
+      namedImports: [ 'SessionPlugin' ]
     });
-    // import type { InkPlugin } from '@stackpress/incept-ink/dist/types';
+    // import type { TemplatePlugin } from '@stackpress/incept-ink/dist/types';
     source.addImportDeclaration({
       isTypeOnly: true,
       moduleSpecifier: '@stackpress/incept-ink/dist/types',
-      namedImports: [ 'InkPlugin' ]
+      namedImports: [ 'TemplatePlugin' ]
+    });
+    // import type { AdminConfig } from '@stackpress/incept-admin/dist/types';
+    source.addImportDeclaration({
+      isTypeOnly: true,
+      moduleSpecifier: '@stackpress/incept-admin/dist/types',
+      namedImports: [ 'AdminConfig' ]
     });
     // import type { ProfileInput } from '../types';
     source.addImportDeclaration({
@@ -38,39 +46,48 @@ export default function generate(directory: Directory, registry: Registry) {
       moduleSpecifier: '../types',
       namedImports: [ `${model.title}Input` ]
     });
-    // import client from '../../client';
-    source.addImportDeclaration({
-      moduleSpecifier: '../../client',
-      defaultImport: 'client'
+    //const error = '@stackpress/incept-admin/dist/components/error';
+    //const template = '@stackpress/.incept/${model.name}/admin/update';
+    source.addVariableStatement({
+      declarationKind: VariableDeclarationKind.Const,
+      declarations: [
+        {
+          name: 'error',
+          initializer: `'@stackpress/incept-admin/dist/components/error'`
+        },
+        {
+          name: 'template',
+          initializer: `'@stackpress/.incept/${model.name}/admin/update'`
+        }
+      ]
     });
-    // export default async function ProfileCreate(req: Context, res: Response) {  
+    // export default async function ProfileCreate(req: ServerRequest, res: Response) {  
     source.addFunction({
       name: `Admin${model.title}Update`,
       isAsync: true,
       isDefaultExport: true,
       parameters: [
-        { name: 'req', type: 'Context' }, 
+        { name: 'req', type: 'ServerRequest' }, 
         { name: 'res', type: 'Response' }
       ],
       statements: `
-        //extract project and model from client
-        const { project, model } = client;
-        //bootstrap plugins
-        await project.bootstrap();
-        //get the project config
-        const config = project.config<Record<string, any>>();
+        //get the server
+        const server = req.context;
+        //get the admin config
+        const admin = server.config<AdminConfig['admin']>('admin') || {};
+        const root = settings.root || '/admin';
         //get the session
-        const session = project.plugin<Session>('session');
+        const session = server.plugin<SessionPlugin>('session');
         //get the renderer
-        const { render } = project.plugin<InkPlugin>('template');
-        //prep error page
-        const error = '@stackpress/incept-admin/dist/components/error';
+        const { render } = server.plugin<TemplatePlugin>('template');
         //get authorization
-        const authorization = session.authorize(req, res, [ '${model.dash}-update' ]);
+        const authorization = session.authorize(req, res, [ 
+          '${model.dash}-update' 
+        ]);
         //if not authorized
         if (!authorization) return;
         //general settings
-        const settings = { ...config.admin, session: authorization };
+        const settings = { ...admin, session: authorization };
         //get id from url params
         ${model.ids.map(
           (column, i) => `const id${i + 1} = req.data('${column.name}');`
@@ -79,47 +96,50 @@ export default function generate(directory: Directory, registry: Registry) {
         if (${model.ids.map((_, i) => `id${i + 1}`).join(' && ')}) {
           //if form submitted
           if (req.method === 'POST') {
-            //get form body
-            const input = model.${model.camel}.config.filter(req.data()) as Partial<ProfileInput>;
-            //update the row using the id and the submitted input
-            const response = await model.${model.camel}.action.update(${
-              model.ids.map((_, i) => `id${i + 1}`).join(', ')
-            }, input);
+            //emit remove update
+            const response = await server.call('${model.dash}-update', req);
+            //if they want json (success or fail)
+            if (req.data.has('json')) {
+              return res.setJSON(response);
+            }
             //if successfully updated
             if (response.code === 200) {
               //redirect
               return res.redirect(
-                \`\${config.admin.root}/${model.dash}/detail/${
+                \`\${root}/${model.dash}/detail/${
                   model.ids.map((_, i) => `\${id${i + 1}}`).join('/')
                 }\`
               );
             }
             //it did not update...
-            //set the errors
-            if (response.errors) {
-              res.errors.set(response.errors);
-            }
             //recall the update form
-            return res.setHTML(await render(
-              '@stackpress/.incept/${model.name}/admin/update', 
-              { ...response, settings, input }
-            ), response.code as number);
+            return res.setHTML(await render(template, { 
+              ...response, 
+              input: req.data(), 
+              settings 
+            }), res.code || 400);
           }
           //not submitted, fetch the data using the id
-          const response = await model.${model.camel}.action.detail(${
-            model.ids.map((_, i) => `id${i + 1}`).join(', ')
-          });
+          const response = await server.call('${model.dash}-detail', req);
+          //if they want json (success or fail)
+          if (req.data.has('json')) {
+            return res.setJSON(response);
+          }
           //if successfully fetched
           if (response.code === 200) {
             //render the update page
-            const input: Record<string, any> = { ...(response.results || {}) };
-            return res.setHTML(await render(
-              '@stackpress/.incept/${model.name}/admin/update', 
-              { ...response, settings, input }
-            ));
+            return res.setHTML(await render(template, { 
+              ...response, 
+              input: response.results || {}, 
+              settings 
+            }));
           }
           //it did not fetch, render error page
           return res.setHTML(await render(error, { ...response, settings }));
+        }
+        //if they want json (success or fail)
+        if (req.data.has('json')) {
+          return res.setJSON({ code: 404, status: 'Not Found' });
         }
         //no id was found, render error page (404)
         res.setHTML(await render(error, { 

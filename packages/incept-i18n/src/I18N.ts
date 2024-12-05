@@ -1,3 +1,4 @@
+//local
 import type { Scalar, Languages } from './types';
 
 export default class I18N {

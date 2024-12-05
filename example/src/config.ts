@@ -1,76 +1,21 @@
-import type { CookieOptions } from '@stackpress/incept';
+import type { ServerConfig } from '@stackpress/incept/dist/types';
+import type { LanguageConfig } from '@stackpress/incept-i18n/dist/types';
+import type { AuthConfig } from '@stackpress/incept-user/dist/types';
+import type { TemplateConfig } from '@stackpress/incept-ink/dist/types';
+import type { AdminConfig } from '@stackpress/incept-admin/dist/types';
+
 import path from 'path';
 
 const cwd = process.cwd();
 const environment = process.env.SERVER_ENV || 'development';
 
-export type Config = {
-  plugins: string[],
-  server: { 
-    cwd: string, 
-    mode: string, 
-    routes: string, 
-    bodySize: number 
-  },
-  access: Record<string, string[]>,
-  cookie: CookieOptions,
-  auth: {
-    name: string,
-    logo: string,
-    '2fa': {},
-    captcha: {},
-    username: boolean,
-    email: boolean,
-    phone: boolean,
-    password: {
-      min: number,
-      max: number,
-      upper: boolean,
-      lower: boolean,
-      number: boolean,
-      special: boolean
-    }
-  },
-  template: {
-    engine: string,
-    config: {
-      brand: string,
-      minify: boolean,
-      buildPath: string,
-      cwd: string,
-      dev: { 
-        buildRoute: string,
-        socketRoute: string
-      }
-    }
-  },
-  admin: {
-    root: string,
-    menu: {
-      name: string,
-      icon: string,
-      path: string,
-      match: string
-    }[]
-  },
-  languages: Record<string, {
-    label: string,
-    translations: Record<string, string>
-  }>
-};
+export type Config = ServerConfig 
+  & LanguageConfig 
+  & TemplateConfig 
+  & AuthConfig 
+  & AdminConfig;
 
 export const config: Config = {
-  plugins: [ 
-    //transformers
-    '@stackpress/incept-types',
-    '@stackpress/incept-drizzle',
-    '@stackpress/incept-ink',
-    '@stackpress/incept-admin',
-    '@stackpress/incept-client',
-    //plugins
-    '@stackpress/incept-i18n', 
-    '@stackpress/incept-user'
-  ],
   server: {
     cwd: cwd,
     routes: environment === 'development' 

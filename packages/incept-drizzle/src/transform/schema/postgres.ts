@@ -1,7 +1,7 @@
-//types
-import type Column from '@stackpress/incept/dist/config/Column';
+//stackpress
+import type Column from '@stackpress/incept/dist/schema/Column';
+//common
 import type { Method, Relations } from '../types';
-//helpers
 import { clen, numdata, attr } from '../helpers';
 
 const typemap: Record<string, string> = {

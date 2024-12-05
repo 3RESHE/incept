@@ -1,12 +1,28 @@
-//types
-import type { PluginWithCLIProps } from '@stackpress/idea-transformer';
-//project
-import path from 'path';
+//modules
+import path from 'node:path';
 import { Project, IndentationText } from 'ts-morph';
-import Registry from '@stackpress/incept/dist/config/Registry';
-//transformers
+//stackpress
+import type { 
+  PluginWithCLIProps 
+} from '@stackpress/idea-transformer/dist/types';
+import Registry from '@stackpress/incept/dist/schema/Registry';
+//local
 import enumGenerator from './enums';
 import typeGenerator from './types';
+
+
+/**
+ * @stackpress/.incept (file structure)
+ * - profile/
+ * | - index.ts
+ * | - types.ts
+ * - address/
+ * | - index.ts
+ * | - types.ts
+ * - enums.ts
+ * - index.ts
+ * - types.ts
+ */
 
 /**
  * This is the The params comes form the cli
@@ -54,25 +70,47 @@ export default function generate({ config, schema, cli }: PluginWithCLIProps) {
   //generate typescript
   typeGenerator(directory, registry);
 
-  const source = directory.createSourceFile('types.ts', '', { overwrite: true });
+  //-----------------------------//
+  // 5. profile/index.ts
 
-  //export * from './module/profile';
   for (const model of registry.model.values()) {
-    source.addExportDeclaration({
-      isTypeOnly: true,
-      moduleSpecifier: `./${model.name}/types`
-    });
-  }
-  //export * from './module/profile';
-  for (const fieldset of registry.fieldset.values()) {
-    source.addExportDeclaration({
-      isTypeOnly: true,
-      moduleSpecifier: `./${fieldset.name}/types`
-    });
+    const filepath = `${model.name}/index.ts`;
+    //load profile/index.ts if it exists, if not create it
+    const source = directory.getSourceFile(filepath) 
+      || directory.createSourceFile(filepath, '', { overwrite: true });
+    //export type * from './module/[name]/types';
+    source.addExportDeclaration({ moduleSpecifier: `./types` });
   }
 
   //-----------------------------//
-  // 5. Save
+  // 6. address/index.ts
+
+  for (const fieldset of registry.fieldset.values()) {
+    const filepath = `${fieldset.name}/index.ts`;
+    //load profile/index.ts if it exists, if not create it
+    const source = directory.getSourceFile(filepath) 
+      || directory.createSourceFile(filepath, '', { overwrite: true });
+    //export type * from './module/[name]/types';
+    source.addExportDeclaration({ moduleSpecifier: `./types` });
+  }
+
+  //-----------------------------//
+  // 7. index.ts
+  //load index.ts if it exists, if not create it
+  const source = directory.getSourceFile('index.ts') 
+    || directory.createSourceFile('index.ts', '', { overwrite: true });
+  //export type * from './types';
+  source.addExportDeclaration({ 
+    isTypeOnly: true,
+    moduleSpecifier: './types'
+  });
+  //export * from './enums';
+  source.addExportDeclaration({ 
+    moduleSpecifier: './enums' 
+  });
+
+  //-----------------------------//
+  // 6. Save
   //if you want ts, tsx files
   if (lang === 'ts') {
     project.saveSync();

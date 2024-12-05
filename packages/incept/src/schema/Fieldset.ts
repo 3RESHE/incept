@@ -1,8 +1,10 @@
+//modules
+import Mustache from 'mustache';
+//stackpress
 import type { NestedObject } from '@stackpress/types';
+//local
 import type { ColumnInfo, SerialOptions } from './types';
 import type Registry from './Registry';
-
-import Mustache from 'mustache';
 import Attributes from './Attributes';
 import Column from './Column';
 import { camelize, capitalize, dasherize, generators } from './helpers';
@@ -198,6 +200,20 @@ export default class Fieldset {
    */
   public column(name: string) {
     return this.columns.get(name);
+  }
+
+  /**
+   * Removes values that are not columns
+   */
+  public input(values: Record<string, any>) {
+    const inputs: Record<string, any> = {};
+    
+    for (const [ name, value ] of Object.entries(values)) {
+      if (this.fields.find(column => column.name === name)) {
+        inputs[name] = value;
+      }
+    }
+    return inputs;
   }
 
   /**
