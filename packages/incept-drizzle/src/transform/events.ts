@@ -39,11 +39,7 @@ export default function generate(
       emitter.on('${model.dash}-create', async function ${model.title}Create(req, res) {
         const input = config.input(req.data());
         const response = await actions.create(input);
-        if (response.error) {
-          res.setError(response);
-        } else {
-          res.setResults(response.results || {});
-        }
+        res.fromStatusResponse(response);
       });
 
       emitter.on('${model.dash}-detail', async function ${model.title}Create(req, res) {
@@ -53,11 +49,11 @@ export default function generate(
         const response = await actions.detail(${model.ids.map(
           (_, i) => `id${i + 1}`
         ).join(', ')});
-        if (response.error) {
-          res.setError(response);
-        } else {
-          res.setResults(response.results || {});
+        if (response.code === 200 && !response.results) {
+          response.code = 404;
+          response.status = 'Not Found';
         }
+        res.fromStatusResponse(response);
       });
 
       emitter.on('${model.dash}-remove', async function ${model.title}Create(req, res) {
@@ -67,11 +63,7 @@ export default function generate(
         const response = await actions.remove(${model.ids.map(
           (_, i) => `id${i + 1}`
         ).join(', ')});
-        if (response.error) {
-          res.setError(response);
-        } else {
-          res.setResults(response.results || {});
-        }
+        res.fromStatusResponse(response);
       });
 
       emitter.on('${model.dash}-restore', async function ${model.title}Create(req, res) {
@@ -81,20 +73,12 @@ export default function generate(
         const response = await actions.restore(${model.ids.map(
           (_, i) => `id${i + 1}`
         ).join(', ')});
-        if (response.error) {
-          res.setError(response);
-        } else {
-          res.setResults(response.results || {});
-        }
+        res.fromStatusResponse(response);
       });
 
       emitter.on('${model.dash}-search', async function ${model.title}Create(req, res) {
         const response = await actions.search(req.data());
-        if (response.error) {
-          res.setError(response);
-        } else {
-          res.setRows(response.results || [], response.total || 0);
-        }
+        res.fromStatusResponse(response);
       });
 
       emitter.on('${model.dash}-update', async function ${model.title}Create(req, res) {
@@ -102,14 +86,10 @@ export default function generate(
           (column, i) => `const id${i + 1} = req.data('${column.name}');`
         ).join('\n')}
         const input = config.input(req.data());
-        const response = await actions.detail(${model.ids.map(
+        const response = await actions.update(${model.ids.map(
           (_, i) => `id${i + 1}`
         ).join(', ')}, input);
-        if (response.error) {
-          res.setError(response);
-        } else {
-          res.setResults(response.results || {});
-        }
+        res.fromStatusResponse(response);
       });
 
       export default emitter;

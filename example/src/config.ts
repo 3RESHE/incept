@@ -1,6 +1,6 @@
 import type { ServerConfig } from '@stackpress/incept/dist/types';
 import type { LanguageConfig } from '@stackpress/incept-i18n/dist/types';
-import type { AuthConfig } from '@stackpress/incept-user/dist/types';
+import type { SessionConfig } from '@stackpress/incept-user/dist/types';
 import type { TemplateConfig } from '@stackpress/incept-ink/dist/types';
 import type { DatabaseConfig } from '@stackpress/incept-drizzle/dist/types';
 import type { AdminConfig } from '@stackpress/incept-admin/dist/types';
@@ -16,7 +16,7 @@ export type Config = ServerConfig
   & DatabaseConfig
   & LanguageConfig 
   & TemplateConfig 
-  & AuthConfig 
+  & SessionConfig 
   & AdminConfig;
 
 export const config: Config = {
@@ -45,110 +45,44 @@ export const config: Config = {
       }
     }
   },
-  cookie: { path: '/' },
-  session: { seed: seed },
-  auth: {
-    name: 'Incept',
-    logo: '/images/incept-logo-long.png',
-    '2fa': {},
-    captcha: {},
-    username: true,
-    email: true,
-    phone: true,
-    password: {
-      min: 8,
-      max: 32,
-      upper: true,
-      lower: true,
-      number: true,
-      special: true
+  session: {
+    name: 'session',
+    seed: seed,
+    access: {
+      ADMIN: [
+        { method: 'ALL', route: '/' },
+        { method: 'ALL', route: '/auth/**' },
+        { method: 'ALL', route: '/admin/**' }
+      ],
+      user: [
+        { method: 'ALL', route: '/' },
+        { method: 'ALL', route: '/auth/**' },
+        { method: 'ALL', route: '/admin/**' }
+      ],
+      GUEST: [
+        { method: 'ALL', route: '/' },
+        { method: 'ALL', route: '/auth/**' }
+      ]
+    },
+    auth: {
+      name: 'Incept',
+      logo: '/images/incept-logo-long.png',
+      '2fa': {},
+      captcha: {},
+      username: true,
+      email: true,
+      phone: true,
+      password: {
+        min: 8,
+        max: 32,
+        upper: true,
+        lower: true,
+        number: true,
+        special: true
+      }
     }
   },
-  access: {
-    ADMIN: [
-      'general',
-      'profile-create',
-      'profile-detail',
-      'profile-search',
-      'profile-remove',
-      'profile-restore',
-      'profile-update',
-  
-      'auth-create',
-      'auth-detail',
-      'auth-search',
-      'auth-remove',
-      'auth-restore',
-      'auth-update',
-
-      'connection-create',
-      'connection-detail',
-      'connection-search',
-      'connection-remove',
-      'connection-restore',
-      'connection-update'
-    ],
-    USER: [
-      'general',
-      'profile-create',
-      'profile-detail',
-      'profile-search',
-      'profile-remove',
-      'profile-restore',
-      'profile-update',
-  
-      'auth-create',
-      'auth-detail',
-      'auth-search',
-      'auth-remove',
-      'auth-restore',
-      'auth-update',
-
-      'connection-create',
-      'connection-detail',
-      'connection-search',
-      'connection-remove',
-      'connection-restore',
-      'connection-update'
-    ],
-    GUEST: [
-      'general',
-      'profile-create',
-      'profile-detail',
-      'profile-search',
-      'profile-remove',
-      'profile-restore',
-      'profile-update',
-  
-      'auth-create',
-      'auth-detail',
-      'auth-search',
-      'auth-remove',
-      'auth-restore',
-      'auth-update',
-  
-      'address-create',
-      'address-detail',
-      'address-search',
-      'address-remove',
-      'address-restore',
-      'address-update',
-  
-      'file-create',
-      'file-detail',
-      'file-search',
-      'file-remove',
-      'file-restore',
-      'file-update',
-
-      'connection-create',
-      'connection-detail',
-      'connection-search',
-      'connection-remove',
-      'connection-restore',
-      'connection-update'
-    ]
-  },
+  cookie: { path: '/' },
   admin: {
     root: '/admin',
     menu: [

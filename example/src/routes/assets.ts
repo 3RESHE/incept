@@ -20,6 +20,7 @@ const mime: Record<string, string> = {
 export default async function Assets(req: ServerRequest, res: Response) {
   if (res.code || res.status || res.body) return;
   const resource = req.url.pathname.substring(1).replace(/\/\//, '/'); 
+  if (resource.length === 0) return;
   const file = path.resolve(__dirname, '../../public', resource); 
   if (fs.existsSync(file)) {
     const ext = path.extname(file);

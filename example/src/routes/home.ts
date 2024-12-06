@@ -1,20 +1,20 @@
 import type { ServerRequest } from '@stackpress/ingest/dist/types';
 import type Response from '@stackpress/ingest/dist/Response';
-import type { SessionPlugin } from '@stackpress/incept-user/dist/types';
 import type { TemplatePlugin } from '@stackpress/incept-ink/dist/types';
 
-export default async function ProfileCreate(req: ServerRequest, res: Response) {  
+export default async function HomePage(req: ServerRequest, res: Response) {  
+  //get the server
   const server = req.context;
-  //get the session
-  const session = server.plugin<SessionPlugin>('session');
+  //get authorization
+  const authorized = await server.call('authorize', req, res);
+  //if not authorized
+  if (authorized.code !== 200) {
+    return;
+  }
   //get the renderer
   const { render } = server.plugin<TemplatePlugin>('template');
-  //get authorization
-  const authorization = session.authorize(req, res, [ 'general' ]);
-  //if not authorized
-  if (!authorization) return;
   //general settings
-  const settings = { session: authorization };
+  const settings = { session: authorized.results };
   //show form
   res.setHTML(await render('@/templates/home', { settings }));
 };

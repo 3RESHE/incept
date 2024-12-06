@@ -22,12 +22,6 @@ export default function generate(directory: Directory, registry: Registry) {
       moduleSpecifier: '@stackpress/ingest/dist/Response',
       defaultImport: 'Response'
     });
-    // import type { SessionPlugin } from '@stackpress/incept-user/dist/types';
-    source.addImportDeclaration({
-      isTypeOnly: true,
-      moduleSpecifier: '@stackpress/incept-user/dist/types',
-      namedImports: [ 'SessionPlugin' ]
-    });
     // import type { TemplatePlugin } from '@stackpress/incept-ink/dist/types';
     source.addImportDeclaration({
       isTypeOnly: true,
@@ -67,21 +61,19 @@ export default function generate(directory: Directory, registry: Registry) {
       statements: `
         //get the server
         const server = req.context;
+        //get authorization
+        const authorized = await server.call('authorize', req, res);
+        //if not authorized
+        if (authorized.code !== 200) {
+          return;
+        }
         //get the admin config
         const admin = server.config<AdminConfig['admin']>('admin') || {};
-        const root = settings.root || '/admin';
-        //get the session
-        const session = server.plugin<SessionPlugin>('session');
+        const root = admin.root || '/admin';
+        //general settings
+        const settings = { ...admin, session: authorized.results };
         //get the renderer
         const { render } = server.plugin<TemplatePlugin>('template');
-        //get authorization
-        const authorization = session.authorize(req, res, [ 
-          '${model.dash}-restore' 
-        ]);
-        //if not authorized
-        if (!authorization) return;
-        //general settings
-        const settings = { ...admin, session: authorization };
         //get id from url params
         ${model.ids.map(
           (column, i) => `const id${i + 1} = req.data('${column.name}');`

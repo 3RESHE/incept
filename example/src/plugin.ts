@@ -13,11 +13,12 @@ export default function plugin(server: HTTPServer<Config>) {
     const server = req.context;
     server.get('/', path.join(__dirname, 'routes/home'));
     server.get('/**', path.join(__dirname, 'routes/assets'));
+    server.on('error', path.join(__dirname, 'events/error'));
   });
 
-  server.on('response', (req, res) => {
-    if (res.code !== 200) {
-      console.log(req.method, req.url.pathname, res.toStatusResponse())
+  server.on('response', async (req, res) => {
+    if (res.error) {
+      await server.emit('error', req, res);
     }
   });
 };

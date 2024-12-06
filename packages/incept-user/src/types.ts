@@ -1,5 +1,16 @@
+//local
 import type SessionType from './Session';
-export type PermissionList = Record<string, string[]>;
+
+//--------------------------------------------------------------------//
+// Permission Types
+
+export type Route = { method: string, route: string };
+export type Permission = string | Route;
+export type PermissionList = Record<string, Permission[]>;
+
+//--------------------------------------------------------------------//
+// Session Class Types
+
 export type SessionData = Record<string, any> & { 
   id: string, 
   name: string,
@@ -9,30 +20,38 @@ export type SessionData = Record<string, any> & {
 export type Session = SessionData & {
   token: string
 };
+
+//--------------------------------------------------------------------//
+// Server Types
+
 export type SessionPlugin = SessionType;
-export type AuthConfig = { 
+export type SessionConfig = { 
   session: {
-    seed: string
-  },
-  access: Record<string, string[]>,
-  auth: {
     name: string,
-    logo: string,
-    '2fa': {},
-    captcha: {},
-    username: boolean,
-    email: boolean,
-    phone: boolean,
-    password: {
-      min: number,
-      max: number,
-      upper: boolean,
-      lower: boolean,
-      number: boolean,
-      special: boolean
+    seed: string,
+    access: PermissionList,
+    auth: {
+      name: string,
+      logo: string,
+      '2fa': {},
+      captcha: {},
+      username: boolean,
+      email: boolean,
+      phone: boolean,
+      password: {
+        min: number,
+        max: number,
+        upper: boolean,
+        lower: boolean,
+        number: boolean,
+        special: boolean
+      }
     }
   }
 };
+
+//--------------------------------------------------------------------//
+// Page Types
 
 export type SignupInput = {
   name: string,
@@ -50,7 +69,9 @@ export type SigninInput = {
 };
 
 export type SigninType = 'username' | 'email' | 'phone';
-export type ProfileAuth = Profile & { auth: Record<string, Auth> };
+
+//--------------------------------------------------------------------//
+// Model Types
 
 export type Profile = {
   id: string;
@@ -104,3 +125,4 @@ export type AuthInput = {
   created?: Date;
   updated?: Date;
 };
+export type ProfileAuth = Profile & { auth: Record<string, Auth> };

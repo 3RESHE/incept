@@ -26,7 +26,7 @@ export default function generate(directory: Directory, registry: Registry) {
       moduleSpecifier: 'path',
       defaultImport: 'path'
     });
-    //export default function route(router: MethodRouter) {}
+    //export default function route(server: Server) {}
     source.addFunction({
       isDefaultExport: true,
       name: 'routes',
@@ -36,13 +36,13 @@ export default function generate(directory: Directory, registry: Registry) {
       statements: `
         //get the admin config
         const admin = server.config<AdminConfig['admin']>('admin') || {};
-        const root = settings.root || '/admin';
-        router.all(\`\${root}/${model.dash}/search\`, path.resolve(__dirname, 'search'));
-        router.all(\`\${root}/${model.dash}/create\`, path.resolve(__dirname, 'create'));
-        router.all(\`\${root}/${model.dash}/detail/${ids}\`, path.resolve(__dirname, 'detail'));
-        router.all(\`\${root}/${model.dash}/update/${ids}\`, path.resolve(__dirname, 'update'));
-        router.all(\`\${root}/${model.dash}/remove/${ids}\`, path.resolve(__dirname, 'remove'));
-        router.all(\`\${root}/${model.dash}/restore/${ids}\`, path.resolve(__dirname, 'restore'));
+        const root = admin.root || '/admin';
+        server.all(\`\${root}/${model.dash}/search\`, path.resolve(__dirname, 'search'));
+        server.all(\`\${root}/${model.dash}/create\`, path.resolve(__dirname, 'create'));
+        server.all(\`\${root}/${model.dash}/detail/${ids}\`, path.resolve(__dirname, 'detail'));
+        server.all(\`\${root}/${model.dash}/update/${ids}\`, path.resolve(__dirname, 'update'));
+        server.all(\`\${root}/${model.dash}/remove/${ids}\`, path.resolve(__dirname, 'remove'));
+        server.all(\`\${root}/${model.dash}/restore/${ids}\`, path.resolve(__dirname, 'restore'));
       `.trim()
     });
   }

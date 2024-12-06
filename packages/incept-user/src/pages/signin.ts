@@ -5,8 +5,9 @@ import type { TemplatePlugin } from '@stackpress/incept-ink/dist/types';
 //actions
 import type  { SigninType } from '../types';
 //common
-import type { AuthConfig, SessionPlugin } from '../types';
+import type { SessionConfig, SessionPlugin } from '../types';
 
+type AuthConfig = SessionConfig['session']['auth'];
 const template = '@stackpress/incept-user/dist/templates/signin';
 
 export default async function SignInPage(req: ServerRequest, res: Response) {
@@ -18,7 +19,7 @@ export default async function SignInPage(req: ServerRequest, res: Response) {
     redirect = '/' 
   } = req.data<{ type: SigninType, redirect: string }>();
   //get the auth config
-  const config = server.config<AuthConfig['auth']>('auth');
+  const config = server.config<AuthConfig>('session', 'auth');
   //get the session
   const session = server.plugin<SessionPlugin>('session');
   //get the renderer
