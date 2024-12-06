@@ -1,10 +1,5 @@
 //modules
-import path from 'path';
-import { 
-  Project, 
-  IndentationText, 
-  VariableDeclarationKind 
-} from 'ts-morph';
+import { VariableDeclarationKind } from 'ts-morph';
 //schema
 import Registry from '../schema/Registry';
 //common
@@ -76,59 +71,25 @@ export default function generate(props: PluginWithProject) {
   //-----------------------------//
   // 1. Config
   //extract props
-  const { config, schema, cli } = props;
-  //get client directory
-  const client = path.resolve(
-    cli.transformer.loader.modules(), 
-    '@stackpress/.incept'
-  );
-  const lang = config.lang || 'js';
-  
-  //-----------------------------//
-  // 2. Registry
+  const { schema, project } = props;
   const registry = new Registry(schema);
   
   //-----------------------------//
-  // 3. Project
-  //if no project in the props
-  if (!props.project) {
-    //set up the ts-morph project
-    props.project = new Project({
-      tsConfigFilePath: path.resolve(__dirname, '../../tsconfig.json'),
-      skipAddingFilesFromTsConfig: true,
-      compilerOptions: {
-        outDir: client,
-        // Generates corresponding '.d.ts' file.
-        declaration: true, 
-        // Generates a sourcemap for each corresponding '.d.ts' file.
-        declarationMap: true, 
-        // Generates corresponding '.map' file.
-        sourceMap: true, 
-      },
-      manipulationSettings: {
-        indentationText: IndentationText.TwoSpaces
-      }
-    });
-  }
-  //create the asserts directory if not exists
-  const directory = props.project.createDirectory(client);
-  
-  //-----------------------------//
-  // 4. Generators
+  // 2. Generators
   // - profile/config.ts
   // - address/config.ts
   // - registry.json
   // - config.json
-  generateConfig(directory, schema);
-  generateRegistry(directory, registry);
+  generateConfig(project, schema);
+  generateRegistry(project, registry);
 
   //-----------------------------//
-  // 5. profile/index.ts
+  // 3. profile/index.ts
   for (const model of registry.model.values()) {
     const filepath = `${model.name}/index.ts`;
     //load profile/index.ts if it exists, if not create it
-    const source = directory.getSourceFile(filepath) 
-      || directory.createSourceFile(filepath, '', { overwrite: true });
+    const source = project.getSourceFile(filepath) 
+      || project.createSourceFile(filepath, '', { overwrite: true });
     //import config from './config';
     source.addImportDeclaration({
       moduleSpecifier: `./config`,
@@ -139,12 +100,12 @@ export default function generate(props: PluginWithProject) {
   }
   
   //-----------------------------//
-  // 6. address/index.ts
+  // 4. address/index.ts
   for (const fieldset of registry.fieldset.values()) {
     const filepath = `${fieldset.name}/index.ts`;
     //load profile/index.ts if it exists, if not create it
-    const source = directory.getSourceFile(filepath) 
-      || directory.createSourceFile(filepath, '', { overwrite: true });
+    const source = project.getSourceFile(filepath) 
+      || project.createSourceFile(filepath, '', { overwrite: true });
     //import config from './config';
     source.addImportDeclaration({
       moduleSpecifier: `./config`,
@@ -155,10 +116,10 @@ export default function generate(props: PluginWithProject) {
   }
   
   //-----------------------------//
-  // 7. index.ts
+  // 5. index.ts
   //load index.ts if it exists, if not create it
-  const source = directory.getSourceFile('index.ts') 
-    || directory.createSourceFile('index.ts', '', { overwrite: true });
+  const source = project.getSourceFile('index.ts') 
+    || project.createSourceFile('index.ts', '', { overwrite: true });
   //import config from './config.json';
   source.addImportDeclaration({ 
     moduleSpecifier: './config.json', 
@@ -208,14 +169,4 @@ export default function generate(props: PluginWithProject) {
       }`
     }]
   });
-  
-  //-----------------------------//
-  // 8. Save
-  //if you want ts, tsx files
-  if (lang === 'ts') {
-    props.project.saveSync();
-  //if you want js, d.ts files
-  } else {
-    props.project.emit();
-  }
 }

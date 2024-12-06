@@ -14,4 +14,10 @@ export default function plugin(server: HTTPServer<Config>) {
     server.get('/', path.join(__dirname, 'routes/home'));
     server.get('/**', path.join(__dirname, 'routes/assets'));
   });
+
+  server.on('response', (req, res) => {
+    if (res.code !== 200) {
+      console.log(req.method, req.url.pathname, res.toStatusResponse())
+    }
+  });
 };

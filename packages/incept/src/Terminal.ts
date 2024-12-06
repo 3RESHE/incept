@@ -38,8 +38,29 @@ export default class InceptTerminal extends EventTerminal {
       fs: server.loader.fs 
     });
     this.server = server;
-    this.server.on('transform', _ => {
-      this.transformer.transform({ cli: this, project: this.project() });
+    this.server.on('transform', async _ => {
+      //make a new project
+      const project = this.project();
+      //get client directory
+      const client = path.resolve(
+        this.transformer.loader.modules(), 
+        '@stackpress/.incept'
+      );
+      //create the directory
+      const directory = project.createDirectory(client);
+      //transform (generate the code)
+      this.transformer.transform({ cli: this, project: directory });
+      //get the output language
+      const lang = this.server.config('idea', 'lang') || 'js';
+      //if you want ts, tsx files
+      if (lang === 'ts') {
+        project.saveSync();
+      //if you want js, d.ts files
+      } else {
+        await project.emit();
+        //sometimes this hangs...
+        process.exit(0);
+      }
     });
   }
 

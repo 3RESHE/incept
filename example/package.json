@@ -32,6 +32,7 @@
     "ethers": "6.13.4",
     "js-cookie": "3.0.5",
     "jsonwebtoken": "9.0.2",
+    "mime": "4.0.4",
     "mustache": "4.2.0",
     "mysql2": "3.11.4",
     "pg": "8.13.1"

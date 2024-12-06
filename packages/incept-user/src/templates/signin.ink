@@ -19,6 +19,7 @@
   const { 
     code = 200, 
     status = 'OK', 
+    error,
     type = 'username',
     errors = {}, 
     input = {},
@@ -58,7 +59,7 @@
 <html>
   <html-head />
   <body class="relative dark bg-t-0 tx-t-1 tx-arial scroll-auto">
-    <blank-app {code} {status} {errors} class="flex flex-col flex-center">
+    <blank-app {code} status={error} {errors} class="flex flex-col flex-center">
       <if true={config.logo}>
         <img height="50" alt={config.name} src={config.logo} class="block mx-auto mb-10" />
       <elif true={config.name} />

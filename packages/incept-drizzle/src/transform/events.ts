@@ -36,7 +36,7 @@ export default function generate(
     source.addStatements(`
       const emitter = new ServerRouter();
 
-      emitter.on('${model.dash}-create', function ${model.title}Create(req, res) {
+      emitter.on('${model.dash}-create', async function ${model.title}Create(req, res) {
         const input = config.input(req.data());
         const response = await actions.create(input);
         if (response.error) {
@@ -46,7 +46,7 @@ export default function generate(
         }
       });
 
-      emitter.on('${model.dash}-detail', function ${model.title}Create(req, res) {
+      emitter.on('${model.dash}-detail', async function ${model.title}Create(req, res) {
         ${model.ids.map(
           (column, i) => `const id${i + 1} = req.data('${column.name}');`
         ).join('\n')}
@@ -60,7 +60,7 @@ export default function generate(
         }
       });
 
-      emitter.on('${model.dash}-remove', function ${model.title}Create(req, res) {
+      emitter.on('${model.dash}-remove', async function ${model.title}Create(req, res) {
         ${model.ids.map(
           (column, i) => `const id${i + 1} = req.data('${column.name}');`
         ).join('\n')}
@@ -74,7 +74,7 @@ export default function generate(
         }
       });
 
-      emitter.on('${model.dash}-restore', function ${model.title}Create(req, res) {
+      emitter.on('${model.dash}-restore', async function ${model.title}Create(req, res) {
         ${model.ids.map(
           (column, i) => `const id${i + 1} = req.data('${column.name}');`
         ).join('\n')}
@@ -88,7 +88,7 @@ export default function generate(
         }
       });
 
-      emitter.on('${model.dash}-search', function ${model.title}Create(req, res) {
+      emitter.on('${model.dash}-search', async function ${model.title}Create(req, res) {
         const response = await actions.search(req.data());
         if (response.error) {
           res.setError(response);
@@ -97,7 +97,7 @@ export default function generate(
         }
       });
 
-      emitter.on('${model.dash}-update', function ${model.title}Create(req, res) {
+      emitter.on('${model.dash}-update', async function ${model.title}Create(req, res) {
         ${model.ids.map(
           (column, i) => `const id${i + 1} = req.data('${column.name}');`
         ).join('\n')}

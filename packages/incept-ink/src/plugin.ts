@@ -91,6 +91,7 @@ export default function plugin(server: Server<Config>) {
     });
     server.all(socketRoute, function SSE(req, res) {
       res.stop();
+      res.setStatus(200);
       const response = res.resource as SR;
       response.statusCode = 200;
       response.statusMessage = 'OK';

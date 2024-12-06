@@ -11,6 +11,9 @@ export type Session = SessionData & {
 };
 export type SessionPlugin = SessionType;
 export type AuthConfig = { 
+  session: {
+    seed: string
+  },
   access: Record<string, string[]>,
   auth: {
     name: string,

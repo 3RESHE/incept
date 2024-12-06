@@ -1,8 +1,11 @@
-//types
-import type Server from '@stackpress/ingest/dist/Server';
+//modules
 import path from 'path';
+//stackpress
+import type Server from '@stackpress/ingest/dist/Server';
+//local
 import type { AuthConfig } from './types';
 import Session from './Session';
+import emitter from './events';
 
 const seed = process.env.SESSION_SEED as string || 'default';
 
@@ -23,10 +26,9 @@ export default function plugin(server: Server<AuthConfig>) {
   //on listen, add user routes
   server.on('listen', req => {
     const server = req.context;
+    server.use(emitter);
     server.all('/auth/signin', path.join(__dirname, 'pages/signin'));
-    server.all('/auth/signin/email', path.join(__dirname, 'pages/signin'));
-    server.all('/auth/signin/phone', path.join(__dirname, 'pages/signin'));
-    server.all('/auth/signin/username', path.join(__dirname, 'pages/signin'));
+    server.all('/auth/signin/:type', path.join(__dirname, 'pages/signin'));
     server.all('/auth/signup', path.join(__dirname, 'pages/signup'));
     server.all('/auth/signout', path.join(__dirname, 'pages/signout'));
   });

@@ -158,25 +158,8 @@ export function body(model: Model) {
     }
     `: ''}
     //filters and spans
-    ${model.ids.map(column => {
-      const helper = helpers[column.type];
-      const value = helper
-        ? `${helper}(filter.${column.name})`
-        : `filter.${column.name}`;
-      return `//filter by ${column.name}
-        if (filter.${column.name}) {
-          where.push(eq(${model.camel}.${column.name}, ${value}));
-        }
-      `;
-    }).join('\n')}
-    ${model.active ? `
-      //filter by ${model.active.name}
-      if (typeof filter.${model.active.name} === 'boolean') {
-        where.push(eq(${model.camel}.${model.active.name}, filter.${model.active.name}));
-      }
-    `: ''}
-    ${model.filters.filter(
-      column => !model.active || model.active.name !== column.name
+    ${Array.from(model.columns.values()).filter(
+      column => helpers[column.type] || column.enum
     ).map(column => {
       const helper = helpers[column.type];
       const value = helper

@@ -2,31 +2,51 @@ import type { ServerConfig } from '@stackpress/incept/dist/types';
 import type { LanguageConfig } from '@stackpress/incept-i18n/dist/types';
 import type { AuthConfig } from '@stackpress/incept-user/dist/types';
 import type { TemplateConfig } from '@stackpress/incept-ink/dist/types';
+import type { DatabaseConfig } from '@stackpress/incept-drizzle/dist/types';
 import type { AdminConfig } from '@stackpress/incept-admin/dist/types';
 
 import path from 'path';
 
 const cwd = process.cwd();
+const seed = process.env.SESSION_SEED || 'abc123';
 const environment = process.env.SERVER_ENV || 'development';
+const dburl = process.env.DATABASE_URL || '';
 
 export type Config = ServerConfig 
+  & DatabaseConfig
   & LanguageConfig 
   & TemplateConfig 
   & AuthConfig 
   & AdminConfig;
 
 export const config: Config = {
+  idea: { lang: 'js' },
   server: {
     cwd: cwd,
-    routes: environment === 'development' 
-      ? path.join(cwd, 'src/routes')
-      : path.join(cwd, 'dist/routes'),
     mode: environment,
     bodySize: 0
   },
-  cookie: { 
-    path: '/' 
+  database: {
+    engine: 'pglite',
+    url: dburl
   },
+  template: {
+    engine: 'ink',
+    config: {
+      brand: '',
+      minify: environment !== 'development',
+      buildPath: path.join(cwd, 'build'),
+      cwd: environment === 'development' 
+        ? path.join(cwd, 'src')
+        : path.join(cwd, 'dist'),
+      dev: { 
+        buildRoute: '/build/client',
+        socketRoute: '/__ink_dev__'
+      }
+    }
+  },
+  cookie: { path: '/' },
+  session: { seed: seed },
   auth: {
     name: 'Incept',
     logo: '/images/incept-logo-long.png',
@@ -128,21 +148,6 @@ export const config: Config = {
       'connection-restore',
       'connection-update'
     ]
-  },
-  template: {
-    engine: 'ink',
-    config: {
-      brand: '',
-      minify: environment !== 'development',
-      buildPath: path.join(cwd, 'build'),
-      cwd: environment === 'development' 
-        ? path.join(cwd, 'src')
-        : path.join(cwd, 'dist'),
-      dev: { 
-        buildRoute: '/build/client',
-        socketRoute: '/__ink_dev__'
-      }
-    }
   },
   admin: {
     root: '/admin',

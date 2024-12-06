@@ -11,6 +11,7 @@ import generateRemove from './remove';
 import generateRestore from './restore';
 import generateSearch from './search';
 import generateUpdate from './update';
+import generateGet from './get';
 
 
 //map from column types to sql types and helpers
@@ -118,5 +119,6 @@ export default function generate(
     generateRestore(source, model);
     generateSearch(source, model);
     generateUpdate(source, model, config);
+    generateGet(source, model);
   }
 }

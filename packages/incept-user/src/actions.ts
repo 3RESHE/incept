@@ -1,20 +1,29 @@
 //stackpress
 import type { StatusResponse } from '@stackpress/types/dist/types';
 import { email } from '@stackpress/incept/dist/assert';
+import Exception from '@stackpress/incept/dist/Exception';
 //common
-import type { ProfileAuth, SignupInput, Profile, Auth } from '../types';
+import type { 
+  Auth,
+  Profile, 
+  ProfileAuth, 
+  AuthExtended,
+  SignupInput, 
+  SigninType, 
+  SigninInput
+} from './types';
 
 /**
  * Signup action
  */
-export default async function signup(
-  input: SignupInput
+export async function signup(
+  input: Partial<SignupInput>
 ): Promise<Partial<StatusResponse<ProfileAuth>>> {
   let client;
   try {
     client = await import('@stackpress/incept/client');
   } catch (error) {
-    return { code: 500, status: 'Internal Server Error' };
+    return Exception.upgrade(error as Error).toResponse();
   }
   //validate input
   const errors = assert(input);
@@ -25,7 +34,7 @@ export default async function signup(
   }
   //create profile
   const response = await client.model.profile.action.create({
-    name: input.name,
+    name: input.name as string,
     roles: [ 'user' ]
   });
   //if error, return response
@@ -77,12 +86,50 @@ export default async function signup(
   }
 
   return { ...response, results };
-}
+};
+
+/**
+ * Signin action
+ */
+export async function signin(
+  type: SigninType, 
+  input: Partial<SigninInput>
+): Promise<Partial<StatusResponse<AuthExtended>>> {
+  let client;
+  try {
+    client = await import('@stackpress/incept/client');
+  } catch (error) {
+    return Exception.upgrade(error as Error).toResponse();
+  }
+  
+  //get form body
+  const response = await client.model.auth.action.search({
+    filter: { type: type, token: input[type] || '' }
+  });
+  const results = response.results?.[0] as AuthExtended;
+  if (response.code !== 200) {
+    return { ...response, results };
+  } else if (!results) {
+    return { code: 404, status: 'Not Found', error: 'User Not Found' };
+  } else if (String(input.secret) !== String(results.secret)) {
+    return { code: 401, status: 'Unauthorized', error: 'Invalid Password' };
+  }
+  //update consumed
+  await client.model.auth.action.update(results.id, {
+    consumed: new Date()
+  });
+  return {
+    code: 200,
+    status: 'OK',
+    results: results,
+    total: 1
+  };
+};
 
 /**
  * Validate signup input
  */
-export function assert(input: SignupInput) {
+export function assert(input: Partial<SignupInput>) {
   const errors: Record<string, string> = {};
   if (!input.name) {
     errors.name = 'Name is required';

@@ -1,6 +1,3 @@
-//modules
-import path from 'path';
-import { Project, IndentationText } from 'ts-morph';
 //stackpress
 import type { PluginWithProject } from '@stackpress/incept/dist/types';
 import Registry from '@stackpress/incept/dist/schema/Registry';
@@ -31,67 +28,32 @@ export default function generate(props: PluginWithProject) {
   //-----------------------------//
   // 1. Config
   //extract props
-  const { config, schema, cli } = props;
-  //get client directory
-  const client = path.resolve(
-    cli.transformer.loader.modules(), 
-    '@stackpress/.incept'
-  );
-
-  const lang = config.lang || 'js';
+  const { config, schema, project } = props;
+  const registry = new Registry(schema);
   //determine url
   const url = enval<string>(config.url || 'env(DATABASE_URL)');
   //determine engine
   const engine = enval<string>(config.engine || 'pglite');
 
   //-----------------------------//
-  // 2. Registry
-  const registry = new Registry(schema);
-
-  //-----------------------------//
-  // 3. Project
-  //if no project in the props
-  if (!props.project) {
-    //set up the ts-morph project
-    props.project = new Project({
-      tsConfigFilePath: path.resolve(__dirname, '../../tsconfig.json'),
-      skipAddingFilesFromTsConfig: true,
-      compilerOptions: {
-        outDir: client,
-        // Generates corresponding '.d.ts' file.
-        declaration: true, 
-        // Generates a sourcemap for each corresponding '.d.ts' file.
-        declarationMap: true, 
-        // Generates corresponding '.map' file.
-        sourceMap: true, 
-      },
-      manipulationSettings: {
-        indentationText: IndentationText.TwoSpaces
-      }
-    });
-  }
-  //create the asserts directory if not exists
-  const directory = props.project.createDirectory(client);
-
-  //-----------------------------//
-  // 4. Generators
+  // 2. Generators
   // - store.ts
-  generateStore(directory, registry, { url, engine });
+  generateStore(project, registry, { url, engine });
   // - profile/schema.ts
-  generateSchema(directory, registry, { url, engine });
+  generateSchema(project, registry, { url, engine });
   // - profile/actions.ts
-  generateActions(directory, registry, { url, engine });
+  generateActions(project, registry, { url, engine });
   // - profile/events.ts
-  generateEvents(directory, registry, { url, engine });
+  generateEvents(project, registry, { url, engine });
 
   //-----------------------------//
-  // 5. profile/index.ts
+  // 3. profile/index.ts
 
   for (const model of registry.model.values()) {
     const filepath = `${model.name}/index.ts`;
     //load profile/index.ts if it exists, if not create it
-    const source = directory.getSourceFile(filepath) 
-      || directory.createSourceFile(filepath, '', { overwrite: true });
+    const source = project.getSourceFile(filepath) 
+      || project.createSourceFile(filepath, '', { overwrite: true });
     //import * as action from './actions';
     source.addImportDeclaration({
       moduleSpecifier: `./actions`,
@@ -114,10 +76,10 @@ export default function generate(props: PluginWithProject) {
   }
 
   //-----------------------------//
-  // 6. index.ts
+  // 4. index.ts
   //load index.ts if it exists, if not create it
-  const source = directory.getSourceFile('index.ts') 
-    || directory.createSourceFile('index.ts', '', { overwrite: true });
+  const source = project.getSourceFile('index.ts') 
+    || project.createSourceFile('index.ts', '', { overwrite: true });
   //import * as schema from './schema';
   source.addImportDeclaration({ 
     moduleSpecifier: './schema', 
@@ -132,14 +94,4 @@ export default function generate(props: PluginWithProject) {
   source.addExportDeclaration({ 
     namedExports: [ 'schema', 'store' ] 
   });
-
-  //-----------------------------//
-  // 7. Save
-  //if you want ts, tsx files
-  if (lang === 'ts') {
-    props.project.saveSync();
-  //if you want js, d.ts files
-  } else {
-    props.project.emit();
-  }
 };

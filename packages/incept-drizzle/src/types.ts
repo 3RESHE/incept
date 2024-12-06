@@ -1,3 +1,9 @@
+export type DatabaseConfig = {
+  database: {
+    engine: string,
+    url: string
+  }
+};
 export type SearchParams = {
   q?: string,
   filter?: Record<string, string|number|boolean>,

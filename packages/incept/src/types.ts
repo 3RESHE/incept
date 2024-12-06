@@ -1,5 +1,5 @@
 //modules
-import type { Project } from 'ts-morph';
+import type { Directory } from 'ts-morph';
 //stackpress
 import type { SchemaConfig } from '@stackpress/idea-parser';
 import type { PluginProps } from '@stackpress/idea-transformer';
@@ -11,16 +11,18 @@ import type InceptTerminal from './Terminal';
 
 export type ProjectProps = {
   cli: InceptTerminal,
-  project: Project
+  project: Directory
 };
 
 export type PluginWithProject = PluginProps<ProjectProps>;
 
 export type ServerConfig = {
+  idea: {
+    lang: string
+  },
   server: { 
     cwd: string, 
     mode: string, 
-    routes: string, 
     bodySize: number 
   },
   cookie: CookieOptions

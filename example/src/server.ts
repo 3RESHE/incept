@@ -10,7 +10,7 @@ export default async function make() {
   });
   //load the plugins
   await app.bootstrap();
-  await app.call('config', {});
-  await app.call('listen', {});
+  await app.call('config');
+  await app.call('listen');
   return app;
 }
