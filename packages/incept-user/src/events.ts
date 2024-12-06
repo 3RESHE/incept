@@ -7,7 +7,8 @@ import { signup, signin } from './actions';
 const emitter = new ServerRouter<SessionConfig>();
 
 emitter.on('auth-signup', async function AuthSignup(req, res) {
-  const response = await signup(req.data());
+  const roles = req.context.config<string[]>('session', 'auth', 'roles') || [];
+  const response = await signup({ ...req.data(), roles });
   res.fromStatusResponse(response);
 });
 

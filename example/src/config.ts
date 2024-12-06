@@ -54,10 +54,9 @@ export const config: Config = {
         { method: 'ALL', route: '/auth/**' },
         { method: 'ALL', route: '/admin/**' }
       ],
-      user: [
+      USER: [
         { method: 'ALL', route: '/' },
-        { method: 'ALL', route: '/auth/**' },
-        { method: 'ALL', route: '/admin/**' }
+        { method: 'ALL', route: '/auth/**' }
       ],
       GUEST: [
         { method: 'ALL', route: '/' },
@@ -69,6 +68,7 @@ export const config: Config = {
       logo: '/images/incept-logo-long.png',
       '2fa': {},
       captcha: {},
+      roles: [ 'USER' ],
       username: true,
       email: true,
       phone: true,

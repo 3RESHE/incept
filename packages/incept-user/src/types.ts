@@ -35,6 +35,7 @@ export type SessionConfig = {
       logo: string,
       '2fa': {},
       captcha: {},
+      roles: string[],
       username: boolean,
       email: boolean,
       phone: boolean,
@@ -58,7 +59,8 @@ export type SignupInput = {
   username?: string,
   email?: string,
   phone?: string,
-  secret: string
+  secret: string,
+  roles: string[]
 };
 
 export type SigninInput = {

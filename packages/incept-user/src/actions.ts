@@ -35,7 +35,7 @@ export async function signup(
   //create profile
   const response = await client.model.profile.action.create({
     name: input.name as string,
-    roles: [ 'user' ]
+    roles: input.roles || []
   });
   //if error, return response
   if (response.code !== 200) {
