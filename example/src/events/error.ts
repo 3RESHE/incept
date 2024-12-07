@@ -1,15 +1,27 @@
-import { ServerRequest, Response } from '@stackpress/ingest';
+//modules
+import fs from 'node:fs';
+import path from 'node:path';
+//stackpress
+import type { ServerRequest } from '@stackpress/ingest/dist/types';
+import type Response from '@stackpress/ingest/dist/Response';
+import type { TemplatePlugin } from '@stackpress/incept-ink/dist/types';
 
-export default function Error(req: ServerRequest, res: Response) {
-  console.log(req.method, req.url.pathname, res.toStatusResponse())
-  const html = [ `<h1>${res.error}</h1>` ];
-  const stack = res.stack?.map((log, i) => {
-    const { line, char } = log;
-    const method = log.method.replace(/</g, "&lt;").replace(/>/g, "&gt;");
-    const file = log.file.replace(/</g, "&lt;").replace(/>/g, "&gt;");
-    return `#${i + 1} ${method} - ${file}:${line}:${char}`;
-  }) || [];
-  html.push(`<pre>${stack.join('<br><br>')}</pre>`);
+export default async function Errorage(req: ServerRequest, res: Response) {  
+  //get the server
+  const server = req.context;
+  //get the renderer
+  const { render } = server.plugin<TemplatePlugin>('template');
+  //general settings
+  const response = res.toStatusResponse();
+  response.stack = res.stack || [];
+  response.stack = response.stack.slice(1).map(trace => {
+    const { file } = trace;
+    if (!file.startsWith(path.sep) || !fs.existsSync(file)) {
+      return trace;
+    }
 
-  res.setHTML(html.join('<br>'));
+    return { ...trace, source: fs.readFileSync(file, 'utf8') };
+  });
+  //show form
+  res.setHTML(await render('@/templates/500', { ...response, url: req.url }));
 };
