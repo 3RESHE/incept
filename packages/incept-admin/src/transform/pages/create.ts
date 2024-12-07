@@ -63,7 +63,7 @@ export default function generate(directory: Directory, registry: Registry) {
         //get the server
         const server = req.context;
         //get authorization
-        const authorized = await server.call('authorize', req, res);
+        const authorized = await server.call('authorize', req);
         //if not authorized
         if (authorized.code !== 200) {
           return;
@@ -71,8 +71,6 @@ export default function generate(directory: Directory, registry: Registry) {
         //get the admin config
         const admin = server.config<AdminConfig['admin']>('admin') || {};
         const root = admin.root || '/admin';
-        //general settings
-        const settings = { ...admin, session: authorized.results };
         //get the renderer
         const { render } = server.plugin<TemplatePlugin>('template');
         //if form submitted
@@ -95,11 +93,15 @@ export default function generate(directory: Directory, registry: Registry) {
           return res.setHTML(await render(template, { 
             ...response, 
             input: req.data(),
-            settings
+            settings: admin,
+            session: authorized.results,
           }), response.code || 400);
         }
         //show form
-        return res.setHTML(await render(template, { settings }));
+        return res.setHTML(await render(template, { 
+          settings: admin,
+          session: authorized.results 
+        }));
       `
     });
   }

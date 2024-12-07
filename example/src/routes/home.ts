@@ -13,8 +13,9 @@ export default async function HomePage(req: ServerRequest, res: Response) {
   }
   //get the renderer
   const { render } = server.plugin<TemplatePlugin>('template');
-  //general settings
-  const settings = { session: authorized.results };
   //show form
-  res.setHTML(await render('@/templates/home', { settings }));
+  res.setHTML(await render('@/templates/home', { 
+    url: req.url.pathname,
+    session: authorized.results
+  }));
 };

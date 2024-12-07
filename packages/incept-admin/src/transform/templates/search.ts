@@ -28,6 +28,7 @@ const template = `
   import { addQueryParam } from '@stackpress/incept-ink/dist/helpers';
   const { 
     q,
+    error,
     code = 200, 
     status = 'OK',
     span = {}, 
@@ -36,15 +37,15 @@ const template = `
     total = 0,
     skip = 0,
     take = 50,
+    session = { 
+      id: 0, 
+      token: '', 
+      roles: [ 'GUEST' ], 
+      permissions: [] 
+    },
     settings = { 
       root: '/admin',
-      menu: [], 
-      session: { 
-        id: 0, 
-        token: '', 
-        roles: [ 'GUEST' ], 
-        permissions: [] 
-      }
+      menu: []
     }
   } = props('document');
   const url = \`\${settings.root}/{{lower}}/search\`;
@@ -77,7 +78,7 @@ const template = `
 <html>
   <html-head />
   <body class="relative dark bg-t-0 tx-t-1 tx-arial">
-    <admin-app {settings} {url} {title} {code} {status}>
+    <admin-app {settings} {session} {url} {title} {code} {error} {status}>
       <header class="p-10 bg-t-1">
         <element-crumbs 
           crumbs={crumbs} 

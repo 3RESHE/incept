@@ -12,7 +12,7 @@ export default function plugin(server: HTTPServer<Config>) {
   server.on('listen', req => {
     const server = req.context;
     server.get('/', path.join(__dirname, 'routes/home'));
-    server.get('/**', path.join(__dirname, 'routes/assets'));
+    server.get('/**.*', path.join(__dirname, 'routes/assets'));
     server.on('error', path.join(__dirname, 'events/error'));
   });
 

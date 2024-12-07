@@ -8,7 +8,16 @@
     code, 
     status,
     errors = {},
-    settings = { menu: [] },
+    session = { 
+      id: 0, 
+      token: '', 
+      roles: [ 'GUEST' ], 
+      permissions: [] 
+    },
+    settings = { 
+      root: '/admin',
+      menu: []
+    },
     brand = 'Admin', 
     logo = '/images/incept-logo-square-1.png'
   } = this.props;
@@ -221,17 +230,43 @@
   </main>
 </aside>
 <aside right class={className.right}>
-  <main class="p-10 bg-t-1 h-full">
-    <a class="tx-white inline-block py-5" href="/profile">
-      <i class="fas fa-fw fa-user mr-5 tx-t-1"></i>
-      Profile
-    </a>
-    <hr class="b-t-0" />
-    <a class="tx-white inline-block py-5" href="/auth/signout">
-      <i class="fas fa-fw fa-power-off mr-5 tx-t-1"></i>
-      Sign Out
-    </a>
-  </main>
+  <section class="flex flex-col h-full">
+    <header>
+      <div class="p-10 bg-t-2 flex flex-center-y" if={!!session?.id}>
+        <element-icon class="tx-4xl inline-block mr-5" name="user-circle" />
+        <span>{session?.name}</span>
+      </div>
+      <nav class="p-10 bg-t-3">
+        <a class="tx-info tx-sm inline-block p-5 bg-t-0" href="#">EN</a>
+        <a class="tx-info tx-sm inline-block p-5 bg-t-0" href="#">TG</a>
+      </nav>
+    </header>
+    <main class="flex-grow bg-t-0">
+      <div class="h-full" if={!!session?.id}>
+        <nav 
+          class="flex flex-center-y px-10 py-15 b-solid b-t-1 bt-0 bx-0 bb-1" 
+          if={session?.roles && session.roles.includes('ADMIN')}
+        >
+          <element-icon class="inline-block mr-5" name="gauge" />
+          <a class="tx-info" href={settings.root}>Admin</a>
+        </nav>
+        <nav class="flex flex-center-y px-10 py-15 b-solid b-t-1 bt-0 bx-0 bb-1">
+          <element-icon class="inline-block mr-5" name="power-off" />
+          <a class="tx-info" href="/auth/signout">Sign Out</a>
+        </nav>
+      </div>
+      <div class="h-full" if={!session?.id}>
+        <nav class="flex flex-center-y px-10 py-15 b-solid b-t-1 bt-0 bx-0 bb-1">
+          <element-icon class="inline-block mr-5" name="lock" />
+          <a class="tx-info" href="/auth/signin">Sign In</a>
+        </nav>
+        <nav class="flex flex-center-y px-10 py-15 b-solid b-t-1 bt-0 bx-0 bb-1">
+          <element-icon class="inline-block mr-5" name="trophy" />
+          <a class="tx-info" href="/auth/signup">Sign Up</a>
+        </nav>
+      </div>
+    </main>
+  </section>
 </aside>
 <main class={className.main} mount=notify>{children}</main>
 <element-notify />

@@ -70,8 +70,6 @@ export default function generate(directory: Directory, registry: Registry) {
         //get the admin config
         const admin = server.config<AdminConfig['admin']>('admin') || {};
         const root = admin.root || '/admin';
-        //general settings
-        const settings = { ...admin, session: authorized.results };
         //get the renderer
         const { render } = server.plugin<TemplatePlugin>('template');
         //get id from url params
@@ -94,7 +92,11 @@ export default function generate(directory: Directory, registry: Registry) {
               return res.redirect(\`\${root}/${model.dash}/search\`);
             }
             //not removed, render error page
-            return res.setHTML(await render(error, { ...response, settings }));
+            return res.setHTML(await render(error, { 
+              ...response, 
+              settings: admin,
+              session: authorized.results 
+            }));
           }
           //not confirmed, fetch the data using the id
           const response = await server.call('${model.dash}-detail', req);
@@ -104,10 +106,18 @@ export default function generate(directory: Directory, registry: Registry) {
           }
           //if successfully fetched
           if (response.code === 200) {
-            return res.setHTML(await render(template, { ...response, settings }));
+            return res.setHTML(await render(template, { 
+              ...response, 
+              settings: admin,
+              session: authorized.results 
+            }));
           }
           //it did not fetch, render error page
-          return res.setHTML(await render(error, { ...response, settings }));
+          return res.setHTML(await render(error, { 
+            ...response, 
+            settings: admin,
+            session: authorized.results 
+          }));
         }
         //if they want json (success or fail)
         if (req.data.has('json')) {
@@ -117,7 +127,8 @@ export default function generate(directory: Directory, registry: Registry) {
         res.setHTML(await render(error, { 
           code: 404, 
           status: 'Not Found', 
-          settings 
+          settings: admin,
+          session: authorized.results 
         }));
       `
     });

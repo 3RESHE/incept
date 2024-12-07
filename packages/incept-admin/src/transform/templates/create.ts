@@ -22,19 +22,20 @@ const template = `
   import { _ } from '@stackpress/incept-i18n';
 
   const { 
+    error,
     code = 200, 
     status = 'OK', 
     errors = {}, 
     input = {{defaults}},
+    session = { 
+      id: 0, 
+      token: '', 
+      roles: [ 'GUEST' ], 
+      permissions: [] 
+    },
     settings = { 
       root: '/admin',
-      menu: [], 
-      session: { 
-        id: 0, 
-        token: '', 
-        roles: [ 'GUEST' ], 
-        permissions: [] 
-      }
+      menu: []
     }
   } = props('document');
   const url = \`\${settings.root}/{{lower}}/create\`;
@@ -49,7 +50,7 @@ const template = `
 <html>
   <html-head />
   <body class="relative dark bg-t-0 tx-t-1 tx-arial">
-    <admin-app {settings} {url} {title} {code} {status} {errors}>
+    <admin-app {settings} {session} {url} {title} {code} {status} {error} {errors}>
       <header class="p-10 bg-t-1">
         <element-crumbs 
           crumbs={crumbs} 

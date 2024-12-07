@@ -70,8 +70,6 @@ export default function generate(directory: Directory, registry: Registry) {
         //get the admin config
         const admin = server.config<AdminConfig['admin']>('admin') || {};
         const root = admin.root || '/admin';
-        //general settings
-        const settings = { ...admin, session: authorized.results };
         //get the renderer
         const { render } = server.plugin<TemplatePlugin>('template');
         //extract filters from url query
@@ -109,12 +107,17 @@ export default function generate(directory: Directory, registry: Registry) {
             sort, 
             skip, 
             take, 
-            settings,
+            settings: admin,
+            session: authorized.results,
             ...response
           }));
         }
         //it did not search, render error page
-        res.setHTML(await render(error, { ...response, settings}));
+        res.setHTML(await render(error, { 
+          ...response, 
+          settings: admin,
+          session: authorized.results 
+        }));
       `
     });
   }

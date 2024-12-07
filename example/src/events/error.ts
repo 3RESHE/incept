@@ -23,5 +23,8 @@ export default async function Errorage(req: ServerRequest, res: Response) {
     return { ...trace, source: fs.readFileSync(file, 'utf8') };
   });
   //show form
-  res.setHTML(await render('@/templates/500', { ...response, url: req.url }));
+  res.setHTML(await render('@/templates/500', { 
+    ...response, 
+    url: req.url.pathname 
+  }));
 };
