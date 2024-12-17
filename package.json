@@ -8,20 +8,20 @@
     "dev": "yarn --cwd example dev",
     "event": "yarn --cwd example emit",
     "generate": "yarn --cwd example generate",
+    "populate": "yarn --cwd example populate",
+    "purge": "yarn --cwd example purge",
+    "push": "yarn --cwd example push",
     "build": "yarn build:incept && yarn build:generators && yarn build:plugins",
     "build:incept": "yarn --cwd packages/incept build",
-    "build:generators": "yarn build:types && yarn build:drizzle && yarn build:ink",
+    "build:generators": "yarn build:types && yarn build:inquire && yarn build:ink",
     "build:types": "yarn --cwd packages/incept-types build",
-    "build:drizzle": "yarn --cwd packages/incept-drizzle build",
     "build:ink": "yarn --cwd packages/incept-ink build",
+    "build:inquire": "yarn --cwd packages/incept-inquire build",
     "build:plugins": "yarn build:i18n && yarn build:user && yarn build:admin",
     "build:i18n": "yarn --cwd packages/incept-i18n build",
     "build:admin": "yarn --cwd packages/incept-admin build",
     "build:user": "yarn --cwd packages/incept-user build",
-    "build:example": "yarn --cwd example build",
-    "push": "yarn --cwd example push",
-    "migrate": "yarn --cwd example migrate",
-    "studio": "yarn --cwd example studio"
+    "build:example": "yarn --cwd example build"
   },
   "devDependencies": {
     "npm-run-all": "4.1.5"

@@ -31,10 +31,13 @@
     "tsconfig.json"
   ],
   "dependencies": {
+    "@paralleldrive/cuid2": "2.2.2",
     "@stackpress/idea-transformer": "0.3.10",
     "@stackpress/ingest": "0.3.10",
+    "@stackpress/inquire": "0.2.3",
     "@stackpress/types": "0.3.10",
-    "mustache": "4.2.0"
+    "mustache": "4.2.0",
+    "nanoid": "3.3.8"
   },
   "devDependencies": {
     "@types/mustache": "4.2.5",

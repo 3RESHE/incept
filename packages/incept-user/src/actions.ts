@@ -1,5 +1,6 @@
 //stackpress
 import type { StatusResponse } from '@stackpress/types/dist/types';
+import type Engine from '@stackpress/inquire/dist/Engine';
 import { email } from '@stackpress/incept/dist/assert';
 import Exception from '@stackpress/incept/dist/Exception';
 //common
@@ -17,7 +18,8 @@ import type {
  * Signup action
  */
 export async function signup(
-  input: Partial<SignupInput>
+  input: Partial<SignupInput>,
+  engine: Engine
 ): Promise<Partial<StatusResponse<ProfileAuth>>> {
   let client;
   try {
@@ -33,7 +35,7 @@ export async function signup(
     return { code: 400, error: 'Invalid Parameters', errors };
   }
   //create profile
-  const response = await client.model.profile.action.create({
+  const response = await client.model.profile.actions(engine).create({
     name: input.name as string,
     roles: input.roles || []
   });
@@ -47,7 +49,7 @@ export async function signup(
   results.auth = {};
   //if email
   if (input.email) {
-    const auth = await client.model.auth.action.create({
+    const auth = await client.model.auth.actions(engine).create({
       profileId: results.id,
       type: 'email',
       token: String(input.email),
@@ -60,7 +62,7 @@ export async function signup(
   } 
   //if phone
   if (input.phone) {
-    const auth = await client.model.auth.action.create({
+    const auth = await client.model.auth.actions(engine).create({
       profileId: results.id,
       type: 'phone',
       token: String(input.phone),
@@ -73,7 +75,7 @@ export async function signup(
   }
   //if username
   if (input.username) {
-    const auth = await client.model.auth.action.create({
+    const auth = await client.model.auth.actions(engine).create({
       profileId: results.id,
       type: 'username',
       token: String(input.username),
@@ -93,7 +95,8 @@ export async function signup(
  */
 export async function signin(
   type: SigninType, 
-  input: Partial<SigninInput>
+  input: Partial<SigninInput>,
+  engine: Engine
 ): Promise<Partial<StatusResponse<AuthExtended>>> {
   let client;
   try {
@@ -103,7 +106,7 @@ export async function signin(
   }
   
   //get form body
-  const response = await client.model.auth.action.search({
+  const response = await client.model.auth.actions(engine).search({
     filter: { type: type, token: input[type] || '' }
   });
   const results = response.results?.[0] as AuthExtended;
@@ -115,7 +118,7 @@ export async function signin(
     return { code: 401, status: 'Unauthorized', error: 'Invalid Password' };
   }
   //update consumed
-  await client.model.auth.action.update(results.id, {
+  await client.model.auth.actions(engine).update(results.id, {
     consumed: new Date()
   });
   return {

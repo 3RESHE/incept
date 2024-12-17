@@ -1,3 +1,6 @@
+//modules
+import { createId as cuid, init } from '@paralleldrive/cuid2';
+import { nanoid } from 'nanoid';
 //stackpress
 import type { EnumConfig } from '@stackpress/idea-parser/dist/types';
 //local
@@ -128,7 +131,28 @@ export default class Column {
    */
   public get default() {
     //@default("some value")
-    return this.attributes.default;
+    const defaults = this.attributes.default;
+    if (typeof defaults === 'string') {
+      if (defaults.toLowerCase() === 'cuid()') {
+        return cuid();
+      } else if (defaults.toLowerCase() === 'nanoid()') {
+        return nanoid();
+      } else if (defaults.toLowerCase() === 'now()') {
+        return new Date();
+      } else if (/^cuid\(([0-9]+)\)$/.test(defaults)) {
+        return cuid();
+      }
+      const forCuid = defaults.match(/^cuid\(([0-9]+)\)$/);
+      if (forCuid) {
+        const uuid = init({ length: parseInt(forCuid[1]) || 10 });
+        return uuid();
+      }
+      const forNano = defaults.match(/^nanoid\(([0-9]+)\)$/);
+      if (forNano) {
+        return nanoid(parseInt(forNano[1]) || 10);
+      }
+    }
+    return defaults;
   }
 
   /**
@@ -224,7 +248,8 @@ export default class Column {
 
   /**
    * Returns the related column, if any
-   * example: user User 
+   * - where parent is this (local) column (id)
+   * - where child is the foreign column (profileId)
    */
   public get related() {
     //get foreign model
@@ -247,7 +272,9 @@ export default class Column {
   }
 
   /**
-   * Returns the column relation
+   * Returns the column relations
+   * - where parent is the foreign column (id)
+   * - where child is this (local) column (profileId)
    */
   public get relation() {
     //ie. owner User @relation({ name "connections" local "userId" foreign "id" })
@@ -302,16 +329,26 @@ export default class Column {
     };
 
     return { 
+      //ie. users User[]
       parent: { 
+        //User
         model: models.parent, 
+        //user User[]
         column: columns.parent, 
+        //id
         key: keys.parent, 
+        //2
         type: types.parent 
       }, 
+      //ie. owner User @relation({ name "connections" local "userId" foreign "id" })
       child: { 
+        //File
         model: models.child, 
+        //owner User @relation(...)
         column: columns.child, 
+        //profileId
         key: keys.child, 
+        //1
         type: types.child 
       } 
     };

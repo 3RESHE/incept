@@ -3,8 +3,6 @@ import type { CLIProps } from '@stackpress/idea-transformer/dist/types';
 import type Transformer from '@stackpress/idea-transformer/dist/Transformer';
 import type Server from '@stackpress/ingest/dist/Server';
 import { ServerRouter } from '@stackpress/ingest/dist/Router';
-//local
-import type { DatabaseConfig } from './types';
 
 /**
  * This interface is intended for the Incept library.
@@ -28,13 +26,8 @@ export default function plugin(server: Server) {
     if (!transformer.schema.plugin) {
       transformer.schema.plugin = {};
     }
-    const server = req.context;
-    const config = server.config<DatabaseConfig['database']>('database');
     //add this plugin generator to the schema
     //so it can be part of the transformation
-    transformer.schema.plugin['@stackpress/incept-drizzle/dist/transform'] = {
-      url: config.url,
-      engine: config.engine
-    };
+    transformer.schema.plugin['@stackpress/incept-inquire/dist/transform'] = {};
   });
 };

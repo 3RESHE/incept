@@ -68,8 +68,8 @@ model Connection
                     @list.date("m d, Y h:iA") 
                     @view.date("m d, Y h:iA")
 
-  owner    Profile  @relation({ local "ownerId" foreign "id" })
-  member   Profile  @relation({ local "memberId" foreign "id" })
+  owner    Profile  @relation({ name "memberships" local "ownerId" foreign "id" })
+  member   Profile  @relation({ name "connections" local "memberId" foreign "id" })
 }
 
 //--------------------------------------------------------------------//

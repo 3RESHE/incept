@@ -1,5 +1,7 @@
 //stackpress
 import { ServerRouter } from '@stackpress/ingest/dist/Router';
+//incept
+import type { StorePlugin } from '@stackpress/incept-inquire/dist/types';
 //local
 import type { SessionConfig, SessionPlugin, AuthExtended } from './types';
 import { signup, signin } from './actions';
@@ -7,16 +9,21 @@ import { signup, signin } from './actions';
 const emitter = new ServerRouter<SessionConfig>();
 
 emitter.on('auth-signup', async function AuthSignup(req, res) {
+  //get the roles from the config
   const roles = req.context.config<string[]>('session', 'auth', 'roles') || [];
-  const response = await signup({ ...req.data(), roles });
+  //get the database engine
+  const store = req.context.plugin<StorePlugin>('store');
+  const response = await signup({ ...req.data(), roles }, store);
   res.fromStatusResponse(response);
 });
 
 emitter.on('auth-signin', async function AuthSignup(req, res) {
   //get the type of signin username, email, phone
   const type = req.data('type') || 'username';
+  //get the database engine
+  const store = req.context.plugin<StorePlugin>('store');
   //get the user from the database
-  const response = await signin(type, req.data());
+  const response = await signin(type, req.data(), store);
   //sync the response object with the response
   res.fromStatusResponse(response);
   //if error

@@ -1,9 +1,7 @@
 //stackpress
 import type { PluginWithProject } from '@stackpress/incept/dist/types';
 import Registry from '@stackpress/incept/dist/schema/Registry';
-import { enval } from '@stackpress/incept/dist/schema/helpers';
 //local
-import generateStore from './store';
 import generateSchema from './schema';
 import generateActions from './actions';
 import generateEvents from './events';
@@ -17,8 +15,6 @@ import generateEvents from './events';
  * | - schema.ts
  * - index.ts
  * - events.ts
- * - schema.ts
- * - store.ts
  */
 
 /**
@@ -28,23 +24,18 @@ export default function generate(props: PluginWithProject) {
   //-----------------------------//
   // 1. Config
   //extract props
-  const { config, schema, project } = props;
+  const { schema, project } = props;
   const registry = new Registry(schema);
-  //determine url
-  const url = enval<string>(config.url || 'env(DATABASE_URL)');
-  //determine engine
-  const engine = enval<string>(config.engine || 'pglite');
 
   //-----------------------------//
   // 2. Generators
-  // - store.ts
-  generateStore(project, registry, { url, engine });
-  // - profile/schema.ts
-  generateSchema(project, registry, { url, engine });
   // - profile/actions.ts
-  generateActions(project, registry, { url, engine });
+  generateActions(project, registry);
   // - profile/events.ts
-  generateEvents(project, registry, { url, engine });
+  // - events.ts
+  generateEvents(project, registry);
+  // - profile/schema.ts
+  generateSchema(project, registry);
 
   //-----------------------------//
   // 3. profile/index.ts
@@ -54,29 +45,29 @@ export default function generate(props: PluginWithProject) {
     //load profile/index.ts if it exists, if not create it
     const source = project.getSourceFile(filepath) 
       || project.createSourceFile(filepath, '', { overwrite: true });
-    //import * as action from './actions';
+    //import action from './actions';
     source.addImportDeclaration({
       moduleSpecifier: `./actions`,
-      defaultImport: '* as action'
+      defaultImport: 'actions'
     });
     //import events from './events';
     source.addImportDeclaration({
       moduleSpecifier: `./events`,
       defaultImport: 'events'
     });
-    //import schema from './schema';
+    //import * as schema from './schema';
     source.addImportDeclaration({
       moduleSpecifier: `./schema`,
-      defaultImport: 'schema'
+      defaultImport: '* as schema'
     });
-    //export { action, schema, event };
+    //export { actions, schema, event };
     source.addExportDeclaration({ 
-      namedExports: [ 'action', 'schema', 'events' ] 
+      namedExports: [ 'actions', 'schema', 'events' ] 
     });
   }
 
   //-----------------------------//
-  // 4. index.ts
+  // 5. index.ts
   //load index.ts if it exists, if not create it
   const source = project.getSourceFile('index.ts') 
     || project.createSourceFile('index.ts', '', { overwrite: true });
@@ -88,7 +79,7 @@ export default function generate(props: PluginWithProject) {
   //import * as store from './store';
   source.addImportDeclaration({ 
     moduleSpecifier: './store', 
-    defaultImport: 'store' 
+    defaultImport: '* as store' 
   });
   //export { schema, registry };
   source.addExportDeclaration({ 

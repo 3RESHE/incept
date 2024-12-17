@@ -2,7 +2,6 @@ import type { ServerConfig } from '@stackpress/incept/dist/types';
 import type { LanguageConfig } from '@stackpress/incept-i18n/dist/types';
 import type { SessionConfig } from '@stackpress/incept-user/dist/types';
 import type { TemplateConfig } from '@stackpress/incept-ink/dist/types';
-import type { DatabaseConfig } from '@stackpress/incept-drizzle/dist/types';
 import type { AdminConfig } from '@stackpress/incept-admin/dist/types';
 
 import path from 'path';
@@ -10,10 +9,8 @@ import path from 'path';
 const cwd = process.cwd();
 const seed = process.env.SESSION_SEED || 'abc123';
 const environment = process.env.SERVER_ENV || 'development';
-const dburl = process.env.DATABASE_URL || '';
 
 export type Config = ServerConfig 
-  & DatabaseConfig
   & LanguageConfig 
   & TemplateConfig 
   & SessionConfig 
@@ -25,10 +22,6 @@ export const config: Config = {
     cwd: cwd,
     mode: environment,
     bodySize: 0
-  },
-  database: {
-    engine: 'pglite',
-    url: dburl
   },
   template: {
     engine: 'ink',
