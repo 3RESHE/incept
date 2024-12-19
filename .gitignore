@@ -133,3 +133,4 @@ dist
 example/build
 archives
 packages/incept/components
+example/migrations
