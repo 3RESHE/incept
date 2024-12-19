@@ -43,7 +43,6 @@ import generateRegistry from './registry';
  * - admin.ts
  * - config.json
  * - enums.ts
- * - events.ts
  * - index.ts
  * - registry.ts
  * - schema.ts
@@ -71,8 +70,9 @@ export default function generate(props: PluginWithProject) {
   //-----------------------------//
   // 1. Config
   //extract props
-  const { schema, project } = props;
+  const { cli, schema, project } = props;
   const registry = new Registry(schema);
+  const fs = cli.server.loader.fs;
   
   //-----------------------------//
   // 2. Generators
@@ -80,7 +80,7 @@ export default function generate(props: PluginWithProject) {
   // - address/config.ts
   // - registry.json
   // - config.json
-  generateConfig(project, schema);
+  generateConfig(project, schema, fs);
   generateRegistry(project, registry);
 
   //-----------------------------//

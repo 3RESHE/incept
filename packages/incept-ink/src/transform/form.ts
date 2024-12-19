@@ -1,15 +1,19 @@
 //modules
 import type { Directory } from 'ts-morph';
-//stackpress
-import type Registry from '@stackpress/incept/dist/schema/Registry';
-import fs from 'fs';
-import path from 'path';
+import path from 'node:path';
 import mustache from 'mustache';
+//stackpress
+import type { FileSystem } from '@stackpress/types/dist/types';
+import type Registry from '@stackpress/incept/dist/schema/Registry';
 //local
 import type { FormData } from './types';
 import { getFormFields } from './helpers';
 
-export default function generate(directory: Directory, registry: Registry) {
+export default function generate(
+  directory: Directory, 
+  registry: Registry,
+  fs: FileSystem
+) {
   //for each model
   for (const model of registry.model.values()) {
     //make new data

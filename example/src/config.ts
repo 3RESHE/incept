@@ -1,5 +1,6 @@
 import type { ServerConfig } from '@stackpress/incept/dist/types';
 import type { LanguageConfig } from '@stackpress/incept-i18n/dist/types';
+import type { DatabaseConfig } from '@stackpress/incept-inquire/dist/types';
 import type { SessionConfig } from '@stackpress/incept-user/dist/types';
 import type { TemplateConfig } from '@stackpress/incept-ink/dist/types';
 import type { AdminConfig } from '@stackpress/incept-admin/dist/types';
@@ -11,6 +12,7 @@ const seed = process.env.SESSION_SEED || 'abc123';
 const environment = process.env.SERVER_ENV || 'development';
 
 export type Config = ServerConfig 
+  & DatabaseConfig
   & LanguageConfig 
   & TemplateConfig 
   & SessionConfig 
@@ -22,6 +24,9 @@ export const config: Config = {
     cwd: cwd,
     mode: environment,
     bodySize: 0
+  },
+  database: {
+    migrations: path.join(cwd, 'migrations'),
   },
   template: {
     engine: 'ink',

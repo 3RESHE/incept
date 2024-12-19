@@ -1,15 +1,22 @@
-//modules
-import { sql } from 'drizzle-orm';
-//stackpress
-import { store } from '@stackpress/incept/client';
+//common
+import database from '../database';
 
 async function purge() {
-  const { db } = store;
-  // await db.execute(sql.raw(`TRUNCATE TABLE Auth CASCADE;`));
-  // await db.execute(sql.raw(`TRUNCATE TABLE File;`));
-  // await db.execute(sql.raw(`TRUNCATE TABLE Address CASCADE;`));
-  // await db.execute(sql.raw(`TRUNCATE TABLE Connection CASCADE;`));
-  // await db.execute(sql.raw(`TRUNCATE TABLE Profile CASCADE;`));
+  const db = await database();
+  const dialect = db.dialect;
+  const queries = [
+    dialect.truncate('Auth', false),
+    dialect.truncate('File', false),
+    dialect.truncate('Address', false),
+    dialect.truncate('Connection', false),
+    dialect.truncate('Profile', false)
+  ];
+  db.transaction(async connection => {
+    for (const query of queries) {
+      await connection.query(query);
+    }
+    return [];
+  });
 };
 
 purge().catch(console.error);

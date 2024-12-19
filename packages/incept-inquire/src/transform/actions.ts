@@ -27,12 +27,6 @@ export default function generate(directory: Directory, registry: Registry) {
       '', 
       { overwrite: true }
     );
-    //import type { StatusResponse } from '@stackpress/types/dist/types';
-    source.addImportDeclaration({
-      isTypeOnly: true,
-      moduleSpecifier: '@stackpress/incept-inquire/dist/types',
-      namedImports: [ 'SearchParams']
-    });
     //import type { SearchParams } from '@stackpress/incept-inquire/dist/types';
     source.addImportDeclaration({
       isTypeOnly: true,

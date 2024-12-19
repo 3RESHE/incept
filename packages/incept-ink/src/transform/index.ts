@@ -25,17 +25,18 @@ export default function generate(props: PluginWithProject) {
   //-----------------------------//
   // 1. Config
   //extract props
-  const { schema, project } = props;
+  const { cli, schema, project } = props;
   const registry = new Registry(schema);
+  const fs = cli.server.loader.fs;
 
   //-----------------------------//
   // 2. Generators
   // - profile/components/view.ink
-  generateView(project, registry);
+  generateView(project, registry, fs);
   // - profile/components/form.ink
-  generateForm(project, registry);
+  generateForm(project, registry, fs);
   // - profile/components/filters.ink
-  generateFilters(project, registry);
+  generateFilters(project, registry, fs);
   // - profile/components/table.ink
-  generateTable(project, registry);
+  generateTable(project, registry, fs);
 };

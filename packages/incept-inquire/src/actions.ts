@@ -25,19 +25,6 @@ const dateable = [ 'Date', 'Time', 'Datetime' ];
 const boolable = [ 'Boolean' ];
 const intable = [ 'Integer' ];
 
-type ID = string|number;
-type IDS = Record<string, ID>;
-
-type SR<M> = StatusResponse<M>;
-type SRP<M> = StatusResponse<Partial<M>>;
-type SRN<M> = StatusResponse<M|null>;
-type SRA<M> = StatusResponse<M[]>;
-
-type PSR<M> = Promise<SR<M>>;
-type PSRP<M> = Promise<SRP<M>>;
-type PSRN<M> = Promise<SRN<M>>;
-type PSRA<M> = Promise<SRA<M>>;
-
 export class Actions<M extends UnknownNest = UnknownNest> {
   //engine generic
   public readonly engine: Engine;
@@ -55,7 +42,9 @@ export class Actions<M extends UnknownNest = UnknownNest> {
   /**
    * Creates a database table row
    */
-  public async create(input: NestedObject): PSRP<M> {
+  public async create(
+    input: NestedObject
+  ): Promise<StatusResponse<Partial<M>>> {
     //collect errors, if any
     const errors = this.model.assert(input, true);
     //if there were errors
@@ -88,7 +77,9 @@ export class Actions<M extends UnknownNest = UnknownNest> {
   /**
    * Returns a database table row
    */
-  public async detail(ids: IDS): PSRN<M> {
+  public async detail(
+    ids: Record<string, string|number>
+  ): Promise<StatusResponse<M|null>> {
     const filter = Object.fromEntries(
       this.model.ids.map(column => [ 
         column.name, 
@@ -110,7 +101,10 @@ export class Actions<M extends UnknownNest = UnknownNest> {
   /**
    * Returns a database table row
    */
-  public async get(key: string, value: ID): PSRN<M> {
+  public async get(
+    key: string, 
+    value: string|number
+  ): Promise<StatusResponse<M|null>> {
     const filter: Record<string, string|number|boolean> = { [key]: value };
     if (this.model.active) {
       filter[this.model.active.name] = -1;
@@ -127,7 +121,9 @@ export class Actions<M extends UnknownNest = UnknownNest> {
   /**
    * Removes a database table row
    */
-  public async remove(ids: IDS): PSR<M> {
+  public async remove(
+    ids: Record<string, string|number>
+  ): Promise<StatusResponse<M>> {
     //action and return response
     const active = this.model.active?.name;
     if (active) {
@@ -154,7 +150,9 @@ export class Actions<M extends UnknownNest = UnknownNest> {
   /**
    * Restores a database table row
    */
-  public async restore(ids: IDS): PSRN<M> {
+  public async restore(
+    ids: Record<string, string|number>
+  ): Promise<StatusResponse<M|null>> {
     //action and return response
     const active = this.model.active?.name;
     if (active) {
@@ -167,7 +165,9 @@ export class Actions<M extends UnknownNest = UnknownNest> {
   /**
    * Searches the database table
    */
-  public async search(query: SearchParams): PSRA<M> {
+  public async search(
+    query: SearchParams
+  ): Promise<StatusResponse<M[]>> {
     //extract params
     let {
       q,
@@ -320,7 +320,10 @@ export class Actions<M extends UnknownNest = UnknownNest> {
   /**
    * Updates a database table row
    */
-  public async update(ids: IDS, input: NestedObject): PSR<M> {
+  public async update(
+    ids: Record<string, string|number>, 
+    input: NestedObject
+  ): Promise<StatusResponse<M>> {
     //collect errors, if any
     const errors = this.model.assert(input, true);
     //if there were errors

@@ -1,8 +1,8 @@
 //modules
 import type { Directory } from 'ts-morph';
-import fs from 'fs';
-import path from 'path';
+import path from 'node:path';
 //stackress
+import type { FileSystem } from '@stackpress/types/dist/types';
 import type Registry from '@stackpress/incept/dist/schema/Registry';
 import { render } from '@stackpress/incept/dist/schema/helpers';
 
@@ -72,7 +72,11 @@ const template = `
 </html>
 `.trim();
 
-export default function generate(directory: Directory, registry: Registry) {
+export default function generate(
+  directory: Directory, 
+  registry: Registry,
+  fs: FileSystem
+) {
   for (const model of registry.model.values()) {
     const file = path.join(
       directory.getPath(), 

@@ -38,7 +38,7 @@ export default class InceptTerminal extends EventTerminal {
       fs: server.loader.fs 
     });
     this.server = server;
-    this.server.on('transform', async _ => {
+    this.server.on('transform', async (req, res) => {
       //make a new project
       const project = this.project();
       //get client directory
@@ -49,15 +49,17 @@ export default class InceptTerminal extends EventTerminal {
       //create the directory
       const directory = project.createDirectory(client);
       //transform (generate the code)
-      this.transformer.transform({ cli: this, project: directory });
+      await this.transformer.transform({ cli: this, project: directory });
       //get the output language
       const lang = this.server.config('idea', 'lang') || 'js';
       //if you want ts, tsx files
       if (lang === 'ts') {
         project.saveSync();
+        await this.server.emit('transformed', req, res);
       //if you want js, d.ts files
       } else {
         await project.emit();
+        await this.server.emit('transformed', req, res);
         //sometimes this hangs...
         process.exit(0);
       }

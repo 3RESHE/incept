@@ -12,9 +12,7 @@ export default function plugin(server: Server) {
     const server = req.context;
     try {
       const client = server.loader.require('@stackpress/.incept');
-      if (typeof client === 'function') {
-        client(server);
-      }
+      server.register('client', client);
     } catch(e) {}
   }, 10);
   //generate some code in the client folder

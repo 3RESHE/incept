@@ -33,8 +33,9 @@ export default function generate(props: PluginWithProject) {
   //-----------------------------//
   // 1. Config
   //extract props
-  const { schema, project } = props;
+  const { cli, schema, project } = props;
   const registry = new Registry(schema);
+  const fs = cli.server.loader.fs;
 
   //-----------------------------//
   // 2. Generators
@@ -51,7 +52,7 @@ export default function generate(props: PluginWithProject) {
   // - profile/admin/restore.ink
   // - profile/admin/search.ink
   // - profile/admin/update.ink
-  generateTemplates(project, registry);
+  generateTemplates(project, registry, fs);
   // - profile/admin/routes.ts
   generateRoutes(project, registry);
 

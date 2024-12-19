@@ -5,7 +5,7 @@ import type Column from '@stackpress/incept/dist/schema/Column';
 import type Registry from '@stackpress/incept/dist/schema/Registry';
 import { camelize } from '@stackpress/incept/dist/schema/helpers'; 
 //common
-import { clen, numdata } from './helpers';
+import { clen, numdata } from '../schema';
 
 export default function generate(directory: Directory, registry: Registry) {
   //loop through models
@@ -121,11 +121,15 @@ export function field(column: Column) {
   //char, varchar
   } else if (type === 'string') {
     const length = clen(column);
+    const hasDefault = typeof column.attributes.default === 'string'
+      && !column.attributes.default.startsWith('uuid(')
+      && !column.attributes.default.startsWith('cuid(')
+      && !column.attributes.default.startsWith('nanoid(');
     if (length[0] === length[1]) {
       return `schema.addField('${column.name}', ${JSON.stringify({
         type: 'CHAR',
         length: length[1],
-        default: column.default,
+        default: hasDefault ? column.attributes.default : undefined,
         nullable: !column.required,
         comment: comment ? String(comment) : undefined
       }, null, 2)});`;
@@ -133,7 +137,7 @@ export function field(column: Column) {
       return `schema.addField('${column.name}', ${JSON.stringify({
         type: 'VARCHAR',
         length: length[1],
-        default: column.default,
+        default: hasDefault ? column.attributes.default : undefined,
         nullable: !column.required,
         comment: comment ? String(comment) : undefined
       }, null, 2)});`;
@@ -141,14 +145,14 @@ export function field(column: Column) {
   } else if (type === 'text') {
     return `schema.addField('${column.name}', ${JSON.stringify({
       type: 'TEXT',
-      default: column.default,
+      default: column.attributes.default ,
       nullable: !column.required,
       comment: comment ? String(comment) : undefined 
     }, null, 2)});`;
   } else if (type === 'boolean') {
     return `schema.addField('${column.name}', ${JSON.stringify({
       type: 'BOOLEAN',
-      default: column.default,
+      default: column.attributes.default,
       nullable: !column.required,
       comment: comment ? String(comment) : undefined
     }, null, 2)});`;
@@ -161,7 +165,7 @@ export function field(column: Column) {
       return `schema.addField('${column.name}', ${JSON.stringify({
         type: 'FLOAT',
         length: `${length}, ${decimalLength}`,
-        default: column.default,
+        default: column.attributes.default,
         nullable: !column.required,
         unsigned: minmax[0] < 0,
         comment: comment ? String(comment) : undefined
@@ -170,7 +174,7 @@ export function field(column: Column) {
       return `schema.addField('${column.name}', ${JSON.stringify({
         type: 'INTEGER',
         length: integerLength,
-        default: column.default,
+        default: column.attributes.default,
         nullable: !column.required,
         unsigned: minmax[0] < 0,
         comment: comment ? String(comment) : undefined
@@ -179,21 +183,21 @@ export function field(column: Column) {
   } else if (type === 'date') {
     return `schema.addField('${column.name}', ${JSON.stringify({
       type: 'DATE',
-      default: column.default,
+      default: column.attributes.default,
       nullable: !column.required,
       comment: comment ? String(comment) : undefined
     }, null, 2)});`;
   } else if (type === 'datetime') {
     return `schema.addField('${column.name}', ${JSON.stringify({
       type: 'DATETIME',
-      default: column.default,
+      default: column.attributes.default,
       nullable: !column.required,
       comment: comment ? String(comment) : undefined  
     }, null, 2)});`;
   } else if (type === 'time') {
     return `schema.addField('${column.name}', ${JSON.stringify({
       type: 'TIME',
-      default: column.default,
+      default: column.attributes.default,
       nullable: !column.required,
       comment: comment ? String(comment) : undefined
     }, null, 2)});`;
@@ -202,7 +206,7 @@ export function field(column: Column) {
     return `schema.addField('${column.name}', ${JSON.stringify({
       type: 'VARCHAR',
       length: 255,
-      default: column.default,
+      default: column.attributes.default,
       nullable: !column.required,
       comment: comment ? String(comment) : undefined
     }, null, 2)});`;

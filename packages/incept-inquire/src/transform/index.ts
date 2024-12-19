@@ -5,22 +5,27 @@ import Registry from '@stackpress/incept/dist/schema/Registry';
 import generateSchema from './schema';
 import generateActions from './actions';
 import generateEvents from './events';
+import migrate from './migrate';
 
 /**
  * @stackpress/.incept (file structure)
  * - profile/
  * | - actions.ts
- * | - events.ts
+ * | - events/create.ts
+ * | - events/detail.ts
+ * | - events/index.ts
+ * | - events/remove.ts
+ * | - events/restore.ts
+ * | - events/search.ts
+ * | - events/update.ts
  * | - index.ts
  * | - schema.ts
- * - index.ts
- * - events.ts
  */
 
 /**
  * This is the The params comes form the cli
  */
-export default function generate(props: PluginWithProject) {
+export default async function generate(props: PluginWithProject) {
   //-----------------------------//
   // 1. Config
   //extract props
@@ -32,7 +37,6 @@ export default function generate(props: PluginWithProject) {
   // - profile/actions.ts
   generateActions(project, registry);
   // - profile/events.ts
-  // - events.ts
   generateEvents(project, registry);
   // - profile/schema.ts
   generateSchema(project, registry);
@@ -47,42 +51,27 @@ export default function generate(props: PluginWithProject) {
       || project.createSourceFile(filepath, '', { overwrite: true });
     //import action from './actions';
     source.addImportDeclaration({
-      moduleSpecifier: `./actions`,
+      moduleSpecifier: './actions',
       defaultImport: 'actions'
     });
     //import events from './events';
     source.addImportDeclaration({
-      moduleSpecifier: `./events`,
+      moduleSpecifier: './events',
       defaultImport: 'events'
     });
-    //import * as schema from './schema';
+    //import schema from './schema';
     source.addImportDeclaration({
-      moduleSpecifier: `./schema`,
-      defaultImport: '* as schema'
+      moduleSpecifier: './schema',
+      defaultImport: 'schema'
     });
-    //export { actions, schema, event };
+    //export { actions, schema, events };
     source.addExportDeclaration({ 
       namedExports: [ 'actions', 'schema', 'events' ] 
     });
   }
 
   //-----------------------------//
-  // 5. index.ts
-  //load index.ts if it exists, if not create it
-  const source = project.getSourceFile('index.ts') 
-    || project.createSourceFile('index.ts', '', { overwrite: true });
-  //import * as schema from './schema';
-  source.addImportDeclaration({ 
-    moduleSpecifier: './schema', 
-    defaultImport: '* as schema' 
-  });
-  //import * as store from './store';
-  source.addImportDeclaration({ 
-    moduleSpecifier: './store', 
-    defaultImport: '* as store' 
-  });
-  //export { schema, registry };
-  source.addExportDeclaration({ 
-    namedExports: [ 'schema', 'store' ] 
-  });
+  // 4. migrations
+  migrate(props);
+  
 };

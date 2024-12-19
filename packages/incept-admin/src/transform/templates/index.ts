@@ -1,6 +1,7 @@
 //modules
 import type { Directory } from 'ts-morph';
 //stackpress
+import type { FileSystem } from '@stackpress/types/dist/types';
 import type Registry from '@stackpress/incept/dist/schema/Registry';
 
 //generators
@@ -11,11 +12,15 @@ import generateRestore from './restore';
 import generateSearch from './search';
 import generateUpdate from './update';
 
-export default function generate(directory: Directory, registry: Registry) {
-  generateCreate(directory, registry);
-  generateDetail(directory, registry);
-  generateRemove(directory, registry);
-  generateRestore(directory, registry);
-  generateSearch(directory, registry);
-  generateUpdate(directory, registry);
+export default function generate(
+  directory: Directory, 
+  registry: Registry,
+  fs: FileSystem
+) {
+  generateCreate(directory, registry, fs);
+  generateDetail(directory, registry, fs);
+  generateRemove(directory, registry, fs);
+  generateRestore(directory, registry, fs);
+  generateSearch(directory, registry, fs);
+  generateUpdate(directory, registry, fs);
 };

@@ -5,13 +5,13 @@ import type { HTTPServer } from '@stackpress/ingest';
 //local
 import type { Config } from './config';
 import { config } from './config';
-import store from './store';
+import database from './database';
 
 export default function plugin(server: HTTPServer<Config>) {
   server.config.set(config);
   //on config, register the store
   server.on('config', async req => {
-    server.register('store', await store());
+    server.register('database', await database());
   });
   //on listen, register the app routes
   server.on('listen', req => {
