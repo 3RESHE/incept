@@ -300,7 +300,7 @@ export class Actions<M extends UnknownNest = UnknownNest> {
         const joins: UnknownNest = Object.fromEntries((
           await this.engine.select<UnknownNest>()
           .from(foreignTable)
-          .where(`${foreignKey} IN (${ids.join(', ')})`)
+          .where(`${foreignKey} IN (${ids.map(_ => '?').join(', ')})`, ids)
         ).map(row => [ row[foreignKey], model.unserialize(row) ]));
         rows.forEach(row => {
           if (row[localKey]) {

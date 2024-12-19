@@ -471,17 +471,24 @@
     ts-morph "24.0.0"
     typescript "5.7.2"
 
-"@stackpress/inquire-pglite@0.2.4":
-  version "0.2.4"
-  resolved "https://registry.yarnpkg.com/@stackpress/inquire-pglite/-/inquire-pglite-0.2.4.tgz#b2004f82cc2ab69722d789adbcf054762cd25ba3"
-  integrity sha512-7ygAY6xPdyBdbLj/xccva8xCOnTDA/Eyn8eQqvSshIxQPGeUGofkfkDZgo1COfmPv6H9/f+ha1Nu7iryADWdCA==
+"@stackpress/inquire-pglite@0.2.5":
+  version "0.2.5"
+  resolved "https://registry.yarnpkg.com/@stackpress/inquire-pglite/-/inquire-pglite-0.2.5.tgz#10474806f39749fc7a0960d49a1f46f4991f0fd5"
+  integrity sha512-LktUu3hbWkb0UxnKtl9bKYXQ4rPi3Qmh1VOMStYXocvTw8fWIqS3BhTY6PzJ6d1/F/OmQLJ6FtI3Z8OJkbQm5A==
   dependencies:
-    "@stackpress/inquire" "0.2.4"
+    "@stackpress/inquire" "0.2.5"
 
 "@stackpress/inquire@0.2.4":
   version "0.2.4"
   resolved "https://registry.yarnpkg.com/@stackpress/inquire/-/inquire-0.2.4.tgz#c6706f77b0564eca395b1a4b9165bab0024acb27"
   integrity sha512-giLRIQefscRI6F6s5hIdvZTNyjDbQnUBPPpY9MXEkXG92CWafdeEGPBK4Lt/xDcqrlXCMFVoSoyyvfZDW74xsA==
+  dependencies:
+    "@stackpress/types" "0.3.11"
+
+"@stackpress/inquire@0.2.5":
+  version "0.2.5"
+  resolved "https://registry.yarnpkg.com/@stackpress/inquire/-/inquire-0.2.5.tgz#f67290da8ed0d5693ca902adce6ca0a6145252c3"
+  integrity sha512-i46HXskschBtJ3xyRTmLPHu0EslwpBVzTMm2mYwQvsNnIQ0+t5Or9Dj0rYu34EGzJsin+7/fsF9gGjJ+cvCwzg==
   dependencies:
     "@stackpress/types" "0.3.11"
 

@@ -60,7 +60,7 @@
           <each key=index value=trace from=stack>
             <table-row>
               <table-col nowrap>
-                <div class="tx-bold">#{Number(index) + 1} {trace.method}</div>
+                <div class="tx-bold">#{stack.length - Number(index)} {trace.method}</div>
                 <div class="tx-italic tx-muted tx-md pt-10">
                   {trace.file}:{trace.line}:{trace.char}
                 </div>

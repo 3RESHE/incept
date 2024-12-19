@@ -51,7 +51,7 @@ export default function generate(directory: Directory, registry: Registry) {
     //import { Actions } from '@stackpress/incept-inquire/dist/actions';
     source.addImportDeclaration({
       moduleSpecifier: '@stackpress/incept-inquire/dist/actions',
-      defaultImport: 'actions'
+      defaultImport: 'Actions'
     });
     //import config from './config';
     source.addImportDeclaration({

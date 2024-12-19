@@ -47,9 +47,10 @@ export async function signup(
     auth: Record<string, Auth> 
   };
   results.auth = {};
+  const actions = client.model.auth.actions(engine);
   //if email
   if (input.email) {
-    const auth = await client.model.auth.actions(engine).create({
+    const auth = await actions.create({
       profileId: results.id,
       type: 'email',
       token: String(input.email),
@@ -62,7 +63,7 @@ export async function signup(
   } 
   //if phone
   if (input.phone) {
-    const auth = await client.model.auth.actions(engine).create({
+    const auth = await actions.create({
       profileId: results.id,
       type: 'phone',
       token: String(input.phone),
@@ -75,7 +76,7 @@ export async function signup(
   }
   //if username
   if (input.username) {
-    const auth = await client.model.auth.actions(engine).create({
+    const auth = await actions.create({
       profileId: results.id,
       type: 'username',
       token: String(input.username),
@@ -104,9 +105,9 @@ export async function signin(
   } catch (error) {
     return Exception.upgrade(error as Error).toResponse();
   }
-  
+  const actions = client.model.auth.actions(engine);
   //get form body
-  const response = await client.model.auth.actions(engine).search({
+  const response = await actions.search({
     filter: { type: type, token: input[type] || '' }
   });
   const results = response.results?.[0] as AuthExtended;
@@ -118,7 +119,7 @@ export async function signin(
     return { code: 401, status: 'Unauthorized', error: 'Invalid Password' };
   }
   //update consumed
-  await client.model.auth.actions(engine).update(results.id, {
+  await actions.update(results.id, {
     consumed: new Date()
   });
   return {
