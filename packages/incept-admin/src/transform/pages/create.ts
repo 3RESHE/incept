@@ -66,7 +66,7 @@ export default function generate(directory: Directory, registry: Registry) {
         const authorized = await server.call('authorize', req);
         //if not authorized
         if (authorized.code !== 200) {
-          return;
+          return res.fromStatusResponse(authorized);
         }
         //get the admin config
         const admin = server.config<AdminConfig['admin']>('admin') || {};

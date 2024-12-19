@@ -1,3 +1,5 @@
+import type Server from '@stackpress/ingest/dist/Server';
+
 export type AdminConfig = {
   admin: {
     root: string,
@@ -9,3 +11,7 @@ export type AdminConfig = {
     }[]
   }
 };
+
+export type ClientWithRoutesPlugin = {
+  admin(server: Server): void
+}
