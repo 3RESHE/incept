@@ -279,36 +279,38 @@ export class Actions<M extends UnknownNest = UnknownNest> {
     try {
       const rows = (await select).map(row => this.model.unserialize(row));
       const total = useTotal ? await count : [ { total: 0 } ];
-      for (const column of this.model.relations) {
-        if (!column.relation) {
-          continue;
-        }
-        const model = column.relation.parent.model;
-        const foreignTable = model.name;
-        const foreignKey = column.relation.parent.key.name;
-        const localKey = column.relation.child.key.name;
-        const key = column.relation.child.column.name;
-        //if there is an include and this relation is not included
-        if (include.length 
-          && !include.includes(foreignTable.toLowerCase())
-        ) {
-          continue;
-        }
-        const ids = rows.map(
-          row => column.relation && row[localKey]
-        ).filter(Boolean);
-        const joins: UnknownNest = Object.fromEntries((
-          await this.engine.select<UnknownNest>()
-          .from(foreignTable)
-          .where(`${foreignKey} IN (${ids.map(_ => '?').join(', ')})`, ids)
-        ).map(row => [ row[foreignKey], model.unserialize(row) ]));
-        rows.forEach(row => {
-          if (row[localKey]) {
-            //@ts-ignore - Type 'R' is generic 
-            //and can only be indexed for reading.
-            row[key] = joins[row[localKey] as any];
+      if (rows.length) {
+        for (const column of this.model.relations) {
+          if (!column.relation) {
+            continue;
           }
-        });
+          const model = column.relation.parent.model;
+          const foreignTable = model.name;
+          const foreignKey = column.relation.parent.key.name;
+          const localKey = column.relation.child.key.name;
+          const key = column.relation.child.column.name;
+          //if there is an include and this relation is not included
+          if (include.length 
+            && !include.includes(foreignTable.toLowerCase())
+          ) {
+            continue;
+          }
+          const ids = rows.map(
+            row => column.relation && row[localKey]
+          ).filter(Boolean);
+          const joins: UnknownNest = Object.fromEntries((
+            await this.engine.select<UnknownNest>()
+            .from(foreignTable)
+            .where(`${foreignKey} IN (${ids.map(_ => '?').join(', ')})`, ids)
+          ).map(row => [ row[foreignKey], model.unserialize(row) ]));
+          rows.forEach(row => {
+            if (row[localKey]) {
+              //@ts-ignore - Type 'R' is generic 
+              //and can only be indexed for reading.
+              row[key] = joins[row[localKey] as any];
+            }
+          });
+        }
       }
   
       return toResponse(rows, total[0].total) as StatusResponse<M[]>;
