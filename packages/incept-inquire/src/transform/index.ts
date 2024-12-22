@@ -5,7 +5,6 @@ import Registry from '@stackpress/incept/dist/schema/Registry';
 import generateSchema from './schema';
 import generateActions from './actions';
 import generateEvents from './events';
-import migrate from './migrate';
 
 /**
  * @stackpress/.incept (file structure)
@@ -69,9 +68,4 @@ export default async function generate(props: PluginWithProject) {
       namedExports: [ 'actions', 'schema', 'events' ] 
     });
   }
-
-  //-----------------------------//
-  // 4. migrations
-  migrate(props);
-  
 };

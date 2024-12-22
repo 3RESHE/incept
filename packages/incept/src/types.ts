@@ -20,7 +20,8 @@ export type PluginWithProject = PluginProps<ProjectProps>;
 
 export type ServerConfig = {
   idea: {
-    lang: string
+    lang: string,
+    revisions: string
   },
   server: { 
     cwd: string, 

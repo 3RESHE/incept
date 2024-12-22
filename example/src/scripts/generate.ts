@@ -1,12 +1,12 @@
 //stackpress
-import Terminal from '@stackpress/incept/dist/Terminal';
+import { scripts } from '@stackpress/incept';
 //common
 import make from '../server';
 
 async function transform() {
-  const server = await make();
-  const terminal = new Terminal([ 'transform' ], server);
-  await terminal.run();
+  await scripts.generate(await make());
 };
 
-transform().catch(console.error);
+transform()
+  .then(() => process.exit(0))
+  .catch(console.error);

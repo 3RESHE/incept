@@ -4,6 +4,7 @@ import type { DatabaseConfig } from '@stackpress/incept-inquire/dist/types';
 import type { SessionConfig } from '@stackpress/incept-user/dist/types';
 import type { TemplateConfig } from '@stackpress/incept-ink/dist/types';
 import type { AdminConfig } from '@stackpress/incept-admin/dist/types';
+import type { APIConfig } from '@stackpress/incept-api/dist/types';
 
 import path from 'path';
 
@@ -16,10 +17,14 @@ export type Config = ServerConfig
   & LanguageConfig 
   & TemplateConfig 
   & SessionConfig 
-  & AdminConfig;
+  & AdminConfig
+  & APIConfig;
 
 export const config: Config = {
-  idea: { lang: 'js' },
+  idea: { 
+    lang: 'js',
+    revisions: path.join(cwd, 'revisions')
+  },
   server: {
     cwd: cwd,
     mode: environment,
@@ -27,6 +32,10 @@ export const config: Config = {
   },
   database: {
     migrations: path.join(cwd, 'migrations'),
+    schema: {
+      onDelete: 'CASCADE',
+      onUpdate: 'RESTRICT'
+    }
   },
   template: {
     engine: 'ink',
@@ -113,6 +122,55 @@ export const config: Config = {
         icon: 'users',
         path: '/admin/connection/search',
         match: '/admin/connection'
+      },
+      {
+        name: 'Apps',
+        icon: 'laptop',
+        path: '/admin/application/search',
+        match: '/admin/application'
+      },
+      {
+        name: 'Sessions',
+        icon: 'coffee',
+        path: '/admin/session/search',
+        match: '/admin/session'
+      }
+    ]
+  },
+  api: {
+    scopes: {
+      'profile-read': { 
+        name: 'Read Profile',
+        description: 'Read from Profile' 
+      },
+      'profile-write': { 
+        name: 'Write Profile',
+        description: 'Write to Profile' 
+      },
+    },
+    endpoints: [
+      {
+        method: 'GET',
+        route: '/api/profile',
+        type: 'public',
+        event: 'profile-search',
+        data: {}
+      },
+      {
+        method: 'POST',
+        route: '/api/profile/create',
+        type: 'app',
+        scopes: [ 'profile-write' ],
+        event: 'profile-create',
+        data: {}
+      },
+      {
+        method: 'GET',
+        route: '/api/auth/:profileId',
+        type: 'session',
+        scopes: [ 'auth-read' ],
+        event: 'auth-search',
+        data: {}
       }
     ]
   },

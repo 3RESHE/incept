@@ -2,8 +2,11 @@
 import path from 'node:path';
 import type { Directory } from 'ts-morph';
 //stackpress
-import type { FileSystem } from '@stackpress/types/dist/types';
 import type { SchemaConfig } from '@stackpress/idea-parser';
+import type Server from '@stackpress/ingest/dist/Server';
+//common
+import type { ServerConfig } from '../types';
+import Revisions from '../Revisions';
 
 /**
  * This is the The params comes form the cli
@@ -11,8 +14,18 @@ import type { SchemaConfig } from '@stackpress/idea-parser';
 export default function generate(
   directory: Directory, 
   schema: SchemaConfig, 
-  fs: FileSystem
+  server: Server
 ) {
+  //need revisions path
+  const { revisions } = server.config<ServerConfig['idea']>('idea') || {};
+  //if can revision
+  if (revisions) {
+    //add a new revision
+    Revisions.insert(revisions, server.loader, schema);
+  }
+
+  const fs = server.loader.fs;
+
   const pwd = directory.getPath();
   if (!fs.existsSync(pwd)) {
     fs.mkdirSync(pwd, { recursive: true });

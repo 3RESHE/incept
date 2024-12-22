@@ -1,4 +1,5 @@
 //stackpress
+import type Create from '@stackpress/inquire/dist/builder/Create';
 import Exception from '@stackpress/incept/dist/Exception';
 
 /**
@@ -110,4 +111,40 @@ export function toSqlFloat<
     return (strict ? 0: null) as Strict;
   }
   return (parseFloat(value) || 0) as Strict;
+}
+
+export function sequence(schema: Create[]) {
+  //LOGIC FOR DROPPING:
+  //We can't drop a table if there is another table with a FK contraint
+  //so we need to loop through all the tables multiple times, dropping 
+  //the ones that don't have FK constraints, until all tables are dropped
+  //
+  //LOGIC FOR CREATING:
+  //We cant create a table with a FK constraint if the table it depends 
+  //on hasn't been created yet. So we need to loop through all the 
+  //tables multiple times, creating the ones that don't have FK 
+  //constraints, until all tables are created....
+  //or, logically this is the dropped table list in reverse.
+  const sequence: string[] = [];
+  while (sequence.length < schema.length) {
+    const exists = schema.filter(
+      table => !sequence.includes(table.build().table)
+    );
+    //loop through all the existing table create schemas
+    for (const create of exists) {
+      //build the schema (in order to get the table name)
+      const build = create.build();
+      //does any of the existing tables depend on this table?
+      const dependents = exists.filter(create => Object
+        .values(create.build().foreign)
+        .find(fk => fk.table === build.table)
+      );
+      //if no dependents, then we can drop the table
+      if (!dependents.length) {
+        //add to the dropped list
+        sequence.push(build.table);
+      }
+    }
+  }
+  return sequence;
 }

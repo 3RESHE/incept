@@ -1,5 +1,12 @@
 //stackpress
-import type { StatusResponse } from '@stackpress/types/dist/types';
+import type { 
+  StatusResponse,
+  ErrorResponse
+} from '@stackpress/types/dist/types';
+import type { ClientPlugin } from '@stackpress/incept/dist/types';
+import type { 
+  ClientWithDatabasePlugin 
+} from '@stackpress/incept-inquire/dist/types';
 import type Engine from '@stackpress/inquire/dist/Engine';
 import { email } from '@stackpress/incept/dist/assert';
 import Exception from '@stackpress/incept/dist/Exception';
@@ -23,7 +30,9 @@ export async function signup(
 ): Promise<Partial<StatusResponse<ProfileAuth>>> {
   let client;
   try {
-    client = await import('@stackpress/incept/client');
+    client = (
+      await import('@stackpress/incept/client')
+    ) as unknown as ClientPlugin<ClientWithDatabasePlugin>;
   } catch (error) {
     return Exception.upgrade(error as Error).toResponse();
   }
@@ -41,7 +50,7 @@ export async function signup(
   });
   //if error, return response
   if (response.code !== 200) {
-    return response;
+    return response as ErrorResponse;
   }
   const results = response.results as Profile & { 
     auth: Record<string, Auth> 
@@ -57,7 +66,7 @@ export async function signup(
       secret: String(input.secret)
     });
     if (auth.code !== 200) {
-      return auth;
+      return auth as StatusResponse<ProfileAuth>;
     }
     results.auth.email = auth.results as Auth;
   } 
@@ -70,7 +79,7 @@ export async function signup(
       secret: String(input.secret)
     });
     if (auth.code !== 200) {
-      return auth;
+      return auth as StatusResponse<ProfileAuth>;
     }
     results.auth.phone = auth.results as Auth;
   }
@@ -83,7 +92,7 @@ export async function signup(
       secret: String(input.secret)
     });
     if (auth.code !== 200) {
-      return auth;
+      return auth as StatusResponse<ProfileAuth>;
     }
     results.auth.username = auth.results as Auth;
   }
@@ -101,7 +110,9 @@ export async function signin(
 ): Promise<Partial<StatusResponse<AuthExtended>>> {
   let client;
   try {
-    client = await import('@stackpress/incept/client');
+    client = (
+      await import('@stackpress/incept/client')
+    ) as unknown as ClientPlugin<ClientWithDatabasePlugin>;
   } catch (error) {
     return Exception.upgrade(error as Error).toResponse();
   }
@@ -119,7 +130,7 @@ export async function signin(
     return { code: 401, status: 'Unauthorized', error: 'Invalid Password' };
   }
   //update consumed
-  await actions.update(results.id, {
+  await actions.update({ id: results.id }, {
     consumed: new Date()
   });
   return {

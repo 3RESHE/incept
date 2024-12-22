@@ -3,7 +3,6 @@ import type { Directory } from 'ts-morph';
 //stackpress
 import type Column from '@stackpress/incept/dist/schema/Column';
 import type Registry from '@stackpress/incept/dist/schema/Registry';
-import { camelize } from '@stackpress/incept/dist/schema/helpers'; 
 //common
 import { clen, numdata } from '../schema';
 
@@ -11,7 +10,7 @@ export default function generate(directory: Directory, registry: Registry) {
   //loop through models
   for (const model of registry.model.values()) {
     const relations = model.relations.map(column => {
-      const table = camelize(column.type);
+      const table = column.type;
       const foreign = column.relation?.parent.key.name as string;
       const local = column.relation?.child.key.name as string;
       return { table, foreign, local, delete: 'CASCADE', update: 'RESTRICT' };
@@ -44,14 +43,14 @@ export default function generate(directory: Directory, registry: Registry) {
           column => `schema.addPrimaryKey('${column.name}');`
         ).join('\n')}
         ${model.uniques.map(
-          column => `schema.addUniqueKey('${column.name}_unique_idx', '${column.name}');`
+          column => `schema.addUniqueKey('${model.lower}_${column.name}_unique', '${column.name}');`
         ).join('\n')}
         ${model.indexables.map(
-          column => `schema.addKey('${column.name}_idx', '${column.name}');`
+          column => `schema.addKey('${model.lower}_${column.name}_index', '${column.name}');`
         ).join('\n')}
         ${relations.map(relation => {
-          return `schema.addForeignKey('${relation.local}_idx', ${
-            JSON.stringify(relations, null, 2)
+          return `schema.addForeignKey('${model.lower}_${relation.local}_foreign', ${
+            JSON.stringify(relation, null, 2)
           });`;
         }).join('\n')}
         return schema;

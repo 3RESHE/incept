@@ -72,7 +72,6 @@ export default function generate(props: PluginWithProject) {
   //extract props
   const { cli, schema, project } = props;
   const registry = new Registry(schema);
-  const fs = cli.server.loader.fs;
   
   //-----------------------------//
   // 2. Generators
@@ -80,7 +79,7 @@ export default function generate(props: PluginWithProject) {
   // - address/config.ts
   // - registry.json
   // - config.json
-  generateConfig(project, schema, fs);
+  generateConfig(project, schema, cli.server);
   generateRegistry(project, registry);
 
   //-----------------------------//

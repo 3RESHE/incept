@@ -1,7 +1,6 @@
 import type Column from '@stackpress/incept/dist/schema/Column';
 import type Model from '@stackpress/incept/dist/schema/Model';
 import Create from '@stackpress/inquire/dist/builder/Create';
-import { camelize } from '@stackpress/incept/dist/schema/helpers'; 
 
 //map from column types to sql types and helpers
 export const typemap: Record<string, string> = {
@@ -19,7 +18,11 @@ export const typemap: Record<string, string> = {
   Hash: 'json'
 };
 
-export default function schema(model: Model) {
+export default function schema(
+  model: Model,
+  onDelete: 'CASCADE'|'SET NULL'|'RESTRICT' = 'CASCADE',
+  onUpdate: 'CASCADE'|'SET NULL'|'RESTRICT' = 'RESTRICT'
+) {
   const schema = new Create(model.name);
   for (const column of model.columns.values()) {
     //schema.addField(column.name, {})...
@@ -30,20 +33,20 @@ export default function schema(model: Model) {
     schema.addPrimaryKey(column.name);
   }
   for (const column of model.uniques) {
-    schema.addUniqueKey(`${column.name}_unique_idx`, column.name);
+    schema.addUniqueKey(`${column.name}_unique`, column.name);
   }
   for (const column of model.indexables) {
-    schema.addKey(`${column.name}_idx`, column.name);
+    schema.addKey(`${model.lower}_${column.name}_index`, column.name);
   }
 
   const relations = model.relations.map(column => {
-    const table = camelize(column.type);
+    const table = column.type;
     const foreign = column.relation?.parent.key.name as string;
     const local = column.relation?.child.key.name as string;
-    return { table, foreign, local, delete: 'CASCADE', update: 'RESTRICT' };
+    return { table, foreign, local, delete: onDelete, update: onUpdate };
   });
   for (const relation of relations) {
-    schema.addForeignKey(`${relation.local}_idx`, relation);
+    schema.addForeignKey(`${model.lower}_${relation.local}_foreign`, relation);
   }
 
   return schema;
@@ -219,6 +222,8 @@ export function numdata(column: Column) {
   //check for @step(0.01)
   const step = Array.isArray(column.attributes.step) 
     ? column.attributes.step[0] as number
+    : column.type.toLowerCase() === 'float'
+    ? 100000000.01
     : 0;
   const stepIntegerLength = step.toString().split('.')[0].length;
   const stepDecimalLength = (step.toString().split('.')[1] || '').length;

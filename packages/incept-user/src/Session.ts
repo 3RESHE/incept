@@ -134,11 +134,6 @@ export default class Session {
     if (req.session.has(this.name)) {
       return req.session(this.name) as string;
     }
-    const authorization = req.headers.get('Authorization') as string;
-    if (authorization) {
-      const [ , token ] = authorization.split(' ');
-      return token;
-    }
     return null;
   }
 

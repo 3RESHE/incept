@@ -4,10 +4,10 @@ import { scripts } from '@stackpress/incept-inquire';
 import database from '../database';
 import make from '../server';
 
-async function purge() {
-  await scripts.purge(await make(), await database());
+async function install() {
+  await scripts.install(await make(), await database());
 };
 
-purge()
+install()
   .then(() => process.exit(0))
   .catch(console.error);

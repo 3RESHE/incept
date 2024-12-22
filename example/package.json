@@ -10,25 +10,28 @@
     "@stackpress/incept-ink",
     "@stackpress/incept-admin",
     "@stackpress/incept-i18n",
-    "@stackpress/incept-user"
+    "@stackpress/incept-user",
+    "@stackpress/incept-api"
   ],
   "scripts": {
     "build": "tsc",
     "dev": "dotenv -e .env.local -- ts-node src/scripts/serve.ts",
     "emit": "dotenv -e .env.local -- ts-node src/scripts/emit.ts",
     "generate": "dotenv -e .env.local -- ts-node src/scripts/generate.ts",
+    "migrate": "dotenv -e .env.local -- ts-node src/scripts/migrate.ts",
     "populate": "dotenv -e .env.local -- ts-node src/scripts/populate.ts",
     "purge": "dotenv -e .env.local -- ts-node src/scripts/purge.ts",
     "push": "dotenv -e .env.local -- ts-node src/scripts/push.ts",
-    "postinstall": "yarn generate"
+    "query": "dotenv -e .env.local -- ts-node src/scripts/query.ts",
+    "setup": "dotenv -e .env.local -- ts-node src/scripts/install.ts"
   },
   "dependencies": {
     "@electric-sql/pglite": "0.2.13",
     "@paralleldrive/cuid2": "2.2.2",
     "@stackpress/incept": "0.3.11",
     "@stackpress/ingest": "0.3.11",
-    "@stackpress/inquire": "0.2.8",
-    "@stackpress/inquire-pglite": "0.2.8",
+    "@stackpress/inquire": "0.2.9",
+    "@stackpress/inquire-pglite": "0.2.10",
     "better-sqlite3": "11.5.0",
     "cookie": "1.0.2",
     "ethers": "6.13.4",

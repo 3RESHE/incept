@@ -1,8 +1,8 @@
 {
-  "name": "@stackpress/incept",
+  "name": "@stackpress/incept-api",
   "version": "0.3.11",
   "license": "MIT",
-  "description": "Incept is a code generator for content management systems.",
+  "description": "This package is a user interface that enables oauth and rest APIs to be used in an Incept app.",
   "author": "Chris <chris@stackpress.io>",
   "homepage": "https://github.com/stackpress/incept",
   "bugs": "https://github.com/stackpress/incept/issues",
@@ -10,38 +10,31 @@
   "plugins": [
     "./dist/plugin"
   ],
-  "bin": {
-    "incept": "./bin.js"
-  },
   "scripts": {
-    "build": "tsc"
+    "build": "yarn build:ts && yarn build:ink",
+    "build:ts": "tsc",
+    "build:ink": "copyfiles -u 1 ./src/**/*.ink ./src/**/**/*.ink ./dist"
   },
   "main": "index.js",
   "files": [
     "dist",
-    "bin.js",
-    "client.js",
-    "client.d.ts",
     "index.js",
     "index.d.ts",
     "LICENSE",
     "README.md",
-    "routes.js",
-    "routes.d.ts",
     "tsconfig.json"
   ],
   "dependencies": {
-    "@paralleldrive/cuid2": "2.2.2",
-    "@stackpress/idea-transformer": "0.3.11",
+    "@stackpress/incept": "0.3.11",
+    "@stackpress/incept-user": "0.3.11",
     "@stackpress/ingest": "0.3.11",
-    "@stackpress/types": "0.3.11",
-    "fast-glob": "3.3.2",
-    "mustache": "4.2.0",
-    "nanoid": "3.3.8"
+    "@stackpress/inquire": "0.2.8",
+    "jsonwebtoken": "9.0.2"
   },
   "devDependencies": {
-    "@types/mustache": "4.2.5",
     "@types/node": "22.9.3",
+    "copyfiles": "2.4.1",
+    "rimraf": "6.0.1",
     "ts-node": "10.9.2",
     "typescript": "5.7.2"
   }

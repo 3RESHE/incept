@@ -5,23 +5,21 @@ async function populate() {
   //server emit
   const server = await make();
   const john = await server.call('profile-create', {
-    id: 'john-doe',
     name: 'John Doe',
     type: 'person',
     roles: [ 'ADMIN' ]
   }) as { results: { id: string } };
   const jane = await server.call('profile-create', {
-    id: 'jane-doe',
     name: 'Jane Doe',
     type: 'person',
     roles: [ 'USER' ]
   }) as { results: { id: string } };
   const jack = await server.call('profile-create', {
-    id: 'jack-doe',
     name: 'Jack Doe',
     type: 'person',
     roles: [ 'USER' ]
   }) as { results: { id: string } };
+
   await server.call('auth-create', {
     profileId: john.results.id,
     type: 'username',
@@ -57,6 +55,20 @@ async function populate() {
     type: 'email',
     token: 'jack@doe.com',
     secret: '123'
+  });
+
+  const app = await server.call('application-create', {
+    profileId: john.results.id,
+    name: 'Example App',
+    scopes: [ 'profile-write', 'auth-read' ],
+    expires: new Date(Date.now() + 1000 * 60 * 60 * 24 * 365)
+  }) as { results: { id: string } };
+
+  await server.call('session-create', {
+    profileId: john.results.id,
+    applicationId: app.results.id,
+    scopes: [ 'profile-write', 'auth-read' ],
+    expires: new Date(Date.now() + 1000 * 60 * 60 * 24 * 365)
   });
 };
 

@@ -26,7 +26,11 @@ export type ClientWithDatabasePlugin<M extends UnknownNest = UnknownNest> = {
 
 export type DatabaseConfig = {
   database: {
-    migrations: string
+    migrations: string,
+    schema: {
+      onDelete: 'CASCADE'|'SET NULL'|'RESTRICT',
+      onUpdate: 'CASCADE'|'SET NULL'|'RESTRICT'
+    }
   }
 };
 export type DatabasePlugin = Engine;

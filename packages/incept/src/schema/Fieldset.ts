@@ -176,6 +176,9 @@ export default class Fieldset {
   public assert(values: Record<string, any>, strict = true) {
     const errors: NestedObject<string|string[]> = {};
     for (const column of this.columns.values()) {
+      if (column.model) {
+        continue;
+      }
       if (column.fieldset) {
         const assertions = column.fieldset.assert(
           values[column.name], 
