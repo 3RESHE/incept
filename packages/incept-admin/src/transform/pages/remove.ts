@@ -59,14 +59,15 @@ export default function generate(directory: Directory, registry: Registry) {
         { name: 'res', type: 'Response' }
       ],
       statements: `
+        //if there is a response body or there is an error code
+        if (res.body || (res.code && res.code !== 200)) {
+          //let the response pass through
+          return;
+        }
         //get the server
         const server = req.context;
-        //get authorization
-        const authorized = await server.call('authorize', req, res);
-        //if not authorized
-        if (authorized.code !== 200) {
-          return res.fromStatusResponse(authorized);
-        }
+        //get session
+        const session = await server.call('me', req);
         //get the admin config
         const admin = server.config<AdminConfig['admin']>('admin') || {};
         const root = admin.root || '/admin';
@@ -95,7 +96,7 @@ export default function generate(directory: Directory, registry: Registry) {
             return res.setHTML(await render(error, { 
               ...response, 
               settings: admin,
-              session: authorized.results 
+              session: session.results 
             }));
           }
           //not confirmed, fetch the data using the id
@@ -109,14 +110,14 @@ export default function generate(directory: Directory, registry: Registry) {
             return res.setHTML(await render(template, { 
               ...response, 
               settings: admin,
-              session: authorized.results 
+              session: session.results 
             }));
           }
           //it did not fetch, render error page
           return res.setHTML(await render(error, { 
             ...response, 
             settings: admin,
-            session: authorized.results 
+            session: session.results 
           }));
         }
         //if they want json (success or fail)
@@ -128,7 +129,7 @@ export default function generate(directory: Directory, registry: Registry) {
           code: 404, 
           status: 'Not Found', 
           settings: admin,
-          session: authorized.results 
+          session: session.results 
         }));
       `
     });

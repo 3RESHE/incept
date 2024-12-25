@@ -2,10 +2,8 @@
 import type Response from '@stackpress/ingest/dist/Response';
 import type { ServerRequest } from '@stackpress/ingest/dist/types';
 import type { TemplatePlugin } from '@stackpress/incept-ink/dist/types';
-//actions
-import type  { SigninType } from '../types';
 //common
-import type { SessionConfig, SessionPlugin } from '../types';
+import type { SigninType, SessionConfig, SessionPlugin } from '../types';
 
 type AuthConfig = SessionConfig['session']['auth'];
 const template = '@stackpress/incept-user/dist/templates/signin';
@@ -16,8 +14,8 @@ export default async function SignInPage(req: ServerRequest, res: Response) {
   // /auth/signin/:type
   const { 
     type = 'username', 
-    redirect = '/' 
-  } = req.data<{ type: SigninType, redirect: string }>();
+    redirect_uri: redirect = '/' 
+  } = req.data<{ type: SigninType, redirect_uri: string }>();
   //get the auth config
   const config = server.config<AuthConfig>('session', 'auth');
   //get the session
@@ -37,9 +35,9 @@ export default async function SignInPage(req: ServerRequest, res: Response) {
         config 
       }));
     }
-    const results = response.results as {
-      id: string,
+    const { profile } = response.results as {
       profile: {
+        id: string,
         name: string,
         image: string,
         roles: string[]
@@ -47,10 +45,10 @@ export default async function SignInPage(req: ServerRequest, res: Response) {
     };
     //set session
     res.session.set('session', session.create({
-      id: results.id, 
-      name: results.profile.name,
-      image: results.profile.image,
-      roles: results.profile.roles
+      id: profile.id, 
+      name: profile.name,
+      image: profile.image,
+      roles: profile.roles
     }));
     //redirect
     return res.redirect(redirect);

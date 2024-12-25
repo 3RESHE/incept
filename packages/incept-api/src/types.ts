@@ -5,6 +5,9 @@ import type { Profile } from '@stackpress/incept-user/dist/types';
 //--------------------------------------------------------------------//
 // Server Types
 export type Endpoint = {
+  name?: string,
+  description?: string,
+  example?: string,
   method: Method,
   route: string,
   type: 'public'|'app'|'session',
@@ -14,11 +17,13 @@ export type Endpoint = {
   data: Record<string, Data>
 };
 export type Scope = {
+  icon?: string,
   name: string,
   description: string
 };
 export type APIConfig = { 
   api: {
+    expires: number,
     scopes: Record<string, Scope>,
     endpoints: Endpoint[]
   }

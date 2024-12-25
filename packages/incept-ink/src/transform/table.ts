@@ -23,7 +23,8 @@ export default function generate(
         { href: '@stackpress/ink-ui/layout/table/row', type: 'component', name: 'table-row' },
         { href: '@stackpress/ink-ui/layout/table/col', type: 'component', name: 'table-col' },
         { href: '@stackpress/ink-ui/element/alert', type: 'component', name: 'element-alert' },
-        { href: '@stackpress/ink-ui/element/icon', type: 'component', name: 'element-icon' }
+        { href: '@stackpress/ink-ui/element/icon', type: 'component', name: 'element-icon' },
+        { href: '@stackpress/ink-ui/form/button', type: 'component', name: 'form-button' }
       ],
       headers: [],
       columns: []
@@ -97,7 +98,9 @@ const template = `
           </table-col>
         {{/columns}}
         <table-col class="tx-left" nowrap>
-          <a href={mustache.render(detail || '', data)}>View</a>
+          <form-button primary href={mustache.render(detail || '', data)}>
+            <element-icon name="caret-right" />
+          </form-button>
         </table-col>
       </table-row>
     </each>

@@ -29,6 +29,7 @@ export default function plugin(server: Server<SessionConfig>) {
   server.on('listen', req => {
     const server = req.context;
     server.use(emitter);
+    server.all('/**', path.join(__dirname, 'pages/authorize'), 100);
     server.all('/auth/signin', path.join(__dirname, 'pages/signin'));
     server.all('/auth/signin/:type', path.join(__dirname, 'pages/signin'));
     server.all('/auth/signup', path.join(__dirname, 'pages/signup'));

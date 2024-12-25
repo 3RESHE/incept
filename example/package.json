@@ -31,7 +31,7 @@
     "@stackpress/incept": "0.3.11",
     "@stackpress/ingest": "0.3.11",
     "@stackpress/inquire": "0.2.9",
-    "@stackpress/inquire-pglite": "0.2.10",
+    "@stackpress/inquire-pglite": "0.2.12",
     "better-sqlite3": "11.5.0",
     "cookie": "1.0.2",
     "ethers": "6.13.4",

@@ -90,11 +90,17 @@ export class Actions<M extends UnknownNest = UnknownNest> {
       filter[this.model.active.name] = -1;
     }
     const response = await this.search({ filter, take: 1 });
-    //@ts-ignore - Property 'results' does not exist on type 'ErrorResponse'.
-    if (Array.isArray(response.results)) {
-      //@ts-ignore - Property 'results' does not exist on type 'ErrorResponse'.
-      response.results = response.results[0] || null;
+    //if error
+    if (response.code !== 200) {
+      return response as unknown as StatusResponse<M>;
+    //if no results
+    } else if (!response.results[0]) {
+      return toErrorResponse(
+        Exception.for('Not Found').withCode(404)
+      ) as StatusResponse<M>;
     }
+    //@ts-ignore - Property 'results' does not exist on type 'ErrorResponse'.
+    response.results = response.results[0];
     return response as unknown as StatusResponse<M>;
   }
 

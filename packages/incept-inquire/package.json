@@ -26,7 +26,7 @@
     "@stackpress/idea-transformer": "0.3.11",
     "@stackpress/incept": "0.3.11",
     "@stackpress/ingest": "0.3.11",
-    "@stackpress/inquire": "0.2.10",
+    "@stackpress/inquire": "0.2.12",
     "@stackpress/types": "0.3.11",
     "ts-morph": "24.0.0"
   },

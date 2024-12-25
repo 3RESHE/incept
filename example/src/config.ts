@@ -57,15 +57,36 @@ export const config: Config = {
     seed: seed,
     access: {
       ADMIN: [
+        { method: 'GET', route: '/build/**' },
+        { method: 'GET', route: '/__ink_dev__' },
+        { method: 'GET', route: '/dev.js' },
+        { method: 'GET', route: '/images/**' },
+        { method: 'GET', route: '/styles/**' },
+        { method: 'GET', route: '/favicon.ico' },
+        { method: 'GET', route: '/favicon.png' },
         { method: 'ALL', route: '/' },
         { method: 'ALL', route: '/auth/**' },
         { method: 'ALL', route: '/admin/**' }
       ],
       USER: [
+        { method: 'GET', route: '/build/**' },
+        { method: 'GET', route: '/__ink_dev__' },
+        { method: 'GET', route: '/dev.js' },
+        { method: 'GET', route: '/images/**' },
+        { method: 'GET', route: '/styles/**' },
+        { method: 'GET', route: '/favicon.ico' },
+        { method: 'GET', route: '/favicon.png' },
         { method: 'ALL', route: '/' },
         { method: 'ALL', route: '/auth/**' }
       ],
       GUEST: [
+        { method: 'GET', route: '/build/**' },
+        { method: 'GET', route: '/__ink_dev__' },
+        { method: 'GET', route: '/dev.js' },
+        { method: 'GET', route: '/images/**' },
+        { method: 'GET', route: '/styles/**' },
+        { method: 'GET', route: '/favicon.ico' },
+        { method: 'GET', route: '/favicon.png' },
         { method: 'ALL', route: '/' },
         { method: 'ALL', route: '/auth/**' }
       ]
@@ -138,6 +159,7 @@ export const config: Config = {
     ]
   },
   api: {
+    expires: 1000 * 60 * 60 * 24 * 365,
     scopes: {
       'profile-read': { 
         name: 'Read Profile',

@@ -1,10 +1,10 @@
+//modules
+import path from 'node:path';
 //stackpress
-import type { ServerRequest } from '@stackpress/ingest/dist/types';
-import type Response from '@stackpress/ingest/dist/Response';
 import type Server from '@stackpress/ingest/dist/Server';
-import Exception from '@stackpress/incept/dist/Exception';
 //local
 import type { APIConfig, Endpoint, Application, Session } from './types';
+import { authorize, unauthorized } from './helpers';
 
 /**
  * This interface is intended for the Incept library.
@@ -13,6 +13,8 @@ export default function plugin(server: Server) {
   //on listen, add user routes
   server.on('listen', req => {
     const server = req.context;
+    server.all('/auth/oauth/token', path.join(__dirname, 'pages/token'));
+    server.all('/auth/oauth', path.join(__dirname, 'pages/oauth'));
     const { endpoints = [] } = server.config<APIConfig['api']>('api') || {};
     for (const endpoint of endpoints) {
       if (endpoint.type === 'session') {
@@ -25,41 +27,6 @@ export default function plugin(server: Server) {
     }
   });
 };
-
-export function authorize(req: ServerRequest, res: Response) {
-  const authorization = req.headers.get('authorization') as string;
-  if (!authorization) {
-    unauthorized(res);
-    return false;
-  }
-  const [ , token ] = authorization.split(' ');
-  if (!token.trim().length) {
-    unauthorized(res);
-    return false;
-  }
-  const [ id, secret ] = token.split(':');
-  if (!id.trim().length) {
-    unauthorized(res);
-    return false;
-  }
-  if (req.method.toUpperCase() !== 'GET' && !secret.trim().length) {
-    unauthorized(res);
-    return false;
-  }
-  return { 
-    token: token.trim(), 
-    id: id.trim(), 
-    secret: secret.trim() 
-  };
-}
-
-export function unauthorized(res: Response) {
-  res.setError(Exception
-    .for('Unauthorized')
-    .withCode(401)
-    .toResponse()
-  );
-}
 
 export function session(endpoint: Endpoint, server: Server) {
   server.route(endpoint.method, endpoint.route, async (req, res) => {
