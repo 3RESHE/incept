@@ -7,9 +7,8 @@
   <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" />
   <link rel="stylesheet" type="text/css" href="/styles/global.css" />
   <link rel="stylesheet" type="text/css" href={`/build/client/${env('BUILD_ID')}.css`} />
-  
-  <script data-app={env('APP_DATA')} src={`/build/client/${env('BUILD_ID')}.js`}></script>
-  <if true={env('SERVER_ENV') === 'development'}>
-    <script src="/dev.js"></script>
-  </if>
+
+  <script id="CLIENT_DATA" type="text/json">__CLIENT_DATA__</script>
+  <script type="text/javascript" src={`/build/client/${env('BUILD_ID')}.js`}></script>
+  <if true={env('PUBLIC_ENV') === 'development'}><script src="/dev.js"></script></if>
 </head>
