@@ -105,6 +105,66 @@ export class Actions<M extends UnknownNest = UnknownNest> {
   }
 
   /**
+   * Returns csv table export data
+   */
+  public async export(
+    query: SearchParams
+  ): Promise<StatusResponse<unknown[][]>> {
+    const response = await this.search({ ...query, take: 0 });
+    //if error
+    if (response.code !== 200) {
+      return response as unknown as StatusResponse<unknown[][]>;
+    }
+    const head: [ string, string ][] = [];
+    const body: any[][] = [];
+    const relations = this.model.relations.map(column => column.name);
+    //loop through the data (row) of each result
+    for (const data of response.results) {
+      //loop through the columns of the data (row)
+      for (const key in data) {
+        const includes = head.find(
+          head => head[0] === '' && head[1] === key
+        );
+        //if the key is not in the head and not ignore
+        if (!includes && !relations.includes(key)) {
+          //add the key to the head
+          head.push(['', key]);
+        }
+      }
+      //loop through the ignore list
+      for (const relation of relations) {
+        //if there are no relations, skip
+        if (!data[relation]) continue;
+        //loop through the keys of the relation in the data
+        for (const key in data[relation]) {
+          const includes = head.find(
+            head => head[0] === relation && head[1] === key
+          );
+          //if the key is not in the head
+          if (!includes) {
+            //add the key to the head
+            head.push([ relation, key ]);
+          }
+        }
+      }
+      const row: any[] = [];
+      for (const [ relation, key ] of head) {
+        if (relation === '') {
+          row.push(data[key]);
+        } else {
+          const column = data[relation] as Record<string, any>;
+          row.push(column?.[key]);
+        }
+      }
+      body.push(row);
+    }
+    return toResponse(
+      [ head, ...body ], 
+      response.total
+    ) as StatusResponse<unknown[][]>;
+  }
+
+  /**
    * Returns a database table row
    */
   public async get(
@@ -122,6 +182,37 @@ export class Actions<M extends UnknownNest = UnknownNest> {
       response.results = response.results[0] || null;
     }
     return response as unknown as StatusResponse<M>;
+  }
+
+  /**
+   * Imports from a csv table
+   */
+  public async import(csv: unknown[][]) {
+    const head = csv.shift();
+    if (!head) {
+      return Exception
+        .for('Invalid CSV')
+        .withCode(400)
+        .toResponse();
+    }
+    const rows: Partial<M>[] = [];
+    await this.engine.transaction(async connection => {
+      for (const row of csv) {
+        const data = Object.fromEntries(
+          head.map((key, i) => [ key, row[i] ])
+        );
+        const results = await this.upsert(data);
+        if (results.code !== 200) {
+          throw Exception
+            .for(results.error)
+            .withCode(results.code)
+            //@ts-ignore - Type 'string | string[]' is not assignable to type 'string'.
+            .withErrors(results.errors || {});
+        }
+        rows.push(results.results);
+      }
+    });
+    return toResponse(rows) as StatusResponse<Partial<M>[]>;
   }
 
   /**
@@ -197,9 +288,15 @@ export class Actions<M extends UnknownNest = UnknownNest> {
     //selectors
     const select = this.engine
       .select<M>(columns)
-      .from(this.model.name)
-      .offset(skip)
-      .limit(take);
+      .from(this.model.name);
+    //if skip
+    if (skip) {
+      select.offset(skip);
+    }
+    //if take
+    if (take) {
+      select.limit(take);
+    }
     const count = this.engine
       .select<{ total: number }>('COUNT(*) as total')
       .from(this.model.name);
@@ -363,6 +460,20 @@ export class Actions<M extends UnknownNest = UnknownNest> {
       return toErrorResponse(e as Error) as StatusResponse<M>;
     }
     return await this.detail(ids) as StatusResponse<M>;
+  }
+
+  /**
+   * Updates or inserts into a database table row
+   */
+  public async upsert(input: NestedObject) {
+    const ids: Record<string, string|number> = {};
+    for (const column of this.model.ids) {
+      if (!input[column.name]) {
+        return this.create(input);
+      }
+      ids[column.name] = input[column.name] as string|number;
+    }
+    return this.update(ids, input);
   }
 }
 
