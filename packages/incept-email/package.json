@@ -1,0 +1,35 @@
+{
+  "name": "@stackpress/incept-email",
+  "version": "0.3.17",
+  "license": "MIT",
+  "description": "This package is enables email in an Incept app.",
+  "author": "Chris <chris@stackpress.io>",
+  "homepage": "https://github.com/stackpress/incept",
+  "bugs": "https://github.com/stackpress/incept/issues",
+  "repository": "stackpress/incept",
+  "plugins": [
+    "./dist/plugin"
+  ],
+  "scripts": {
+    "build": "tsc"
+  },
+  "main": "index.js",
+  "files": [
+    "dist",
+    "index.js",
+    "index.d.ts",
+    "LICENSE",
+    "README.md",
+    "tsconfig.json"
+  ],
+  "dependencies": {
+    "@stackpress/ingest": "0.3.17",
+    "nodemailer": "6.9.16"
+  },
+  "devDependencies": {
+    "@types/node": "22.9.3",
+    "@types/nodemailer": "6.4.17",
+    "ts-node": "10.9.2",
+    "typescript": "5.7.2"
+  }
+}

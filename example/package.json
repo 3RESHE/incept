@@ -11,7 +11,8 @@
     "@stackpress/incept-admin",
     "@stackpress/incept-i18n",
     "@stackpress/incept-user",
-    "@stackpress/incept-api"
+    "@stackpress/incept-api",
+    "@stackpress/incept-email"
   ],
   "scripts": {
     "build": "tsc",

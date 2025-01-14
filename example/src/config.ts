@@ -5,6 +5,7 @@ import type { SessionConfig } from '@stackpress/incept-user/dist/types';
 import type { TemplateConfig } from '@stackpress/incept-ink/dist/types';
 import type { AdminConfig } from '@stackpress/incept-admin/dist/types';
 import type { APIConfig } from '@stackpress/incept-api/dist/types';
+import type { EmailConfig } from '@stackpress/incept-email/dist/types';
 
 import path from 'path';
 
@@ -18,7 +19,8 @@ export type Config = ServerConfig
   & TemplateConfig 
   & SessionConfig 
   & AdminConfig
-  & APIConfig;
+  & APIConfig
+  & EmailConfig;
 
 export const config: Config = {
   idea: { 
@@ -51,6 +53,15 @@ export const config: Config = {
         socketRoute: '/__ink_dev__'
       }
     }
+  },
+  email: {
+    host: 'smtp.example.com',
+    port: 587,
+    secure: false, // upgrade later with STARTTLS
+    auth: {
+      user: 'username',
+      pass: 'password',
+    },
   },
   session: {
     name: 'session',

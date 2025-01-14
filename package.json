@@ -20,11 +20,12 @@
     "build:types": "yarn --cwd packages/incept-types build",
     "build:ink": "yarn --cwd packages/incept-ink build",
     "build:inquire": "yarn --cwd packages/incept-inquire build",
-    "build:plugins": "yarn build:i18n && yarn build:user && yarn build:api && yarn build:admin",
+    "build:plugins": "yarn build:i18n && yarn build:user && yarn build:api && yarn build:admin && yarn build:email",
     "build:i18n": "yarn --cwd packages/incept-i18n build",
     "build:admin": "yarn --cwd packages/incept-admin build",
     "build:user": "yarn --cwd packages/incept-user build",
     "build:api": "yarn --cwd packages/incept-api build",
+    "build:email": "yarn --cwd packages/incept-email build",
     "build:example": "yarn --cwd example build"
   },
   "devDependencies": {

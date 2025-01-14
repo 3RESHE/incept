@@ -14,7 +14,26 @@ emitter.on('auth-signup', async function AuthSignup(req, res) {
   const roles = req.context.config<string[]>('session', 'auth', 'roles') || [];
   //get the database engine
   const store = req.context.plugin<DatabasePlugin>('database');
-  const response = await signup({ ...req.data(), roles }, store);
+  //get input
+  const input = { ...req.data(), roles };
+  const response = await signup(input, store);
+  //if good
+  if (response.code === 200) {
+    //get server
+    const server = req.context;
+    if (input.email) {
+      server.call('email-email-send', { 
+        email: input.email, 
+        ...response.results 
+      });
+    }
+    if (input.phone) {
+      server.call('auth-phone-verify', { 
+        phone: input.phone, 
+        ...response.results 
+      });
+    }
+  }
   res.fromStatusResponse(response);
 });
 
