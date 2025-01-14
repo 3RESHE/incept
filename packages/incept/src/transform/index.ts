@@ -11,28 +11,50 @@ import generateRegistry from './registry';
 /**
  * @stackpress/.incept (file structure)
  * - profile/
- * | - admin/
+ * | - actions/
+ * | | - batch.ts
  * | | - create.ts
  * | | - detail.ts
+ * | | - get.ts
+ * | | - index.ts
  * | | - remove.ts
  * | | - restore.ts
  * | | - search.ts
  * | | - update.ts
- * | | - create.ink
- * | | - detail.ink
- * | | - remove.ink
- * | | - restore.ink
- * | | - search.ink
- * | | - update.ink
+ * | | - upsert.ts
+ * | - admin/
+ * | | - pages/
+ * | | | - create.ts
+ * | | | - detail.ts
+ * | | | - remove.ts
+ * | | | - restore.ts
+ * | | | - search.ts
+ * | | | - update.ts
+ * | | - templates/
+ * | | | - create.ink
+ * | | | - detail.ink
+ * | | | - remove.ink
+ * | | | - restore.ink
+ * | | | - search.ink
+ * | | | - update.ink
  * | | - routes.ts
  * | - components/
  * | | - filter.ink
  * | | - form.ink
  * | | - table.ink
  * | | - view.ink
- * | - actions.ts
+ * | - events/
+ * | | - batch.ts
+ * | | - create.ts
+ * | | - detail.ts
+ * | | - get.ts
+ * | | - index.ts
+ * | | - remove.ts
+ * | | - restore.ts
+ * | | - search.ts
+ * | | - update.ts
+ * | | - upsert.ts
  * | - config.ts
- * | - events.ts
  * | - index.ts
  * | - schema.ts
  * | - types.ts

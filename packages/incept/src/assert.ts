@@ -161,7 +161,9 @@ export function object(value: any) {
 };
 
 export function array(values: any[], validator: string, ...args: any[]) {
-  return values.every(value => assert[validator].apply(assert, [value, ...args]));
+  return Array.isArray(values) && values.every(
+    value => assert[validator].apply(assert, [value, ...args])
+  );
 }
 
 const assert: Record<string, (value: any, ...args: any[]) => boolean> = {

@@ -98,7 +98,7 @@ export default function generate(
   for (const model of registry.model.values()) {
     const file = path.join(
       directory.getPath(), 
-      `${model.name}/admin/remove.ink`
+      `${model.name}/admin/templates/remove.ink`
     );
     if (!fs.existsSync(path.dirname(file))) {
       fs.mkdirSync(path.dirname(file), { recursive: true });

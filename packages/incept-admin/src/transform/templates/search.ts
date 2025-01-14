@@ -13,8 +13,8 @@ const template = `
 <link rel="import" type="component" href="@stackpress/ink-ui/element/pager.ink" name="element-pager" />
 <link rel="import" type="component" href="@stackpress/ink-ui/field/input.ink" name="field-input" />
 <link rel="import" type="component" href="@stackpress/ink-ui/form/button.ink" name="form-button" />
-<link rel="import" type="component" href="../components/table.ink" name="{{lower}}-table" />
-<link rel="import" type="component" href="../components/filters.ink" name="{{lower}}-filters" />
+<link rel="import" type="component" href="../../components/table.ink" name="{{lower}}-table" />
+<link rel="import" type="component" href="../../components/filters.ink" name="{{lower}}-filters" />
 <link rel="import" type="component" href="@stackpress/incept-admin/dist/components/app.ink" name="admin-app" />
 <style>
   @ink theme;
@@ -23,7 +23,8 @@ const template = `
   @ink utilities;
 </style>
 <script>
-  import { env, props } from '@stackpress/ink';
+  import Papa from 'papaparse/papaparse.min';
+  import { env, props, MouseEvent } from '@stackpress/ink';
   import { _ } from '@stackpress/incept-i18n';
   import { addQueryParam } from '@stackpress/incept-ink/dist/helpers';
   const { 
@@ -50,7 +51,13 @@ const template = `
   } = props('document');
   const url = \`\${settings.root}/{{lower}}/search\`;
   const title = _('{{plural}}');
-  const links = { create: \`\${settings.root}/{{lower}}/create\` };
+  const links = { 
+    create: \`\${settings.root}/{{lower}}/create\`,
+    detail: \`\${settings.root}/{{lower}}/detail/{{ids}}\`,
+    export: \`\${settings.root}/{{lower}}/export\`,
+    import: \`\${settings.root}/{{lower}}/import\`,
+    detail: \`\${settings.root}/{{lower}}/update/{{ids}}\`
+  };
   const crumbs = [
     { icon: 'home', label: 'Home', href: settings.root },
     { icon: '{{icon}}', label: title }
@@ -62,8 +69,75 @@ const template = `
       (page - 1) * take
     );
   };
-  const detail = \`\${settings.root}/{{lower}}/detail/{{ids}}\`;
-  const update = \`\${settings.root}/{{lower}}/update/{{ids}}\`;
+  const init = (e: CustomEvent) => {
+    //button wrapper
+    const button = e.detail.target;
+    //file input in button
+    const input = button.querySelector('input');
+    //global notifier
+    const notifier = document.querySelector('element-notify');
+    if (!input) return;
+    button.addEventListener('click', () => input.click());
+    input.addEventListener('change', (e) => {
+      e.preventDefault();
+      if (!input?.files?.[0]) return;
+      const file = input.files[0];
+      Papa.parse(file, { 
+        header: true,
+        skipEmptyLines: true,
+        complete(results: { 
+          data: Record<string, unknown>[],
+          errors: {
+            code: string,
+            message: string,
+            row: number,
+            type: string
+          }[]
+        }) {
+          if (results.errors.length) {
+            results.errors.forEach(error => {
+              console.error(error);
+              if (notifier) {
+                notifier.notify('error', \`ROW \${error.row}: \${error.message}\`);
+              }
+            });
+            return;
+          }
+          const data = new FormData();
+          for (let i = 0; i < results.data.length; i++) {
+            for (const [ key, value ] of Object.entries(results.data[i])) {
+              data.append(\`rows[\${i}][\${key}]\`, value);
+            }
+          }
+          fetch(links.import, {
+            method: 'POST',
+            body: data,
+            headers: { 'Authorization': session.token }
+          }).then(response => {
+            response.json().then(response => {
+              if (response.code === 200) {
+                window.location.reload();
+              } else if (notifier) {
+                if (response.results) {
+                  response.results.forEach((result, i) => {
+                    const errors = result.errors ? Object.entries(result.errors).map(
+                      error => \`\${error[0]}: \${error[1]}\`
+                    ): [];
+                    notifier.notify('error', [
+                      \`ROW \${i}: \${result.error}\`,
+                      ...errors
+                    ].join(' - '));
+                  });
+                } else if (response.error) {
+                  notifier.notify('error', response.error);
+                }
+              }
+            });
+          });
+        }
+      });
+    });
+  };
   const toggle = () => {
     const filter = document.querySelector('.filter');
     if (filter?.classList.contains('right-0')) {
@@ -101,12 +175,26 @@ const template = `
               <element-icon name="search" />
             </form-button>
           </form>
+          <span mount=init>
+            <form-button warning padding={10} class="ml-10">
+              <element-icon name="upload" />
+              <input type="file" style="display:none" />
+            </form-button>
+          </span>
+          <form-button info padding={10} class="ml-10" href={links.export}>
+            <element-icon name="download" />
+          </form-button>
           <form-button success padding={10} class="ml-10" href={links.create}>
             <element-icon name="plus" />
           </form-button>
         </div>
         <div class="flex-grow p-10">
-          <{{lower}}-table rows={results} {detail} {update} none={_('No Results Found')} />
+          <{{lower}}-table 
+            rows={results} 
+            detail={links.detail} 
+            update={links.update} 
+            none={_('No Results Found')} 
+          />
         </div>
         <div class="p-10">
           <element-pager 
@@ -151,7 +239,7 @@ export default function generate(
   for (const model of registry.model.values()) {
     const file = path.join(
       directory.getPath(), 
-      `${model.name}/admin/search.ink`
+      `${model.name}/admin/templates/search.ink`
     );
     if (!fs.existsSync(path.dirname(file))) {
       fs.mkdirSync(path.dirname(file), { recursive: true });

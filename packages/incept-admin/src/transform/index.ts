@@ -10,18 +10,20 @@ import generateRoutes from './routes';
  * @stackpress/.incept (file structure)
  * - profile/
  * | - admin/
- * | | - create.ts
- * | | - detail.ts
- * | | - remove.ts
- * | | - restore.ts
- * | | - search.ts
- * | | - update.ts
- * | | - create.ink
- * | | - detail.ink
- * | | - remove.ink
- * | | - restore.ink
- * | | - search.ink
- * | | - update.ink
+ * | | - pages/
+ * | | | - create.ts
+ * | | | - detail.ts
+ * | | | - remove.ts
+ * | | | - restore.ts
+ * | | | - search.ts
+ * | | | - update.ts
+ * | | - templates/
+ * | | | - create.ink
+ * | | | - detail.ink
+ * | | | - remove.ink
+ * | | | - restore.ink
+ * | | | - search.ink
+ * | | | - update.ink
  * | | - routes.ts
  * - admin.ts
  */

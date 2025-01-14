@@ -9,14 +9,28 @@ import generateEvents from './events';
 /**
  * @stackpress/.incept (file structure)
  * - profile/
- * | - actions.ts
- * | - events/create.ts
- * | - events/detail.ts
- * | - events/index.ts
- * | - events/remove.ts
- * | - events/restore.ts
- * | - events/search.ts
- * | - events/update.ts
+ * | - actions/
+ * | | - batch.ts
+ * | | - create.ts
+ * | | - detail.ts
+ * | | - get.ts
+ * | | - index.ts
+ * | | - remove.ts
+ * | | - restore.ts
+ * | | - search.ts
+ * | | - update.ts
+ * | | - upsert.ts
+ * | - events/
+ * | | - batch.ts
+ * | | - create.ts
+ * | | - detail.ts
+ * | | - get.ts
+ * | | - index.ts
+ * | | - remove.ts
+ * | | - restore.ts
+ * | | - search.ts
+ * | | - update.ts
+ * | | - upsert.ts
  * | - index.ts
  * | - schema.ts
  */

@@ -11,7 +11,7 @@ const template = `
 <link rel="import" type="component" href="@stackpress/ink-ui/element/icon.ink" name="element-icon" />
 <link rel="import" type="component" href="@stackpress/ink-ui/element/crumbs.ink" name="element-crumbs" />
 <link rel="import" type="component" href="@stackpress/ink-ui/form/button.ink" name="form-button" />
-<link rel="import" type="component" href="../components/view.ink" name="{{lower}}-view" />
+<link rel="import" type="component" href="../../components/view.ink" name="{{lower}}-view" />
 <link rel="import" type="component" href="@stackpress/incept-admin/dist/components/app.ink" name="admin-app" />
 <style>
   @ink theme;
@@ -113,7 +113,7 @@ export default function generate(
   for (const model of registry.model.values()) {
     const file = path.join(
       directory.getPath(), 
-      `${model.name}/admin/detail.ink`
+      `${model.name}/admin/templates/detail.ink`
     );
     if (!fs.existsSync(path.dirname(file))) {
       fs.mkdirSync(path.dirname(file), { recursive: true });

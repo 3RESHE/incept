@@ -37,12 +37,14 @@ export default function generate(directory: Directory, registry: Registry) {
         //get the admin config
         const admin = server.config<AdminConfig['admin']>('admin') || {};
         const root = admin.root || '/admin';
-        server.all(\`\${root}/${model.dash}/search\`, path.resolve(__dirname, 'search'));
-        server.all(\`\${root}/${model.dash}/create\`, path.resolve(__dirname, 'create'));
-        server.all(\`\${root}/${model.dash}/detail/${ids}\`, path.resolve(__dirname, 'detail'));
-        server.all(\`\${root}/${model.dash}/update/${ids}\`, path.resolve(__dirname, 'update'));
-        server.all(\`\${root}/${model.dash}/remove/${ids}\`, path.resolve(__dirname, 'remove'));
-        server.all(\`\${root}/${model.dash}/restore/${ids}\`, path.resolve(__dirname, 'restore'));
+        server.all(\`\${root}/${model.dash}/search\`, path.resolve(__dirname, 'pages/search'));
+        server.all(\`\${root}/${model.dash}/create\`, path.resolve(__dirname, 'pages/create'));
+        server.all(\`\${root}/${model.dash}/detail/${ids}\`, path.resolve(__dirname, 'pages/detail'));
+        server.all(\`\${root}/${model.dash}/export\`, path.resolve(__dirname, 'pages/export'));
+        server.all(\`\${root}/${model.dash}/import\`, path.resolve(__dirname, 'pages/import'));
+        server.all(\`\${root}/${model.dash}/update/${ids}\`, path.resolve(__dirname, 'pages/update'));
+        server.all(\`\${root}/${model.dash}/remove/${ids}\`, path.resolve(__dirname, 'pages/remove'));
+        server.all(\`\${root}/${model.dash}/restore/${ids}\`, path.resolve(__dirname, 'pages/restore'));
       `.trim()
     });
   }

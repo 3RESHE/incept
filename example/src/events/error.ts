@@ -6,7 +6,9 @@ import type { ServerRequest } from '@stackpress/ingest/dist/types';
 import type Response from '@stackpress/ingest/dist/Response';
 import type { TemplatePlugin } from '@stackpress/incept-ink/dist/types';
 
-export default async function ErrorPage(req: ServerRequest, res: Response) {  
+export default async function ErrorPage(req: ServerRequest, res: Response) {
+  //if there is already a body
+  if (res.body) return;
   //get the server
   const server = req.context;
   //get the renderer
@@ -28,11 +30,16 @@ export default async function ErrorPage(req: ServerRequest, res: Response) {
     url: req.url.pathname 
   });
   if (req.url.pathname.endsWith('.js')) {
-    res.setBody('text/javascript', `document.write(${JSON.stringify(html)});`);
+    res.setBody('text/javascript', `document.write(${
+      JSON.stringify(html
+        .replaceAll('\\\\n', '\n')
+        .replaceAll('\\\\\\', '')
+      )
+    });`, res.code, res.status);
     return;
   } else if (req.url.pathname.endsWith('.css')) {
-    res.setBody('text/css', `/* ${response.error} */`);
+    res.setBody('text/css', `/* ${response.error} */`, res.code, res.status);
     return;
   }
-  res.setHTML(html);
+  res.setHTML(html, res.code, res.status);
 };

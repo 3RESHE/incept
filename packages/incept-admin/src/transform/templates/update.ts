@@ -9,7 +9,7 @@ import { render } from '@stackpress/incept/dist/schema/helpers';
 const template = `
 <link rel="import" type="template" href="@stackpress/incept-admin/dist/components/head.ink" name="html-head" />
 <link rel="import" type="component" href="@stackpress/ink-ui/element/crumbs.ink" name="element-crumbs" />
-<link rel="import" type="component" href="../components/form.ink" name="{{lower}}-form" />
+<link rel="import" type="component" href="../../components/form.ink" name="{{lower}}-form" />
 <link rel="import" type="component" href="@stackpress/incept-admin/dist/components/app.ink" name="admin-app" />
 <style>
   @ink theme;
@@ -87,7 +87,7 @@ export default function generate(
   for (const model of registry.model.values()) {
     const file = path.join(
       directory.getPath(), 
-      `${model.name}/admin/update.ink`
+      `${model.name}/admin/templates/update.ink`
     );
     if (!fs.existsSync(path.dirname(file))) {
       fs.mkdirSync(path.dirname(file), { recursive: true });
