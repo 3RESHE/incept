@@ -78,6 +78,51 @@ export default function generate(directory: Directory, registry: Registry) {
       parameters: [ { name: 'engine', type: 'Engine' } ],
       statements: `return new Actions<${model.title}Extended>(config, engine);`
     });
+    //import batch from './batch';
+    source.addImportDeclaration({
+      moduleSpecifier: './batch',
+      defaultImport: 'batch'
+    });
+    //import create from './create';
+    source.addImportDeclaration({
+      moduleSpecifier: './create',
+      defaultImport: 'create'
+    });
+    //import detail from './detail';
+    source.addImportDeclaration({
+      moduleSpecifier: './detail',
+      defaultImport: 'detail'
+    });
+    //import get from './get';
+    source.addImportDeclaration({
+      moduleSpecifier: './get',
+      defaultImport: 'get'
+    });
+    //import remove from './remove';
+    source.addImportDeclaration({
+      moduleSpecifier: './remove',
+      defaultImport: 'remove'
+    });
+    //import restore from './restore';
+    source.addImportDeclaration({
+      moduleSpecifier: './restore',
+      defaultImport: 'restore'
+    });
+    //import search from './search';
+    source.addImportDeclaration({
+      moduleSpecifier: './search',
+      defaultImport: 'search'
+    });
+    //import update from './update';
+    source.addImportDeclaration({
+      moduleSpecifier: './update',
+      defaultImport: 'update'
+    });
+    //import upsert from './upsert';
+    source.addImportDeclaration({
+      moduleSpecifier: './upsert',
+      defaultImport: 'upsert'
+    });
     //export { create, detail, ... }
     source.addExportDeclaration({
       namedExports: [
@@ -396,8 +441,8 @@ export function search(model: Model, directory: Directory) {
     parameters: [
       //engine: Engine,
       { name: 'engine', type: 'Engine' },
-      //query: SearchParams
-      { name: 'params', type: 'SearchParams' }
+      //query: SearchParams = {}
+      { name: 'params', type: 'SearchParams', initializer: '{}' }
     ],
     statements: (`return search<${model.title}Extended>(config, engine, params);`)
   });

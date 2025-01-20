@@ -36,7 +36,7 @@ export default async function create<M extends UnknownNest = UnknownNest>(
   //action and return response
   try {
     const results = await engine
-      .insert(model.name)
+      .insert(model.snake)
       .values(model.serialize(data) as NestedObject<string>)
       .returning('*');
     if (results.length) {

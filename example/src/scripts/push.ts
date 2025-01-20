@@ -1,11 +1,15 @@
 //stackpress
 import { scripts } from '@stackpress/incept-inquire';
 //common
-import database from '../database';
 import make from '../server';
 
 async function push() {
-  await scripts.push(await make(), await database());
+  const database = process.env.NODE_ENV === 'production' 
+    ? await import('../databases/production') 
+    : process.env.NODE_ENV === 'integration'
+    ? await import('../databases/integration')
+    : await import('../databases/development');
+  await scripts.push(await make(), await database.default());
 };
 
 push()

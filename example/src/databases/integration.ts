@@ -7,7 +7,7 @@ import connect from '@stackpress/inquire-pglite';
  */
 export default async function make() {
   //this is the raw resource, anything you want
-  const resource = new PGlite('./build/database');
+  const resource = new PGlite('./build/database/integration');
   //this maps the resource to the engine
   return connect(resource); 
 }

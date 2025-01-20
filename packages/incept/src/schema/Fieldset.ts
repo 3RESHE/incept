@@ -7,7 +7,13 @@ import type { ColumnInfo, SerialOptions } from './types';
 import type Registry from './Registry';
 import Attributes from './Attributes';
 import Column from './Column';
-import { camelize, capitalize, dasherize, generators } from './helpers';
+import { 
+  camelize, 
+  capitalize, 
+  dasherize, 
+  generators,
+  snakerize
+} from './helpers';
 
 export default class Fieldset {
   //stores the registry
@@ -131,6 +137,13 @@ export default class Fieldset {
   }
 
   /**
+   * returns snake case name
+   */
+  public get snake() {
+    return snakerize(this.name);
+  }
+
+  /**
    * Returns the fieldset @template
    */
   public get template() {
@@ -208,6 +221,32 @@ export default class Fieldset {
   /**
    * Removes values that are not columns
    */
+  public filter(values: Record<string, any>) {
+    const filtered: Record<string, any> = {};
+    for (const [ name, value ] of Object.entries(values)) {
+      if (this.columns.has(name)) {
+        filtered[name] = value;
+      }
+    }
+    return filtered;
+  }
+
+  /**
+   * Finds a column by snake case name
+   */
+  public fromSnake(name: string) {
+    const columns = Array.from(this.columns.values());
+    for (const column of columns) {
+      if (column.snake === name) {
+        return column;
+      }
+    }
+    return null;
+  }
+
+  /**
+   * Removes values that are not columns
+   */
   public input(values: Record<string, any>) {
     const inputs: Record<string, any> = {};
     
@@ -217,19 +256,6 @@ export default class Fieldset {
       }
     }
     return inputs;
-  }
-
-  /**
-   * Removes values that are not columns
-   */
-  public filter(values: Record<string, any>) {
-    const filtered: Record<string, any> = {};
-    for (const [ name, value ] of Object.entries(values)) {
-      if (this.columns.has(name)) {
-        filtered[name] = value;
-      }
-    }
-    return filtered;
   }
 
   /**
@@ -252,7 +278,7 @@ export default class Fieldset {
       if (!column) {
         continue;
       }
-      serialized[name] = column.serialize(value, options);
+      serialized[column.snake] = column.serialize(value, options);
     }
     return serialized;
   }
@@ -263,12 +289,12 @@ export default class Fieldset {
   public unserialize(values: Record<string, any>, options: SerialOptions = {}) {
     const unserialized: Record<string, any> = {};
     for (const [ name, value ] of Object.entries(values)) {
-      const column = this.columns.get(name);
+      const column = this.fromSnake(name);
       if (!column) {
         unserialized[name] = value;
         continue;
       }
-      unserialized[name] = column.unserialize(value, options);
+      unserialized[column.name] = column.unserialize(value, options);
     }
     return unserialized;
   }

@@ -9,7 +9,7 @@ const emitter = new ServerRouter();
 
 emitter.on('email-send', async function EmailSend(req, res) {
   const server = req.context;
-  const config = server.config<EmailConfig>('email');
+  const config = server.config<EmailConfig['email']>('email');
   if (!config) return;
   const options = req.data<SendMailOptions>();
   const transporter = nodemailer.createTransport(config);

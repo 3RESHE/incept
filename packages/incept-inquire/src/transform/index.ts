@@ -5,6 +5,7 @@ import Registry from '@stackpress/incept/dist/schema/Registry';
 import generateSchema from './schema';
 import generateActions from './actions';
 import generateEvents from './events';
+import generateTests from './tests';
 
 /**
  * @stackpress/.incept (file structure)
@@ -31,8 +32,13 @@ import generateEvents from './events';
  * | | - search.ts
  * | | - update.ts
  * | | - upsert.ts
+ * | - tests/
+ * | | - actions.ts
+ * | | - events.ts
+ * | | - index.ts
  * | - index.ts
  * | - schema.ts
+ * | - tests.ts
  */
 
 /**
@@ -53,6 +59,8 @@ export default async function generate(props: PluginWithProject) {
   generateEvents(project, registry);
   // - profile/schema.ts
   generateSchema(project, registry);
+  // - profile/tests.ts
+  generateTests(project, registry);
 
   //-----------------------------//
   // 3. profile/index.ts

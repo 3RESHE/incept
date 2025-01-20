@@ -29,6 +29,7 @@
     "@stackpress/ink": "0.3.17",
     "@stackpress/ink-css": "0.3.17",
     "@stackpress/ink-dev": "0.3.17",
+    "@stackpress/ink-ui": "0.3.18",
     "mustache": "4.2.0",
     "ts-morph": "24.0.0"
   },

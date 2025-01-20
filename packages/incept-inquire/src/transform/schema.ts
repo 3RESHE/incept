@@ -1,6 +1,6 @@
 //modules
 import type { Directory } from 'ts-morph';
-//stackpress
+//incept
 import type Column from '@stackpress/incept/dist/schema/Column';
 import type Registry from '@stackpress/incept/dist/schema/Registry';
 //common
@@ -10,9 +10,9 @@ export default function generate(directory: Directory, registry: Registry) {
   //loop through models
   for (const model of registry.model.values()) {
     const relations = model.relations.map(column => {
-      const table = column.type;
-      const foreign = column.relation?.parent.key.name as string;
-      const local = column.relation?.child.key.name as string;
+      const table = column.model?.snake as string;
+      const foreign = column.relation?.parent.key.snake as string;
+      const local = column.relation?.child.key.snake as string;
       return { table, foreign, local, delete: 'CASCADE', update: 'RESTRICT' };
     });
 
@@ -32,7 +32,7 @@ export default function generate(directory: Directory, registry: Registry) {
       name: 'create',
       isExported: true,
       statements: (`
-        const schema = new Create('${model.name}');
+        const schema = new Create('${model.snake}');
         ${Array
           .from(model.columns.values())
           .map(column => field(column))
@@ -40,16 +40,16 @@ export default function generate(directory: Directory, registry: Registry) {
           .join('\n')
         }
         ${model.ids.map(
-          column => `schema.addPrimaryKey('${column.name}');`
+          column => `schema.addPrimaryKey('${column.snake}');`
         ).join('\n')}
         ${model.uniques.map(
-          column => `schema.addUniqueKey('${model.lower}_${column.name}_unique', '${column.name}');`
+          column => `schema.addUniqueKey('${model.snake}_${column.snake}_unique', '${column.snake}');`
         ).join('\n')}
         ${model.indexables.map(
-          column => `schema.addKey('${model.lower}_${column.name}_index', '${column.name}');`
+          column => `schema.addKey('${model.snake}_${column.snake}_index', '${column.snake}');`
         ).join('\n')}
         ${relations.map(relation => {
-          return `schema.addForeignKey('${model.lower}_${relation.local}_foreign', ${
+          return `schema.addForeignKey('${model.snake}_${relation.local}_foreign', ${
             JSON.stringify(relation, null, 2)
           });`;
         }).join('\n')}
@@ -98,7 +98,7 @@ export function field(column: Column) {
       hasDefault = typeof column.default === 'string' 
         && Array.isArray(JSON.parse(column.default));
     } catch(e) {}
-    return `schema.addField('${column.name}', ${JSON.stringify({
+    return `schema.addField('${column.snake}', ${JSON.stringify({
       type: 'JSON',
       default: hasDefault ? column.default: undefined,
       nullable: !column.required,
@@ -111,7 +111,7 @@ export function field(column: Column) {
         && !!column.default 
         && typeof JSON.parse(column.default) === 'object';
     } catch(e) {}
-    return `schema.addField('${column.name}', ${JSON.stringify({
+    return `schema.addField('${column.snake}', ${JSON.stringify({
       type: 'JSON',
       default: hasDefault ? column.default: undefined,
       nullable: !column.required,
@@ -125,7 +125,7 @@ export function field(column: Column) {
       && !column.attributes.default.startsWith('cuid(')
       && !column.attributes.default.startsWith('nanoid(');
     if (length[0] === length[1]) {
-      return `schema.addField('${column.name}', ${JSON.stringify({
+      return `schema.addField('${column.snake}', ${JSON.stringify({
         type: 'CHAR',
         length: length[1],
         default: hasDefault ? column.attributes.default : undefined,
@@ -133,7 +133,7 @@ export function field(column: Column) {
         comment: comment ? String(comment) : undefined
       }, null, 2)});`;
     } else {
-      return `schema.addField('${column.name}', ${JSON.stringify({
+      return `schema.addField('${column.snake}', ${JSON.stringify({
         type: 'VARCHAR',
         length: length[1],
         default: hasDefault ? column.attributes.default : undefined,
@@ -142,14 +142,14 @@ export function field(column: Column) {
       }, null, 2)});`;
     }
   } else if (type === 'text') {
-    return `schema.addField('${column.name}', ${JSON.stringify({
+    return `schema.addField('${column.snake}', ${JSON.stringify({
       type: 'TEXT',
       default: column.attributes.default ,
       nullable: !column.required,
       comment: comment ? String(comment) : undefined 
     }, null, 2)});`;
   } else if (type === 'boolean') {
-    return `schema.addField('${column.name}', ${JSON.stringify({
+    return `schema.addField('${column.snake}', ${JSON.stringify({
       type: 'BOOLEAN',
       default: column.attributes.default,
       nullable: !column.required,
@@ -161,7 +161,7 @@ export function field(column: Column) {
 
     if (decimalLength > 0) {
       const length = integerLength + decimalLength;
-      return `schema.addField('${column.name}', ${JSON.stringify({
+      return `schema.addField('${column.snake}', ${JSON.stringify({
         type: 'FLOAT',
         length: `${length}, ${decimalLength}`,
         default: column.attributes.default,
@@ -170,7 +170,7 @@ export function field(column: Column) {
         comment: comment ? String(comment) : undefined
       }, null, 2)});`;
     } else {
-      return `schema.addField('${column.name}', ${JSON.stringify({
+      return `schema.addField('${column.snake}', ${JSON.stringify({
         type: 'INTEGER',
         length: integerLength,
         default: column.attributes.default,
@@ -180,21 +180,21 @@ export function field(column: Column) {
       }, null, 2)});`;
     }
   } else if (type === 'date') {
-    return `schema.addField('${column.name}', ${JSON.stringify({
+    return `schema.addField('${column.snake}', ${JSON.stringify({
       type: 'DATE',
       default: column.attributes.default,
       nullable: !column.required,
       comment: comment ? String(comment) : undefined
     }, null, 2)});`;
   } else if (type === 'datetime') {
-    return `schema.addField('${column.name}', ${JSON.stringify({
+    return `schema.addField('${column.snake}', ${JSON.stringify({
       type: 'DATETIME',
       default: column.attributes.default,
       nullable: !column.required,
       comment: comment ? String(comment) : undefined  
     }, null, 2)});`;
   } else if (type === 'time') {
-    return `schema.addField('${column.name}', ${JSON.stringify({
+    return `schema.addField('${column.snake}', ${JSON.stringify({
       type: 'TIME',
       default: column.attributes.default,
       nullable: !column.required,
@@ -202,7 +202,7 @@ export function field(column: Column) {
     }, null, 2)});`;
   //if it's an enum
   } else if (column.enum) {
-    return `schema.addField('${column.name}', ${JSON.stringify({
+    return `schema.addField('${column.snake}', ${JSON.stringify({
       type: 'VARCHAR',
       length: 255,
       default: column.attributes.default,

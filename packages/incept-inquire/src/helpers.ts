@@ -1,5 +1,5 @@
-//stackpress
-import type Create from '@stackpress/inquire/dist/builder/Create';
+//incept
+import type Model from '@stackpress/incept/dist/schema/Model';
 import Exception from '@stackpress/incept/dist/Exception';
 
 /**
@@ -113,7 +113,7 @@ export function toSqlFloat<
   return (parseFloat(value) || 0) as Strict;
 }
 
-export function sequence(schema: Create[]) {
+export function sequence(models: Model[]) {
   //LOGIC FOR DROPPING:
   //We can't drop a table if there is another table with a FK contraint
   //so we need to loop through all the tables multiple times, dropping 
@@ -125,24 +125,23 @@ export function sequence(schema: Create[]) {
   //tables multiple times, creating the ones that don't have FK 
   //constraints, until all tables are created....
   //or, logically this is the dropped table list in reverse.
-  const sequence: string[] = [];
-  while (sequence.length < schema.length) {
-    const exists = schema.filter(
-      table => !sequence.includes(table.build().table)
+  const sequence: Model[] = [];
+  while (sequence.length < models.length) {
+    const floating = models.filter(
+      //model doesn't exist in the sequence
+      model => !sequence.find(order => order.name === model.name)
     );
     //loop through all the existing table create schemas
-    for (const create of exists) {
-      //build the schema (in order to get the table name)
-      const build = create.build();
+    for (const model of floating) {
       //does any of the existing tables depend on this table?
-      const dependents = exists.filter(create => Object
-        .values(create.build().foreign)
-        .find(fk => fk.table === build.table)
+      const dependents = floating.filter(float => float.relations
+        .map(column => column.type)
+        .find(table => table === model.name)
       );
       //if no dependents, then we can drop the table
       if (!dependents.length) {
         //add to the dropped list
-        sequence.push(build.table);
+        sequence.push(model);
       }
     }
   }

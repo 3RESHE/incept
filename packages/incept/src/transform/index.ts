@@ -54,6 +54,10 @@ import generateRegistry from './registry';
  * | | - search.ts
  * | | - update.ts
  * | | - upsert.ts
+ * | - tests/
+ * | | - actions.ts
+ * | | - events.ts
+ * | | - index.ts
  * | - config.ts
  * | - index.ts
  * | - schema.ts
@@ -69,6 +73,7 @@ import generateRegistry from './registry';
  * - registry.ts
  * - schema.ts
  * - store.ts
+ * - tests.ts
  * - types.ts
  */
 

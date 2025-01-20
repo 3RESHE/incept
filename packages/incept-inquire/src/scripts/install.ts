@@ -17,25 +17,23 @@ export default async function install(server: Server<any, any, any>, database: E
   //get config and client
   const config = server.config<ServerConfig['idea']>('idea');
   const client = server.plugin<Client>('client') || {};
-  //get table create schemas
-  const schema = Object.values(client.model).map(model => model.schema);
-  //loop through all the table create schemas
-  for (const create of schema) {
-    //set the engine to the database
-    create.engine = database;
-  }
+  //get models
+  const models = Object.values(client.model);
   //repo of all the queries for the transaction
   const queries: QueryObject[] = [];
   //there's an order to creating and dropping tables
-  const order = sequence(schema);
+  const order = sequence(models.map(model => model.config));
   //add drop queries
-  for (const table of order) {
-    queries.push(database.dialect.drop(table));
+  for (const model of order) {
+    queries.push(database.dialect.drop(model.snake));
   }
   //add create queries
-  for (const table of order.reverse()) {
-    const create = schema.find(create => create.build().table === table);
-    if (create) {
+  for (const model of order.reverse()) {
+    const exists = models.find(map => map.config.name === model.name);
+    if (exists) {
+      const create = exists.schema;
+      //set the engine to the database (to set the dialect)
+      create.engine = database;
       queries.push(...create.query());
     }
   }

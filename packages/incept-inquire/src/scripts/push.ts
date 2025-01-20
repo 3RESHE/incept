@@ -25,23 +25,22 @@ export default async function push(server: Server<any, any, any>, database: Engi
   const to = revisions.last();
   //if no previous revision
   if (!from && to) {
-    //make a list of create schemas
-    const schema = Array
-      .from(to.registry.model.values())
-      .map(model => create(model));
+    //get models
+    const models = Array.from(to.registry.model.values());
     //there's an order to creating and dropping tables
-    const order = sequence(schema);
+    const order = sequence(models);
     //add drop queries
-    for (const table of order) {
-      queries.push(database.dialect.drop(table));
+    for (const model of order) {
+      queries.push(database.dialect.drop(model.name));
     }
     //add create queries
-    for (const table of order.reverse()) {
-      const create = schema.find(create => create.build().table === table);
-      if (create) {
+    for (const model of order.reverse()) {
+      const exists = models.find(map => map.name === model.name);
+      if (exists) {
+        const schema = create(exists);
         //set the engine to determine the dialect
-        create.engine = database;
-        queries.push(...create.query());
+        schema.engine = database;
+        queries.push(...schema.query());
       }
     }
     if (queries.length) {

@@ -1,8 +1,8 @@
 //stackpress
 import { scripts } from '@stackpress/incept-inquire';
 //common
-import database from '../database';
 import make from '../server';
+import database from '../databases/development';
 
 async function migrate() {
   await scripts.migrate(await make(), await database());

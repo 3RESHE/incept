@@ -23,7 +23,7 @@ export default async function update<M extends UnknownNest = UnknownNest>(
   input: NestedObject
 ): Promise<StatusResponse<M>> {
   //collect errors, if any
-  const errors = model.assert(input, true);
+  const errors = model.assert(input, false);
   //if there were errors
   if (errors) {
     //return the errors
@@ -36,7 +36,7 @@ export default async function update<M extends UnknownNest = UnknownNest>(
 
   //action and return response
   const update = engine
-    .update(model.name)
+    .update(model.snake)
     .set(model.serialize(input) as NestedObject<string>);
   for (const column of model.ids) {
     if (!ids[column.name]) {
@@ -45,7 +45,7 @@ export default async function update<M extends UnknownNest = UnknownNest>(
         .withCode(400)
         .toResponse()as StatusResponse<M>;
     }
-    update.where(`${column.name} = ?`, [ ids[column.name] ]);
+    update.where(`${column.snake} = ?`, [ ids[column.name] ]);
   }
   try {
     await update;

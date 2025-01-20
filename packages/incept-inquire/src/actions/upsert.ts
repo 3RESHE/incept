@@ -5,6 +5,7 @@ import type Engine from '@stackpress/inquire/dist/Engine';
 import type Model from '@stackpress/incept/dist/schema/Model';
 //local
 import create from './create';
+import detail from './detail';
 import update from './update';
 
 /**
@@ -16,11 +17,15 @@ export default async function upsert<M extends UnknownNest = UnknownNest>(
   input: NestedObject
 ) {
   const ids: Record<string, string|number> = {};
-    for (const column of model.ids) {
-      if (!input[column.name]) {
-        return await create<M>(model, engine, input);
-      }
-      ids[column.name] = input[column.name] as string|number;
+  for (const column of model.ids) {
+    if (!input[column.name]) {
+      return await create<M>(model, engine, input);
     }
+    ids[column.name] = input[column.name] as string|number;
+  }
+  const row = await detail<M>(model, engine, ids);
+  if (row.results) {
     return await update<M>(model, engine, ids, input);
+  }
+  return await create<M>(model, engine, input);
 };

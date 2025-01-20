@@ -23,30 +23,30 @@ export default function schema(
   onDelete: 'CASCADE'|'SET NULL'|'RESTRICT' = 'CASCADE',
   onUpdate: 'CASCADE'|'SET NULL'|'RESTRICT' = 'RESTRICT'
 ) {
-  const schema = new Create(model.name);
+  const schema = new Create(model.snake);
   for (const column of model.columns.values()) {
-    //schema.addField(column.name, {})...
+    //schema.addField(column.snake, {})...
     field(column, schema);
   }
 
   for (const column of model.ids) {
-    schema.addPrimaryKey(column.name);
+    schema.addPrimaryKey(column.snake);
   }
   for (const column of model.uniques) {
-    schema.addUniqueKey(`${column.name}_unique`, column.name);
+    schema.addUniqueKey(`${column.snake}_unique`, column.snake);
   }
   for (const column of model.indexables) {
-    schema.addKey(`${model.lower}_${column.name}_index`, column.name);
+    schema.addKey(`${model.lower}_${column.snake}_index`, column.snake);
   }
 
   const relations = model.relations.map(column => {
-    const table = column.type;
-    const foreign = column.relation?.parent.key.name as string;
-    const local = column.relation?.child.key.name as string;
+    const table = column.model?.snake as string;
+    const foreign = column.relation?.parent.key.snake as string;
+    const local = column.relation?.child.key.snake as string;
     return { table, foreign, local, delete: onDelete, update: onUpdate };
   });
   for (const relation of relations) {
-    schema.addForeignKey(`${model.lower}_${relation.local}_foreign`, relation);
+    schema.addForeignKey(`${model.snake}_${relation.local}_foreign`, relation);
   }
 
   return schema;
@@ -68,7 +68,7 @@ export function field(column: Column, schema: Create) {
       hasDefault = typeof column.default === 'string' 
         && Array.isArray(JSON.parse(column.default));
     } catch(e) {}
-    return schema.addField(column.name, {
+    return schema.addField(column.snake, {
       type: 'JSON',
       default: hasDefault ? column.default: undefined,
       nullable: !column.required,
@@ -81,7 +81,7 @@ export function field(column: Column, schema: Create) {
         && !!column.default 
         && typeof JSON.parse(column.default) === 'object';
     } catch(e) {}
-    return schema.addField(column.name, {
+    return schema.addField(column.snake, {
       type: 'JSON',
       default: hasDefault ? column.default: undefined,
       nullable: !column.required,
@@ -94,7 +94,7 @@ export function field(column: Column, schema: Create) {
       && !column.attributes.default.startsWith('uuid(')
       && !column.attributes.default.startsWith('cuid(')
       && !column.attributes.default.startsWith('nanoid(');
-    return schema.addField(column.name, {
+    return schema.addField(column.snake, {
       type: length[0] === length[1] ? 'CHAR' : 'VARCHAR',
       length: length[1],
       default: hasDefault ? column.attributes.default : undefined,
@@ -102,14 +102,14 @@ export function field(column: Column, schema: Create) {
       comment: comment ? String(comment) : undefined
     });
   } else if (type === 'text') {
-    return schema.addField(column.name, {
+    return schema.addField(column.snake, {
       type: 'TEXT',
       default: column.attributes.default ,
       nullable: !column.required,
       comment: comment ? String(comment) : undefined 
     });
   } else if (type === 'boolean') {
-    return schema.addField(column.name, {
+    return schema.addField(column.snake, {
       type: 'BOOLEAN',
       default: column.attributes.default,
       nullable: !column.required,
@@ -121,7 +121,7 @@ export function field(column: Column, schema: Create) {
 
     if (decimalLength > 0) {
       const length = integerLength + decimalLength;
-      return schema.addField(column.name, {
+      return schema.addField(column.snake, {
         type: 'FLOAT',
         length: [ length, decimalLength ],
         default: column.attributes.default,
@@ -130,7 +130,7 @@ export function field(column: Column, schema: Create) {
         comment: comment ? String(comment) : undefined
       });
     } else {
-      return schema.addField(column.name, {
+      return schema.addField(column.snake, {
         type: 'INTEGER',
         length: integerLength,
         default: column.attributes.default,
@@ -140,21 +140,21 @@ export function field(column: Column, schema: Create) {
       });
     }
   } else if (type === 'date') {
-    return schema.addField(column.name, {
+    return schema.addField(column.snake, {
       type: 'DATE',
       default: column.attributes.default,
       nullable: !column.required,
       comment: comment ? String(comment) : undefined
     });
   } else if (type === 'datetime') {
-    return schema.addField(column.name, {
+    return schema.addField(column.snake, {
       type: 'DATETIME',
       default: column.attributes.default,
       nullable: !column.required,
       comment: comment ? String(comment) : undefined  
     });
   } else if (type === 'time') {
-    return schema.addField(column.name, {
+    return schema.addField(column.snake, {
       type: 'TIME',
       default: column.attributes.default,
       nullable: !column.required,
@@ -162,7 +162,7 @@ export function field(column: Column, schema: Create) {
     });
   //if it's an enum
   } else if (column.enum) {
-    return schema.addField(column.name, {
+    return schema.addField(column.snake, {
       type: 'VARCHAR',
       length: 255,
       default: column.attributes.default,

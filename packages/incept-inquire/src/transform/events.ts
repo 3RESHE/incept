@@ -15,6 +15,8 @@ export default function generate(directory: Directory, registry: Registry) {
     event('detail', model, directory);
     // - profile/events/get.ts
     event('get', model, directory);
+    // - profile/events/purge.ts
+    event('purge', model, directory);
     // - profile/events/remove.ts
     event('remove', model, directory);
     // - profile/events/restore.ts
@@ -49,6 +51,7 @@ export default function generate(directory: Directory, registry: Registry) {
       emitter.on('${model.dash}-create', path.resolve(__dirname, 'create'));
       emitter.on('${model.dash}-detail', path.resolve(__dirname, 'detail'));
       emitter.on('${model.dash}-get', path.resolve(__dirname, 'get'));
+      emitter.on('${model.dash}-purge', path.resolve(__dirname, 'purge'));
       emitter.on('${model.dash}-remove', path.resolve(__dirname, 'remove'));
       emitter.on('${model.dash}-restore', path.resolve(__dirname, 'restore'));
       emitter.on('${model.dash}-search', path.resolve(__dirname, 'search'));
@@ -64,6 +67,7 @@ export default function generate(directory: Directory, registry: Registry) {
         'create',
         'detail',
         'get',
+        'purge',
         'remove',
         'restore',
         'search',

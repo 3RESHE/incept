@@ -11,7 +11,7 @@ import path from 'path';
 
 const cwd = process.cwd();
 const seed = process.env.SESSION_SEED || 'abc123';
-const environment = process.env.SERVER_ENV || 'development';
+const environment = process.env.NODE_ENV || 'development';
 
 export type Config = ServerConfig 
   & DatabaseConfig
@@ -61,7 +61,7 @@ export const config: Config = {
     auth: {
       user: 'username',
       pass: 'password',
-    },
+    }
   },
   session: {
     name: 'session',
@@ -77,7 +77,8 @@ export const config: Config = {
         { method: 'GET', route: '/favicon.png' },
         { method: 'ALL', route: '/' },
         { method: 'ALL', route: '/auth/**' },
-        { method: 'ALL', route: '/admin/**' }
+        { method: 'ALL', route: '/admin/**' },
+        { method: 'ALL', route: '/api/**' }
       ],
       USER: [
         { method: 'GET', route: '/build/**' },
@@ -187,7 +188,9 @@ export const config: Config = {
         route: '/api/profile',
         type: 'public',
         event: 'profile-search',
-        data: {}
+        data: {
+          take: 1
+        }
       },
       {
         method: 'POST',

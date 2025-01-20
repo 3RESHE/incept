@@ -16,7 +16,7 @@ export default async function restore<M extends UnknownNest = UnknownNest>(
   ids: Record<string, string|number>
 ): Promise<StatusResponse<M|null>> {
   //action and return response
-  const active = model.active?.name;
+  const active = model.active?.snake;
   if (active) {
     return await update<M>(model, engine, ids, { [active]: true });
   }

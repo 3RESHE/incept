@@ -66,6 +66,24 @@ export function lowerize(word: string) {
   return word.charAt(0).toLowerCase() + word.slice(1);
 }
 
+/**
+ * Converts a string into dash format
+ * ie. "some string" to "some_string"
+ * ie. "someString" to "some_string"
+ */
+export function snakerize(string: string) {
+  return string.trim()
+    //replace special characters with dashes
+    .replace(/[^a-zA-Z0-9]/g, '_')
+    //replace multiple dashes with a single dash
+    .replace(/-{2,}/g, '_')
+    //trim dashes from the beginning and end of the string
+    .replace(/^_+|_+$/g, '')
+    //replace "someString" to "some-string"
+    .replace(/([a-z])([A-Z0-9])/g, '$1_$2')
+    .toLowerCase();
+}
+
 export function render(template: string, data: Record<string, any> = {}) {
   return template.replace(/\{\{([a-zA-Z0-9_\-]+)\}\}/g, (match, key) => {
     return data[key] || '';

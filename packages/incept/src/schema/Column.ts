@@ -3,11 +3,13 @@ import { createId as cuid, init } from '@paralleldrive/cuid2';
 import { nanoid } from 'nanoid';
 //stackpress
 import type { EnumConfig } from '@stackpress/idea-parser/dist/types';
+//common
+import assert from '../assert';
 //local
 import type { ColumnInfo, SerialOptions } from './types';
 import type Fieldset from './Fieldset';
 import Attributes from './Attributes';
-import assert from '../assert';
+import { snakerize } from './helpers';
 
 export const typemap: Record<string, string> = {
   String: 'string',
@@ -420,6 +422,13 @@ export default class Column {
    */
   public get sortable() {
     return this.attributes.sortable;
+  }
+
+  /**
+   * returns snake case name
+   */
+  public get snake() {
+    return snakerize(this.name);
   }
 
   /**

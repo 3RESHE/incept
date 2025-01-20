@@ -30,24 +30,21 @@ export default async function migrate(server: Server<any, any, any>, database: E
   if (first) {
     //this is where we are going to store all the queries
     const queries: QueryObject[] = [];
-    //make a list of create schemas
-    const schema = Array
-      .from(first.registry.model.values())
-      .map(model => create(model));
+    //get models
+    const models = Array.from(first.registry.model.values());
     //there's an order to creating and dropping tables
-    const order = sequence(schema);
+    const order = sequence(models);
     //add drop queries
-    for (const table of order) {
-      queries.push(database.dialect.drop(table));
+    for (const model of order) {
+      queries.push(database.dialect.drop(model.snake));
     }
     //add create queries
-    for (const table of order.reverse()) {
-      const create = schema.find(
-        create => create.build().table === table
-      );
-      if (create) {
-        create.engine = database;
-        queries.push(...create.query());
+    for (const model of order.reverse()) {
+      const exists = models.find(map => map.name === model.name);
+      if (exists) {
+        const schema = create(exists);
+        schema.engine = database;
+        queries.push(...schema.query());
       }
     }
     if (queries.length) {
