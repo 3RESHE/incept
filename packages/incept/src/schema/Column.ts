@@ -625,6 +625,15 @@ export default class Column {
     //if value is null or undefined
     if (value === null || typeof value === 'undefined') {
       return value;
+    //if fieldset or multiple
+    } else if (this.fieldset || this.multiple) {
+      if (typeof value === 'string') {
+        try {
+          return JSON.parse(value);
+        } catch (e) {
+          return this.multiple ? []: {};
+        }
+      }
     //if type is in the typemap
     } else if (this.type in typemap) {
       //string, number, integer, float, boolean, date, object
@@ -664,15 +673,6 @@ export default class Column {
           } catch (e) {}
         }
         return value;
-      }
-    //if fieldset or multiple
-    } else if (this.fieldset || this.multiple) {
-      if (typeof value === 'string') {
-        try {
-          return JSON.parse(value);
-        } catch (e) {
-          return this.multiple ? []: {};
-        }
       }
     }
     return value;
