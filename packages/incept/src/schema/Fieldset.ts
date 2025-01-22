@@ -1,7 +1,7 @@
 //modules
 import Mustache from 'mustache';
 //stackpress
-import type { NestedObject } from '@stackpress/types';
+import type { NestedObject } from '@stackpress/lib';
 //local
 import type { ColumnInfo, SerialOptions } from './types';
 import type Registry from './Registry';

@@ -1,4 +1,4 @@
-import type { Method } from '@stackpress/types/dist/types';
+import type { Method } from '@stackpress/lib/dist/types';
 import type { Data } from '@stackpress/idea-parser/dist/types';
 import type { Profile } from '@stackpress/incept-user/dist/types';
 

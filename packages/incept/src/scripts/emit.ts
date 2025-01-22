@@ -1,6 +1,6 @@
 //stackpress
 import type Server from '@stackpress/ingest/dist/Server';
-import EventTerminal from '@stackpress/types/dist/event/EventTerminal';
+import EventTerminal from '@stackpress/lib/dist/event/EventTerminal';
 
 export default async function emit(server: Server<any, any, any>) {
   //from the cli

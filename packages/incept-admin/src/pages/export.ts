@@ -1,5 +1,5 @@
 //stackpress
-import type { UnknownNest } from '@stackpress/types/dist/types';
+import type { UnknownNest } from '@stackpress/lib/dist/types';
 import type { ServerRequest } from '@stackpress/ingest/dist/types';
 import type Response from '@stackpress/ingest/dist/Response';
 //incept

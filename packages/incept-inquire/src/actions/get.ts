@@ -1,5 +1,5 @@
 //stacpress
-import type { UnknownNest, StatusResponse } from '@stackpress/types/dist/types';
+import type { UnknownNest, StatusResponse } from '@stackpress/lib/dist/types';
 import type Engine from '@stackpress/inquire/dist/Engine';
 //incept
 import type Model from '@stackpress/incept/dist/schema/Model';

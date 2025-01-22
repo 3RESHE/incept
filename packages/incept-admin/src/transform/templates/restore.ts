@@ -2,7 +2,7 @@
 import type { Directory } from 'ts-morph';
 import path from 'node:path';
 //stackress
-import type { FileSystem } from '@stackpress/types/dist/types';
+import type { FileSystem } from '@stackpress/lib/dist/types';
 import type Registry from '@stackpress/incept/dist/schema/Registry';
 import { render } from '@stackpress/incept/dist/schema/helpers';
 

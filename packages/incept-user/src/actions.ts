@@ -2,7 +2,7 @@
 import type { 
   StatusResponse,
   ErrorResponse
-} from '@stackpress/types/dist/types';
+} from '@stackpress/lib/dist/types';
 import type { ClientPlugin } from '@stackpress/incept/dist/types';
 import type { 
   ClientWithDatabasePlugin 

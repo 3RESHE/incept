@@ -1,6 +1,6 @@
 {
   "name": "@stackpress/incept-ink",
-  "version": "0.3.17",
+  "version": "0.3.21",
   "license": "MIT",
   "description": "This package generates form, fields, formats, search and detail template files based on models in and Incept client using the Ink template engine.",
   "author": "Chris <chris@stackpress.io>",
@@ -23,13 +23,13 @@
     "tsconfig.json"
   ],
   "dependencies": {
-    "@stackpress/idea-transformer": "0.3.17",
-    "@stackpress/incept": "0.3.17",
-    "@stackpress/ingest": "0.3.17",
-    "@stackpress/ink": "0.3.17",
-    "@stackpress/ink-css": "0.3.17",
-    "@stackpress/ink-dev": "0.3.17",
-    "@stackpress/ink-ui": "0.3.18",
+    "@stackpress/idea-transformer": "0.3.21",
+    "@stackpress/incept": "0.3.21",
+    "@stackpress/ingest": "0.3.21",
+    "@stackpress/ink": "0.3.21",
+    "@stackpress/ink-css": "0.3.21",
+    "@stackpress/ink-dev": "0.3.21",
+    "@stackpress/ink-ui": "0.3.21",
     "mustache": "4.2.0",
     "ts-morph": "24.0.0"
   },

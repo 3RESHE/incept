@@ -3,7 +3,7 @@ import path from 'path';
 import { Project, IndentationText } from 'ts-morph';
 //stackpress
 import type Server from '@stackpress/ingest/dist/Server';
-import EventTerminal from '@stackpress/types/dist/event/EventTerminal';
+import EventTerminal from '@stackpress/lib/dist/event/EventTerminal';
 import Transformer from '@stackpress/idea-transformer/dist/Transformer';
 //local
 import type { ProjectProps } from './types';

@@ -188,10 +188,10 @@ export function create(model: Model, directory: Directory) {
     '', 
     { overwrite: true }
   );
-  //import type { NestedObject } from '@stackpress/types/dist/types';
+  //import type { NestedObject } from '@stackpress/lib/dist/types';
   source.addImportDeclaration({
     isTypeOnly: true,
-    moduleSpecifier: '@stackpress/types/dist/types',
+    moduleSpecifier: '@stackpress/lib/dist/types',
     namedImports: [ 'NestedObject' ]
   });
   //import type Engine from '@stackpress/inquire/dist/Engine';
@@ -454,10 +454,10 @@ export function update(model: Model, directory: Directory) {
     '', 
     { overwrite: true }
   );
-  //import type { NestedObject } from '@stackpress/types/dist/types';
+  //import type { NestedObject } from '@stackpress/lib/dist/types';
   source.addImportDeclaration({
     isTypeOnly: true,
-    moduleSpecifier: '@stackpress/types/dist/types',
+    moduleSpecifier: '@stackpress/lib/dist/types',
     namedImports: [ 'NestedObject' ]
   });
   //import type Engine from '@stackpress/inquire/dist/Engine';
@@ -504,10 +504,10 @@ export function upsert(model: Model, directory: Directory) {
     '', 
     { overwrite: true }
   );
-  //import type { NestedObject } from '@stackpress/types/dist/types';
+  //import type { NestedObject } from '@stackpress/lib/dist/types';
   source.addImportDeclaration({
     isTypeOnly: true,
-    moduleSpecifier: '@stackpress/types/dist/types',
+    moduleSpecifier: '@stackpress/lib/dist/types',
     namedImports: [ 'NestedObject' ]
   });
   //import type Engine from '@stackpress/inquire/dist/Engine';

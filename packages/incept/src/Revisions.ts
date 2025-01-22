@@ -3,7 +3,7 @@ import path from 'node:path';
 import glob from 'fast-glob';
 //stackpress
 import type { SchemaConfig } from '@stackpress/idea-parser/dist/types';
-import FileLoader from '@stackpress/types/dist/system/FileLoader';
+import FileLoader from '@stackpress/lib/dist/system/FileLoader';
 //schema
 import Registry from './schema/Registry';
 

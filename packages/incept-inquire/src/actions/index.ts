@@ -1,5 +1,5 @@
 //stackpress
-import type { UnknownNest, NestedObject } from '@stackpress/types/dist/types';
+import type { UnknownNest, NestedObject } from '@stackpress/lib/dist/types';
 import type Engine from '@stackpress/inquire/dist/Engine';
 //incept
 import type Model from '@stackpress/incept/dist/schema/Model';

@@ -603,57 +603,57 @@
     tslib "^2.6.2"
     webcrypto-core "^1.8.0"
 
-"@stackpress/idea-parser@0.3.17":
-  version "0.3.17"
-  resolved "https://registry.yarnpkg.com/@stackpress/idea-parser/-/idea-parser-0.3.17.tgz#54500e0be960e64168b95edc134742d45b6e36ec"
-  integrity sha512-KPO5TOGtjMZV6X+UHrVSsbmDIEYDb79pLIzYEasjKsIC4zkdUqQc7x2zc58bDwMhI7QJqDUSESE449fmDSQLmg==
+"@stackpress/idea-parser@0.3.21":
+  version "0.3.21"
+  resolved "https://registry.yarnpkg.com/@stackpress/idea-parser/-/idea-parser-0.3.21.tgz#09562d6e4dfeb79e1277ac725a1a506a88d8f143"
+  integrity sha512-hvDZJwiLVY5Z9AosHwCy5QZspFjDb9LWK4ZbC9DT0I4f2ZBfDLqFgFKK0QuAyyMum12M8GmMWihnaRYQ+1lmAA==
   dependencies:
-    "@stackpress/types" "0.3.17"
+    "@stackpress/lib" "0.3.21"
 
-"@stackpress/idea-transformer@0.3.17":
-  version "0.3.17"
-  resolved "https://registry.yarnpkg.com/@stackpress/idea-transformer/-/idea-transformer-0.3.17.tgz#9396f1652934bcef76287a6bf29cc0a5c4478b5e"
-  integrity sha512-SiH/EeIDwdyS+ZbTyp+bv0tZFFXHGJv47NL5e5l1JHMmP96hCXLKefzUEfh6ecnENM6s9KvdDhAAR5rxQb6obw==
+"@stackpress/idea-transformer@0.3.21":
+  version "0.3.21"
+  resolved "https://registry.yarnpkg.com/@stackpress/idea-transformer/-/idea-transformer-0.3.21.tgz#2af64cad1d154b349c6e6673463c0f6657d3812f"
+  integrity sha512-rjpa13zvfB2zAwgojhkfPyLQ01NC72VMZiNYykJI8YhdPbck8binpPAx5/Qswii26AzNxuEIWcXDqPC6HgCM2A==
   dependencies:
-    "@stackpress/idea-parser" "0.3.17"
-    "@stackpress/types" "0.3.17"
+    "@stackpress/idea-parser" "0.3.21"
+    "@stackpress/lib" "0.3.21"
 
-"@stackpress/ingest@0.3.17":
-  version "0.3.17"
-  resolved "https://registry.yarnpkg.com/@stackpress/ingest/-/ingest-0.3.17.tgz#fa73a9a659ecb27e915ab67135e07a69cd4ddafe"
-  integrity sha512-yyopiPnLfURWcofpZkvdeD24PFDfpGcepYZ66b5g89PZJgrrrOVQ3JEix0QUwgkA/SGBZZoMthJZx7BPl+P0hg==
+"@stackpress/ingest@0.3.21":
+  version "0.3.21"
+  resolved "https://registry.yarnpkg.com/@stackpress/ingest/-/ingest-0.3.21.tgz#15af1caa26e83b090283502ac0ad1208ed31db0f"
+  integrity sha512-YsaPsGGQ1R8dnhhFRnYdmDFILXat3He8rFSGgi53vLp4tugrFi5TBscz3mllptQrYzPW5yoYutG8u6y+iO9GJg==
   dependencies:
-    "@stackpress/types" "0.3.17"
+    "@stackpress/lib" "0.3.21"
     "@whatwg-node/server" "0.6.7"
     cookie "1.0.2"
 
-"@stackpress/ink-css@0.3.17":
-  version "0.3.17"
-  resolved "https://registry.yarnpkg.com/@stackpress/ink-css/-/ink-css-0.3.17.tgz#61cbe4a1e6365a54e90204a551983de7945b1f86"
-  integrity sha512-++hTRga1mXIoLNMg4ZAb21ezEBCvLNP3uA+KKMRS0kfbrFQtx8LE7TWG75sz/onXvMCD7Z+tFJrSHeavJSFl6w==
+"@stackpress/ink-css@0.3.21":
+  version "0.3.21"
+  resolved "https://registry.yarnpkg.com/@stackpress/ink-css/-/ink-css-0.3.21.tgz#c25f02758b5714ababf3ebd464a183df0031b34d"
+  integrity sha512-O+Y/9hy00cMjFZwOZD+8iLe/6X1TX+GfNKlY1lqeHv4WjA4kQDnIOnI9A83ouNF3PS+3CnLfnZvuI+IiUKEScQ==
   dependencies:
-    "@stackpress/ink" "0.3.17"
+    "@stackpress/ink" "0.3.21"
 
-"@stackpress/ink-dev@0.3.17":
-  version "0.3.17"
-  resolved "https://registry.yarnpkg.com/@stackpress/ink-dev/-/ink-dev-0.3.17.tgz#7d830d9bee6d913343c3bd2b6d1bff87972ec092"
-  integrity sha512-Y9yZfdB4J2EiX6JZdBUXyWQhh9AksjQYdIPWSWHLhRaMwENuqbinHj78ud/Aa+6ofFWC3f2n64h0ol+8aP5DMA==
+"@stackpress/ink-dev@0.3.21":
+  version "0.3.21"
+  resolved "https://registry.yarnpkg.com/@stackpress/ink-dev/-/ink-dev-0.3.21.tgz#a0b9c8123cb41ac34f9fc735f0765f17dcf0d3d9"
+  integrity sha512-+D9+trGNok5if6tURLHIgrORRi9entioI4CigrcxIGuL+RYJlpSQKJRat5G/RxkDyQFWvpMrtDKC4/BKjLxuhg==
   dependencies:
-    "@stackpress/ink" "0.3.17"
+    "@stackpress/ink" "0.3.21"
     chokidar "4.0.1"
     esbuild "0.24.0"
 
-"@stackpress/ink-ui@0.3.18":
-  version "0.3.18"
-  resolved "https://registry.yarnpkg.com/@stackpress/ink-ui/-/ink-ui-0.3.18.tgz#e8d93761b221a4840ebe039304693e69363be761"
-  integrity sha512-ZBoOwFW8eoCdhQX4udrKktYf0nIIiTaPmpA86kI73VABwd4Mn7YLmtio3T4Rc1/RvDBcNODAFHHEzWQYsRAjHg==
+"@stackpress/ink-ui@0.3.21":
+  version "0.3.21"
+  resolved "https://registry.yarnpkg.com/@stackpress/ink-ui/-/ink-ui-0.3.21.tgz#27f0e2d37857a8ab5009314ad70d2d7ce437b74c"
+  integrity sha512-BTTemGnA8qPvKhG/HJDCyVZoP2LkiaWy6iNd5Ok3xPJ+UmXXk+x1v1scc6OIRFW6K5iF5ZGagJ4/duEuP/Xltg==
   dependencies:
     "@editorjs/editorjs" "2.30.6"
     "@editorjs/header" "2.8.7"
     "@editorjs/image" "2.9.3"
     "@editorjs/list" "1.10.0"
     "@editorjs/paragraph" "2.11.6"
-    "@stackpress/ink" "0.3.17"
+    "@stackpress/ink" "0.3.21"
     codemirror "5.65.17"
     dayjs "1.11.13"
     dompurify "3.1.6"
@@ -662,41 +662,41 @@
     prismjs "1.29.0"
     suneditor "2.47.0"
 
-"@stackpress/ink@0.3.17":
-  version "0.3.17"
-  resolved "https://registry.yarnpkg.com/@stackpress/ink/-/ink-0.3.17.tgz#bbae7cfb4473054490b1c722dfa8a8d08ed62b8c"
-  integrity sha512-ZqBlFTknES40ts85TZHOzU/4xZdKOwlF9ggrPlbsYJxKRwZ/8rCZXlpLfWCDmz84TGbAVGJxJdgNRiZNkAbVmQ==
+"@stackpress/ink@0.3.21":
+  version "0.3.21"
+  resolved "https://registry.yarnpkg.com/@stackpress/ink/-/ink-0.3.21.tgz#0578f4d71e7d2fec16830ae95aa05fe18a604672"
+  integrity sha512-HJFafnOQOHgYatv/8JF9rMbPupJtx+n/UWYbnlC+Nzgl18k5Kf3QphSu3TGVk/Uth4Lh41jhIw+4u8rAhH9/KA==
   dependencies:
-    "@stackpress/types" "0.3.17"
+    "@stackpress/lib" "0.3.21"
     esbuild "0.24.0"
     ts-morph "24.0.0"
     typescript "5.7.2"
 
-"@stackpress/inquire-pg@0.3.17":
-  version "0.3.17"
-  resolved "https://registry.yarnpkg.com/@stackpress/inquire-pg/-/inquire-pg-0.3.17.tgz#cb5e3ebf12ba65b739e9c4f9decbaef4a7e1f329"
-  integrity sha512-Cy1fZeTazWVJZFM//9x8yL9mvJdV4VuRV25hF1zKQBV8FKUl9DfaZqzOjUNYYbav5UeuxUG4n+BuhOdh7Dp6JA==
+"@stackpress/inquire-pg@0.3.21":
+  version "0.3.21"
+  resolved "https://registry.yarnpkg.com/@stackpress/inquire-pg/-/inquire-pg-0.3.21.tgz#a4f7b10fc2cad4751ca42626062a0d5652bc29a4"
+  integrity sha512-OrzbIUz8yGoRJsiKTSZC5j7DkKj6uQDOU3EHv5ujYkKrsuL+tvFygeJuQZKOl6G/2w7wSafP3gXl2w80eWDqGw==
   dependencies:
-    "@stackpress/inquire" "0.3.17"
+    "@stackpress/inquire" "0.3.21"
 
-"@stackpress/inquire-pglite@0.3.17":
-  version "0.3.17"
-  resolved "https://registry.yarnpkg.com/@stackpress/inquire-pglite/-/inquire-pglite-0.3.17.tgz#7d7c6d4b21e4a7a27134308963db4314629c2eb2"
-  integrity sha512-7AICm/zkvLEICx3srgah/0u3OwY4PtrLAzR5oImNU79nENdfJAlgmcE/8s4adC+uLi4ul5Jtm9tvbCtEvzeAJw==
+"@stackpress/inquire-pglite@0.3.21":
+  version "0.3.21"
+  resolved "https://registry.yarnpkg.com/@stackpress/inquire-pglite/-/inquire-pglite-0.3.21.tgz#1627af756eda95fd41e71440445fa88da067acd8"
+  integrity sha512-p+icvlsq7zQH/vfnIsqQXJ0U5FIm6X9bAgkcqQbzv915vDhkqjgTG2mRzwC0YDKvr2ahYSUsTnJa45h+OaGHMQ==
   dependencies:
-    "@stackpress/inquire" "0.3.17"
+    "@stackpress/inquire" "0.3.21"
 
-"@stackpress/inquire@0.3.17":
-  version "0.3.17"
-  resolved "https://registry.yarnpkg.com/@stackpress/inquire/-/inquire-0.3.17.tgz#7ef0e514d79cbd307c92e17054e5675145878731"
-  integrity sha512-yHdn35ltsrk0rSZg0tZveAWx87e9b2UEvpJIJjPSa1cYjUjgNbSuwCxery/DiRXovqTXkh3nzdxuwNUV/1jUiQ==
+"@stackpress/inquire@0.3.21":
+  version "0.3.21"
+  resolved "https://registry.yarnpkg.com/@stackpress/inquire/-/inquire-0.3.21.tgz#289cb041efeb7bddd33bf6037905d13062c4e330"
+  integrity sha512-hJlRgtHUZwtqk58VJ2WKqke//CzCe1ZkiNMc4xrtf3jFTujY5g2SQ5OEO9GBDrYc+zfD3nX0ZVzk4+q9OQSbZQ==
   dependencies:
-    "@stackpress/types" "0.3.17"
+    "@stackpress/lib" "0.3.21"
 
-"@stackpress/types@0.3.17":
-  version "0.3.17"
-  resolved "https://registry.yarnpkg.com/@stackpress/types/-/types-0.3.17.tgz#58c462e8edf07f72454215e8ffea6354b87b8be2"
-  integrity sha512-t3FMr+dgESRbXTQ4LCsqA4lyiW5PBDGhNZUIRiMfAJ3gSm4UWw9w+VMj0B/DI8zEwcK4hSMafMwebzIGE283fQ==
+"@stackpress/lib@0.3.21":
+  version "0.3.21"
+  resolved "https://registry.yarnpkg.com/@stackpress/lib/-/lib-0.3.21.tgz#348e71282b6b293c4c5af2fd8232a32df3249de8"
+  integrity sha512-J4H/yv8T9RLAMn20KmPwRU1SvNxWuBpYEFpQDy28jeCPhRh57DnVsxv7pGgC++3T9eSCq/i2XXFpeNTwZWrmfw==
   dependencies:
     "@inquirer/prompts" "7.1.0"
 
