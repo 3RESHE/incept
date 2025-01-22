@@ -88,8 +88,10 @@ export default class InceptTerminal extends EventTerminal {
       skipAddingFilesFromTsConfig: true,
       compilerOptions: {
         outDir: path.resolve(
-          this.transformer.loader.modules(), 
-          '@stackpress/.incept'
+          this.server.loader.cwd,
+          'node_modules',
+          '@stackpress',
+          '.incept'
         ),
         declaration: true, 
         declarationMap: true, 
