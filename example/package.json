@@ -43,7 +43,7 @@
   },
   "dependencies": {
     "@paralleldrive/cuid2": "2.2.2",
-    "@stackpress/incept": "0.3.21",
+    "@stackpress/incept": "0.1.0",
     "@stackpress/ink": "0.3.21",
     "@stackpress/ink-ui": "0.3.21",
     "@stackpress/ingest": "0.3.21",
