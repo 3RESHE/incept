@@ -1,6 +1,6 @@
 {
   "name": "@stackpress/incept",
-  "version": "0.1.6",
+  "version": "0.1.7",
   "license": "MIT",
   "description": "Incept is a code generator for content management systems.",
   "author": "Chris <chris@stackpress.io>",
@@ -61,9 +61,9 @@
   ],
   "dependencies": {
     "@paralleldrive/cuid2": "2.2.2",
-    "@stackpress/idea-transformer": "0.3.21",
-    "@stackpress/ingest": "0.3.21",
-    "@stackpress/lib": "0.3.21",
+    "@stackpress/idea-transformer": "0.3.23",
+    "@stackpress/ingest": "0.3.23",
+    "@stackpress/lib": "0.3.23",
     "fast-glob": "3.3.2",
     "mustache": "4.2.0",
     "nanoid": "3.3.8"
