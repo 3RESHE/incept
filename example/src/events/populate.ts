@@ -1,9 +1,9 @@
-//common
-import make from '../server';
+//stackpress
+import type { ServerRequest } from '@stackpress/ingest/dist/types';
+import type Response from '@stackpress/ingest/dist/Response';
 
-async function populate() {
-  //server emit
-  const server = await make();
+export default async function populate(req: ServerRequest, res: Response) {
+  const server = req.context;
   const john = await server.call('profile-create', {
     name: 'John Doe',
     type: 'person',
@@ -70,8 +70,5 @@ async function populate() {
     scopes: [ 'profile-write', 'auth-read' ],
     expires: new Date(Date.now() + 1000 * 60 * 60 * 24 * 365)
   });
+  res.setStatus(200);
 };
-
-populate()
-  .then(() => process.exit(0))
-  .catch(console.error);

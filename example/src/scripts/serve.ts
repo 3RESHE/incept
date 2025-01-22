@@ -1,10 +1,10 @@
-//stackpress
+//incept
 import { scripts } from '@stackpress/incept';
-//common
-import make from '../server';
+//local
+import server from '../server';
 
 async function serve() {
-  scripts.serve(await make());
+  scripts.serve(await server());
 };
 
 serve().catch(console.error);

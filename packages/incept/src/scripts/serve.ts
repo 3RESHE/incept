@@ -1,10 +1,10 @@
 //stackpress
 import type Server from '@stackpress/ingest/dist/Server';
 
-export default function serve(server: Server<any, any, any>) {
+export default function serve(server: Server<any, any, any>, port = 3000) {
   //start the server
-  server.create().listen(3000, () => {
-    console.log('Server is running on port 3000');
+  server.create().listen(port, () => {
+    console.log(`Server is running on port ${port}`);
     console.log('------------------------------');
   });
 };
