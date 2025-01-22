@@ -43,8 +43,10 @@ export default class InceptTerminal extends EventTerminal {
       const project = this.project();
       //get client directory
       const client = path.resolve(
-        this.transformer.loader.modules(), 
-        '@stackpress/.incept'
+        this.server.loader.cwd,
+        'node_modules',
+        '@stackpress',
+        '.incept'
       );
       //create the directory
       const directory = project.createDirectory(client);
