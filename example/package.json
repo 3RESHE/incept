@@ -16,10 +16,12 @@
   ],
   "scripts": {
     "build": "tsc",
-    "test": "NODE_ENV=integration nyc ts-mocha tests/*.test.ts",
     "dev": "NODE_ENV=development dotenv -e .env.local -- yarn incept",
+    "generate": "dotenv -e .env.local -- yarn incept transform",
     "live": "NODE_ENV=production dotenv -e .env.local -- yarn incept",
-    "serve": "dotenv -e .env.local -- ts-node src/scripts/serve.ts"
+    "migrate": "dotenv -e .env.local -- ts-node src/scripts/migrate.ts",
+    "serve": "dotenv -e .env.local -- ts-node src/scripts/serve.ts",
+    "test": "NODE_ENV=integration nyc ts-mocha tests/*.test.ts"
   },
   "dependencies": {
     "@paralleldrive/cuid2": "2.2.2",

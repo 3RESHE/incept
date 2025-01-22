@@ -25,7 +25,6 @@ export default function plugin(server: HTTPServer<Config>) {
     server.get('/**.*', path.join(__dirname, 'routes/assets'));
     server.on('error', path.join(__dirname, 'events/error'));
     server.on('install', path.join(__dirname, 'events/install'));
-    server.on('migrate', path.join(__dirname, 'events/migrate'));
     server.on('populate', path.join(__dirname, 'events/populate'));
     server.on('purge', path.join(__dirname, 'events/purge'));
     server.on('push', path.join(__dirname, 'events/push'));
