@@ -1,3 +1,5 @@
+//modules
+import path from 'node:path';
 //stackpress
 import type { CLIProps } from '@stackpress/idea-transformer/dist/types';
 import type Transformer from '@stackpress/idea-transformer/dist/Transformer';
@@ -11,7 +13,12 @@ export default function plugin(server: Server) {
   server.on('config', req => {
     const server = req.context;
     try {
-      const client = server.loader.require('@stackpress/.incept');
+      const client = server.loader.require(path.join(
+        server.loader.cwd, 
+        'node_modules', 
+        '@stackpress', 
+        '.incept'
+      ));
       server.register('client', client);
     } catch(e) {}
   }, 10);
