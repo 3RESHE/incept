@@ -1,6 +1,6 @@
 {
   "name": "@stackpress/incept-inquire",
-  "version": "0.1.8",
+  "version": "0.1.9",
   "license": "MIT",
   "description": "This package generates store, schema and actions based on models and fieldsets in an Incept client.",
   "author": "Chris <chris@stackpress.io>",
@@ -23,11 +23,11 @@
     "tsconfig.json"
   ],
   "dependencies": {
-    "@stackpress/idea-transformer": "0.3.24",
-    "@stackpress/incept": "0.1.8",
-    "@stackpress/ingest": "0.3.24",
-    "@stackpress/inquire": "0.3.24",
-    "@stackpress/lib": "0.3.24",
+    "@stackpress/idea-transformer": "0.3.25",
+    "@stackpress/incept": "0.1.9",
+    "@stackpress/ingest": "0.3.25",
+    "@stackpress/inquire": "0.3.25",
+    "@stackpress/lib": "0.3.25",
     "ts-morph": "24.0.0"
   },
   "devDependencies": {

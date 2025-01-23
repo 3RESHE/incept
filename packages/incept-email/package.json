@@ -1,6 +1,6 @@
 {
   "name": "@stackpress/incept-email",
-  "version": "0.1.8",
+  "version": "0.1.9",
   "license": "MIT",
   "description": "This package is enables email in an Incept app.",
   "author": "Chris <chris@stackpress.io>",
@@ -23,7 +23,7 @@
     "tsconfig.json"
   ],
   "dependencies": {
-    "@stackpress/ingest": "0.3.24",
+    "@stackpress/ingest": "0.3.25",
     "nodemailer": "6.9.16"
   },
   "devDependencies": {
