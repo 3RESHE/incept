@@ -8,6 +8,11 @@ import type { EmailConfig } from './types';
 const emitter = new ServerRouter();
 
 emitter.on('email-send', async function EmailSend(req, res) {
+  //if there is a response body or there is an error code
+  if (res.body || (res.code && res.code !== 200)) {
+    //let the response pass through
+    return;
+  }
   const server = req.context;
   const config = server.config<EmailConfig['email']>('email');
   if (!config) return;
@@ -23,7 +28,6 @@ emitter.on('email-send', async function EmailSend(req, res) {
     });
   });
   res.setResults(info);
-  
 });
 
 export default emitter;

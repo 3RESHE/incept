@@ -9,6 +9,11 @@ type AuthConfig = SessionConfig['session']['auth'];
 const template = '@stackpress/incept-user/dist/templates/signin';
 
 export default async function SignInPage(req: ServerRequest, res: Response) {
+  //if there is a response body or there is an error code
+  if (res.body || (res.code && res.code !== 200)) {
+    //let the response pass through
+    return;
+  }
   //extract project and model from client
   const server = req.context;
   // /auth/signin/:type
