@@ -196,7 +196,6 @@ name String @is.required @is.cgt(10)
     <tr>
       <th align="left">Attribute</th>
       <th align="left">Description</th>
-      <th align="left">Attributes</th>
       <th align="left">Example</th>
     </tr>
   </thead>
@@ -205,7 +204,6 @@ name String @is.required @is.cgt(10)
       <td><code>@is.required</code></td>
       <td>Validates that a value must be given before being inserted.</td>
       <td>&nbsp;</td>
-      <td>&nbsp;</td>
     </tr>
     <tr>
       <td><code>@is.notempty</code></td>
@@ -213,14 +211,12 @@ name String @is.required @is.cgt(10)
         Validates that a value is something as opposed to an empty string.
       </td>
       <td>&nbsp;</td>
-      <td>&nbsp;</td>
     </tr>
     <tr>
       <td><code>@is.eq(string|number)</code></td>
       <td>
         Validates that the value is explicitly equal to the given argument
       </td>
-      <td>&nbsp;</td>
       <td>
         <code>@is.eq(10)</code>
         <br /><code>@is.eq("foobar")</code>
@@ -231,7 +227,6 @@ name String @is.required @is.cgt(10)
       <td>
         Validates that the value is explicitly not equal to the given argument
       </td>
-      <td>&nbsp;</td>
       <td>
         <code>@is.neq(10)</code>
         <br /><code>@is.neq("foobar")</code>
@@ -240,7 +235,6 @@ name String @is.required @is.cgt(10)
     <tr>
       <td><code>@is.option(string|number[])</code></td>
       <td>Validates that the value is one of the given options</td>
-      <td>&nbsp;</td>
       <td>is.option([ 1 2 "foo" 3 "bar" ])</td>
     </tr>
     <tr>
@@ -248,37 +242,31 @@ name String @is.required @is.cgt(10)
       <td>
         Validates that the value matches the given regular expression
       </td>
-      <td>&nbsp;</td>
       <td><code>@is.regex("[a-z]$")</code></td>
     </tr>
     <tr>
       <td><code>@is.date</code></td>
       <td>Validates that the value is a date</td>
       <td>&nbsp;</td>
-      <td>&nbsp;</td>
     </tr>
     <tr>
       <td><code>@is.future</code></td>
       <td>Validates that the value is a future date</td>
-      <td>&nbsp;</td>
       <td>&nbsp;</td>
     </tr>
     <tr>
       <td><code>@is.past</code></td>
       <td>Validates that the value is a past date</td>
       <td>&nbsp;</td>
-      <td>&nbsp;</td>
     </tr>
     <tr>
       <td><code>@is.present</code></td>
       <td>Validates that the value is the present date</td>
       <td>&nbsp;</td>
-      <td>&nbsp;</td>
     </tr>
     <tr>
       <td><code>@is.gt(number)</code></td>
       <td>Validate that the value is greater than the given number</td>
-      <td>&nbsp;</td>
       <td><code>@is.gt(10)</code></td>
     </tr>
     <tr>
@@ -286,13 +274,11 @@ name String @is.required @is.cgt(10)
       <td>
         Validate that the value is greater than or equal to the given number
       </td>
-      <td>&nbsp;</td>
       <td><code>@is.ge(10)</code></td>
     </tr>
     <tr>
       <td><code>@is.lt(number)</code></td>
       <td>Validate that the value is less than the given number</td>
-      <td>&nbsp;</td>
       <td><code>@is.lt(10)</code></td>
     </tr>
     <tr>
@@ -300,7 +286,6 @@ name String @is.required @is.cgt(10)
       <td>
         Validate that the value is less than or equal to the given number
       </td>
-      <td>&nbsp;</td>
       <td><code>@is.le(10)</code></td>
     </tr>
     <tr>
@@ -309,7 +294,6 @@ name String @is.required @is.cgt(10)
         Validate that the character count of the value 
         is equal to the given number
       </td>
-      <td>&nbsp;</td>
       <td><code>@is.ceq(10)</code></td>
     </tr>
     <tr>
@@ -318,7 +302,6 @@ name String @is.required @is.cgt(10)
         Validate that the character count of the value is greater 
         than or equal to the given number
       </td>
-      <td>&nbsp;</td>
       <td><code>@is.cle(10)</code></td>
     </tr>
     <tr>
@@ -327,7 +310,6 @@ name String @is.required @is.cgt(10)
         Validate that the character count of the value is 
         less than the given number
       </td>
-      <td>&nbsp;</td>
       <td><code>@is.cge(10)</code></td>
     </tr>
     <tr>
@@ -336,7 +318,6 @@ name String @is.required @is.cgt(10)
         Validate that the character count of the value is 
         less than or equal to the given number
       </td>
-      <td>&nbsp;</td>
       <td><code>@is.clt(10)</code></td>
     </tr>
     <tr>
@@ -345,7 +326,6 @@ name String @is.required @is.cgt(10)
         Validate that the character count of the value is less 
         than or equal to the given number
       </td>
-      <td>&nbsp;</td>
       <td><code>@is.cle(10)</code></td>
     </tr>
     <tr>
@@ -354,7 +334,6 @@ name String @is.required @is.cgt(10)
         Validate that the word count of the value is 
         equal to the given number
       </td>
-      <td>&nbsp;</td>
       <td><code>@is.weq(10)</code></td>
     </tr>
     <tr>
@@ -363,7 +342,6 @@ name String @is.required @is.cgt(10)
         Validate that the word count of the value is greater 
         than or equal to the given number
       </td>
-      <td>&nbsp;</td>
       <td><code>@is.wle(10)</code></td>
     </tr>
     <tr>
@@ -372,7 +350,6 @@ name String @is.required @is.cgt(10)
         Validate that the word count of the value is less 
         than the given number
       </td>
-      <td>&nbsp;</td>
       <td><code>@is.wge(10)</code></td>
     </tr>
     <tr>
@@ -381,7 +358,6 @@ name String @is.required @is.cgt(10)
         Validate that the word count of the value is less than 
         or equal to the given number
       </td>
-      <td>&nbsp;</td>
       <td><code>@is.wlt(10)</code></td>
     </tr>
     <tr>
@@ -390,73 +366,61 @@ name String @is.required @is.cgt(10)
         Validate that the word count of the value is less than 
         or equal to the given number
       </td>
-      <td>&nbsp;</td>
       <td><code>@is.wle(10)</code></td>
     </tr>
     <tr>
       <td><code>@is.cc</code></td>
       <td>Validates that the value is a credit card</td>
       <td>&nbsp;</td>
-      <td>&nbsp;</td>
     </tr>
     <tr>
       <td><code>@is.color</code></td>
       <td>Validates that the value is a color value (color name or hex)</td>
-      <td>&nbsp;</td>
       <td>&nbsp;</td>
     </tr>
     <tr>
       <td><code>@is.email</code></td>
       <td>Validates that the value is an email</td>
       <td>&nbsp;</td>
-      <td>&nbsp;</td>
     </tr>
     <tr>
       <td><code>@is.hex</code></td>
       <td>Validates that the value is a hexidecimal</td>
-      <td>&nbsp;</td>
       <td>&nbsp;</td>
     </tr>
     <tr>
       <td><code>@is.price</code></td>
       <td>Validates that the value is a price number (ie. 2 decimal numbers)</td>
       <td>&nbsp;</td>
-      <td>&nbsp;</td>
     </tr>
     <tr>
       <td><code>@is.url</code></td>
       <td>Validates that the value is a URL</td>
-      <td>&nbsp;</td>
       <td>&nbsp;</td>
     </tr>
     <tr>
       <td><code>@is.boolean</code></td>
       <td>Validates that the value is a boolean</td>
       <td>&nbsp;</td>
-      <td>&nbsp;</td>
     </tr>
     <tr>
       <td><code>@is.number</code></td>
       <td>Validates that the value is a number format</td>
-      <td>&nbsp;</td>
       <td>&nbsp;</td>
     </tr>
     <tr>
       <td><code>@is.float</code></td>
       <td>Validates that the value is a float format</td>
       <td>&nbsp;</td>
-      <td>&nbsp;</td>
     </tr>
     <tr>
       <td><code>@is.integer</code></td>
       <td>Validates that the value is an integer format</td>
       <td>&nbsp;</td>
-      <td>&nbsp;</td>
     </tr>
     <tr>
       <td><code>@is.object</code></td>
       <td>Validates that the value is an object</td>
-      <td>&nbsp;</td>
       <td>&nbsp;</td>
     </tr>
   </tbody>
