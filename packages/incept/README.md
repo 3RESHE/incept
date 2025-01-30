@@ -26,25 +26,25 @@ model User @icon("user") @label("User" "Users") {}
   </thead>
   <tbody>
     <tr>
-      <td>`@icon(string)`</td>
+      <td><code>@icon(string)</code></td>
       <td>An icon representation of a model. Uses font awesome names.</td>
       <td>&nbsp;</td>
-      <td>`@icon("user")`</td>
+      <td><code>@icon("user")</code></td>
     </tr>
     <tr>
-      <td>`@template(string)`</td>
+      <td><code>@template(string)</code></td>
       <td>Used to describe each row in a model</td>
       <td>&nbsp;</td>
-      <td>`@template("User {{name}}")`</td>
+      <td><code>@template("User {{name}}")</code></td>
     </tr>
     <tr>
-      <td>`@label(string string)`</td>
+      <td><code>@label(string string)</code></td>
       <td>A friendly name that represents the model</td>
       <td>&nbsp;</td>
-      <td>`@label("User" "Users")`</td>
+      <td><code>@label("User" "Users")</code></td>
     </tr>
     <tr>
-      <td>`@active`</td>
+      <td><code>@active</code></td>
       <td>
         A flag that represents the active field. Active fields are 
         changed when deleting or restoring a row, as an alternative to 
@@ -54,16 +54,16 @@ model User @icon("user") @label("User" "Users") {}
       <td>&nbsp;</td>
     </tr>
     <tr>
-      <td>`@default(string|number|boolean)`</td>
+      <td><code>@default(string|number|boolean)</code></td>
       <td>
         The default value applied when creating a row if no value 
         was provided.
       </td>
       <td>&nbsp;</td>
       <td>
-        `@default(1)`
-        <br />`@default("user")`
-        <br />`@default(true)`
+        <code>@default(1)</code>
+        <br /><code>@default("user")</code>
+        <br /><code>@default(true)</code>
         <br />`@default("now()")`
         <br />`@default("nanoid()")`
         <br />`@default("nanoid(10)")`
@@ -72,7 +72,7 @@ model User @icon("user") @label("User" "Users") {}
       </td>
     </tr>
     <tr>
-      <td>`@generated`</td>
+      <td><code>@generated</code></td>
       <td>
         A flag that represents that the value of this column is 
         generated, bypassing the need to be validated
@@ -81,7 +81,7 @@ model User @icon("user") @label("User" "Users") {}
       <td>&nbsp;</td>
     </tr>
     <tr>
-      <td>`@id`</td>
+      <td><code>@id</code></td>
       <td>
         A flag that represents the models identifier. If multiple ids 
         then the combination will be used to determine each rows 
@@ -91,7 +91,7 @@ model User @icon("user") @label("User" "Users") {}
       <td>&nbsp;</td>
     </tr>
     <tr>
-      <td>`@searchable`</td>
+      <td><code>@searchable</code></td>
       <td>
         A flag deonoting this column is searchable and will be 
         considered in a search field for example. Also used to know 
@@ -101,7 +101,7 @@ model User @icon("user") @label("User" "Users") {}
       <td>&nbsp;</td>
     </tr>
     <tr>
-      <td>`@sortable`</td>
+      <td><code>@sortable</code></td>
       <td>
         A flag deonoting this column is sortable. Also used to know 
         which columns need to be optimized in the database.
@@ -110,34 +110,34 @@ model User @icon("user") @label("User" "Users") {}
       <td>&nbsp;</td>
     </tr>
     <tr>
-      <td>`@label(string)`</td>
+      <td><code>@label(string)</code></td>
       <td>
         A label that will be shown to represent this column instead of 
         the actual column name.
       </td>
       <td>&nbsp;</td>
-      <td>`@label("Name")`</td>
+      <td><code>@label("Name")</code></td>
     </tr>
     <tr>
-      <td>`@min(number)`</td>
+      <td><code>@min(number)</code></td>
       <td>
         The minimum number value that will be accepted. This is also a 
         consideration when determining the database type.
       </td>
       <td>&nbsp;</td>
-      <td>`@min(10)`</td>
+      <td><code>@min(10)</code></td>
     </tr>
     <tr>
-      <td>`@max(number)`</td>
+      <td><code>@max(number)</code></td>
       <td>
         The maximum number value that will be accepted. This is also a 
         consideration when determining the database type.
       </td>
       <td>&nbsp;</td>
-      <td>`@max(100)`</td>
+      <td><code>@max(100)</code></td>
     </tr>
     <tr>
-      <td>`@step(number)`</td>
+      <td><code>@step(number)</code></td>
       <td>
         The incremental amount value that will be used when changing 
         the columns value. This is also a consideration when determining 
@@ -145,12 +145,12 @@ model User @icon("user") @label("User" "Users") {}
       </td>
       <td>&nbsp;</td>
       <td>
-        `@step(1)`
-        <br />`@step(0.01)`
+        <code>@step(1)</code>
+        <br /><code>@step(0.01)</code>
       </td>
     </tr>
     <tr>
-      <td>`@relation(config)`</td>
+      <td><code>@relation(config)</code></td>
       <td>Maps columns in the model that is related to another model.</td>
       <td>
         local: string
@@ -158,13 +158,13 @@ model User @icon("user") @label("User" "Users") {}
         <br />name?: string
       </td>
       <td>
-        `@relation({ local "userId" foreign "id" })`
-        <br />`@relation({ name "memberships" local "ownerId" foreign "id" })`
-        <br />`@relation({ name "connections" local "memberId" foreign "id" })`
+        <code>@relation({ local "userId" foreign "id" })</code>
+        <br /><code>@relation({ name "memberships" local "ownerId" foreign "id" })</code>
+        <br /><code>@relation({ name "connections" local "memberId" foreign "id" })</code>
       </td>
     </tr>
     <tr>
-      <td>`@unique`</td>
+      <td><code>@unique</code></td>
       <td>
         A flag that ensures no duplicate value can be added to the model
       </td>
@@ -172,7 +172,7 @@ model User @icon("user") @label("User" "Users") {}
       <td>&nbsp;</td>
     </tr>
     <tr>
-      <td>`@updated`</td>
+      <td><code>@updated</code></td>
       <td>
         A flag that will automatically update the timestamp whenever 
         a row is changed.
@@ -202,13 +202,13 @@ name String @is.required @is.cgt(10)
   </thead>
   <tbody>
     <tr>
-      <td>`@is.required`</td>
+      <td><code>@is.required</code></td>
       <td>Validates that a value must be given before being inserted.</td>
       <td>&nbsp;</td>
       <td>&nbsp;</td>
     </tr>
     <tr>
-      <td>`@is.notempty`</td>
+      <td><code>@is.notempty</code></td>
       <td>
         Validates that a value is something as opposed to an empty string.
       </td>
@@ -216,245 +216,245 @@ name String @is.required @is.cgt(10)
       <td>&nbsp;</td>
     </tr>
     <tr>
-      <td>`@is.eq(string|number)`</td>
+      <td><code>@is.eq(string|number)</code></td>
       <td>
         Validates that the value is explicitly equal to the given argument
       </td>
       <td>&nbsp;</td>
       <td>
-        `@is.eq(10)`
-        <br />`@is.eq("foobar")`
+        <code>@is.eq(10)</code>
+        <br /><code>@is.eq("foobar")</code>
       </td>
     </tr>
     <tr>
-      <td>`@is.ne(string|number)`</td>
+      <td><code>@is.ne(string|number)</code></td>
       <td>
         Validates that the value is explicitly not equal to the given argument
       </td>
       <td>&nbsp;</td>
       <td>
-        `@is.neq(10)`
-        <br />`@is.neq("foobar")`
+        <code>@is.neq(10)</code>
+        <br /><code>@is.neq("foobar")</code>
       </td>
     </tr>
     <tr>
-      <td>`@is.option(string|number[])`</td>
+      <td><code>@is.option(string|number[])</code></td>
       <td>Validates that the value is one of the given options</td>
       <td>&nbsp;</td>
       <td>is.option([ 1 2 "foo" 3 "bar" ])</td>
     </tr>
     <tr>
-      <td>`@is.regex(string)`</td>
+      <td><code>@is.regex(string)</code></td>
       <td>
         Validates that the value matches the given regular expression
       </td>
       <td>&nbsp;</td>
-      <td>`@is.regex("[a-z]$")`</td>
+      <td><code>@is.regex("[a-z]$")</code></td>
     </tr>
     <tr>
-      <td>`@is.date`</td>
+      <td><code>@is.date</code></td>
       <td>Validates that the value is a date</td>
       <td>&nbsp;</td>
       <td>&nbsp;</td>
     </tr>
     <tr>
-      <td>`@is.future`</td>
+      <td><code>@is.future</code></td>
       <td>Validates that the value is a future date</td>
       <td>&nbsp;</td>
       <td>&nbsp;</td>
     </tr>
     <tr>
-      <td>`@is.past`</td>
+      <td><code>@is.past</code></td>
       <td>Validates that the value is a past date</td>
       <td>&nbsp;</td>
       <td>&nbsp;</td>
     </tr>
     <tr>
-      <td>`@is.present`</td>
+      <td><code>@is.present</code></td>
       <td>Validates that the value is the present date</td>
       <td>&nbsp;</td>
       <td>&nbsp;</td>
     </tr>
     <tr>
-      <td>`@is.gt(number)`</td>
+      <td><code>@is.gt(number)</code></td>
       <td>Validate that the value is greater than the given number</td>
       <td>&nbsp;</td>
-      <td>`@is.gt(10)`</td>
+      <td><code>@is.gt(10)</code></td>
     </tr>
     <tr>
-      <td>`@is.ge(number)`</td>
+      <td><code>@is.ge(number)</code></td>
       <td>
         Validate that the value is greater than or equal to the given number
       </td>
       <td>&nbsp;</td>
-      <td>`@is.ge(10)`</td>
+      <td><code>@is.ge(10)</code></td>
     </tr>
     <tr>
-      <td>`@is.lt(number)`</td>
+      <td><code>@is.lt(number)</code></td>
       <td>Validate that the value is less than the given number</td>
       <td>&nbsp;</td>
-      <td>`@is.lt(10)`</td>
+      <td><code>@is.lt(10)</code></td>
     </tr>
     <tr>
-      <td>`@is.le(number)`</td>
+      <td><code>@is.le(number)</code></td>
       <td>
         Validate that the value is less than or equal to the given number
       </td>
       <td>&nbsp;</td>
-      <td>`@is.le(10)`</td>
+      <td><code>@is.le(10)</code></td>
     </tr>
     <tr>
-      <td>`@is.ceq(number)`</td>
+      <td><code>@is.ceq(number)</code></td>
       <td>
         Validate that the character count of the value 
         is equal to the given number
       </td>
       <td>&nbsp;</td>
-      <td>`@is.ceq(10)`</td>
+      <td><code>@is.ceq(10)</code></td>
     </tr>
     <tr>
-      <td>`@is.cgt(number)`</td>
+      <td><code>@is.cgt(number)</code></td>
       <td>
         Validate that the character count of the value is greater 
         than or equal to the given number
       </td>
       <td>&nbsp;</td>
-      <td>`@is.cle(10)`</td>
+      <td><code>@is.cle(10)</code></td>
     </tr>
     <tr>
-      <td>`@is.cge(number)`</td>
+      <td><code>@is.cge(number)</code></td>
       <td>
         Validate that the character count of the value is 
         less than the given number
       </td>
       <td>&nbsp;</td>
-      <td>`@is.cge(10)`</td>
+      <td><code>@is.cge(10)</code></td>
     </tr>
     <tr>
-      <td>`@is.clt(number)`</td>
+      <td><code>@is.clt(number)</code></td>
       <td>
         Validate that the character count of the value is 
         less than or equal to the given number
       </td>
       <td>&nbsp;</td>
-      <td>`@is.clt(10)`</td>
+      <td><code>@is.clt(10)</code></td>
     </tr>
     <tr>
-      <td>`@is.cle(number)`</td>
+      <td><code>@is.cle(number)</code></td>
       <td>
         Validate that the character count of the value is less 
         than or equal to the given number
       </td>
       <td>&nbsp;</td>
-      <td>`@is.cle(10)`</td>
+      <td><code>@is.cle(10)</code></td>
     </tr>
     <tr>
-      <td>`@is.weq(number)`</td>
+      <td><code>@is.weq(number)</code></td>
       <td>
         Validate that the word count of the value is 
         equal to the given number
       </td>
       <td>&nbsp;</td>
-      <td>`@is.weq(10)`</td>
+      <td><code>@is.weq(10)</code></td>
     </tr>
     <tr>
-      <td>`@is.wgt(number)`</td>
+      <td><code>@is.wgt(number)</code></td>
       <td>
         Validate that the word count of the value is greater 
         than or equal to the given number
       </td>
       <td>&nbsp;</td>
-      <td>`@is.wle(10)`</td>
+      <td><code>@is.wle(10)</code></td>
     </tr>
     <tr>
-      <td>`@is.wge(number)`</td>
+      <td><code>@is.wge(number)</code></td>
       <td>
         Validate that the word count of the value is less 
         than the given number
       </td>
       <td>&nbsp;</td>
-      <td>`@is.wge(10)`</td>
+      <td><code>@is.wge(10)</code></td>
     </tr>
     <tr>
-      <td>`@is.wlt(number)`</td>
+      <td><code>@is.wlt(number)</code></td>
       <td>
         Validate that the word count of the value is less than 
         or equal to the given number
       </td>
       <td>&nbsp;</td>
-      <td>`@is.wlt(10)`</td>
+      <td><code>@is.wlt(10)</code></td>
     </tr>
     <tr>
-      <td>`@is.wle(number)`</td>
+      <td><code>@is.wle(number)</code></td>
       <td>
         Validate that the word count of the value is less than 
         or equal to the given number
       </td>
       <td>&nbsp;</td>
-      <td>`@is.wle(10)`</td>
+      <td><code>@is.wle(10)</code></td>
     </tr>
     <tr>
-      <td>`@is.cc`</td>
+      <td><code>@is.cc</code></td>
       <td>Validates that the value is a credit card</td>
       <td>&nbsp;</td>
       <td>&nbsp;</td>
     </tr>
     <tr>
-      <td>`@is.color`</td>
+      <td><code>@is.color</code></td>
       <td>Validates that the value is a color value (color name or hex)</td>
       <td>&nbsp;</td>
       <td>&nbsp;</td>
     </tr>
     <tr>
-      <td>`@is.email`</td>
+      <td><code>@is.email</code></td>
       <td>Validates that the value is an email</td>
       <td>&nbsp;</td>
       <td>&nbsp;</td>
     </tr>
     <tr>
-      <td>`@is.hex`</td>
+      <td><code>@is.hex</code></td>
       <td>Validates that the value is a hexidecimal</td>
       <td>&nbsp;</td>
       <td>&nbsp;</td>
     </tr>
     <tr>
-      <td>`@is.price`</td>
+      <td><code>@is.price</code></td>
       <td>Validates that the value is a price number (ie. 2 decimal numbers)</td>
       <td>&nbsp;</td>
       <td>&nbsp;</td>
     </tr>
     <tr>
-      <td>`@is.url`</td>
+      <td><code>@is.url</code></td>
       <td>Validates that the value is a URL</td>
       <td>&nbsp;</td>
       <td>&nbsp;</td>
     </tr>
     <tr>
-      <td>`@is.boolean`</td>
+      <td><code>@is.boolean</code></td>
       <td>Validates that the value is a boolean</td>
       <td>&nbsp;</td>
       <td>&nbsp;</td>
     </tr>
     <tr>
-      <td>`@is.number`</td>
+      <td><code>@is.number</code></td>
       <td>Validates that the value is a number format</td>
       <td>&nbsp;</td>
       <td>&nbsp;</td>
     </tr>
     <tr>
-      <td>`@is.float`</td>
+      <td><code>@is.float</code></td>
       <td>Validates that the value is a float format</td>
       <td>&nbsp;</td>
       <td>&nbsp;</td>
     </tr>
     <tr>
-      <td>`@is.integer`</td>
+      <td><code>@is.integer</code></td>
       <td>Validates that the value is an integer format</td>
       <td>&nbsp;</td>
       <td>&nbsp;</td>
     </tr>
     <tr>
-      <td>`@is.object`</td>
+      <td><code>@is.object</code></td>
       <td>Validates that the value is an object</td>
       <td>&nbsp;</td>
       <td>&nbsp;</td>
@@ -481,13 +481,13 @@ name String @field.text
   </thead>
   <tbody>
     <tr>
-      <td>`@field.color`</td>
+      <td><code>@field.color</code></td>
       <td>Use a color field to represent this column in a form</td>
       <td>&nbsp;</td>
       <td>&nbsp;</td>
     </tr>
     <tr>
-      <td>`@field.checkbox(attributes?)`</td>
+      <td><code>@field.checkbox(attributes?)</code></td>
       <td>Use a checkbox to represent this column in a form</td>
       <td>
         label: string 
@@ -499,95 +499,95 @@ name String @field.text
         <br />orange: boolean
       </td>
       <td>
-        `@field.checkbox`
-        <br />`@field.checkbox({ label "Enabled" circle true })`
+        <code>@field.checkbox</code>
+        <br /><code>@field.checkbox({ label "Enabled" circle true })</code>
       </td>
     </tr>
     <tr>
-      <td>`@field.country(attributes?)`</td>
+      <td><code>@field.country(attributes?)</code></td>
       <td>Use a country dropdown to represent this column in a form</td>
       <td>placeholder: string</td>
       <td>
-        `@field.country`
-        <br />`@field.country({ placeholder "Select Country" })`
+        <code>@field.country</code>
+        <br /><code>@field.country({ placeholder "Select Country" })</code>
       </td>
     </tr>
     <tr>
-      <td>`@field.currency(attributes?)`</td>
+      <td><code>@field.currency(attributes?)</code></td>
       <td>Use a currency dropdown to represent this column in a form</td>
       <td>placeholder: string</td>
       <td>
-        `@field.currency`
-        <br />`@field.currency({ placeholder "Select Currency" })`
+        <code>@field.currency</code>
+        <br /><code>@field.currency({ placeholder "Select Currency" })</code>
       </td>
     </tr>
     <tr>
-      <td>`@field.date`</td>
+      <td><code>@field.date</code></td>
       <td>Use a date field to represent this column in a form</td>
       <td>&nbsp;</td>
       <td>&nbsp;</td>
     </tr>
     <tr>
-      <td>`@field.datetime`</td>
+      <td><code>@field.datetime</code></td>
       <td>Use a date time field to represent this column in a form</td>
       <td>&nbsp;</td>
       <td>&nbsp;</td>
     </tr>
     <tr>
-      <td>`@field.editor(attributes?)`</td>
+      <td><code>@field.editor(attributes?)</code></td>
       <td>Use a code editor to represent this column in a form</td>
       <td>
         lang: html|md|css|js|ts
         <br />numbers: boolean</td>
       <td>
-        `@field.editor`
-        <br />`@field.editor({ lang "html" numbers true })`
+        <code>@field.editor</code>
+        <br /><code>@field.editor({ lang "html" numbers true })</code>
       </td>
     </tr>
     <tr>
-      <td>`@field.file`</td>
+      <td><code>@field.file</code></td>
       <td>Use a file input to represent this column in a form</td>
       <td>&nbsp;</td>
       <td>&nbsp;</td>
     </tr>
     <tr>
-      <td>`@field.filelist`</td>
+      <td><code>@field.filelist</code></td>
       <td>Use a file list fieldset to represent this column in a form</td>
       <td>&nbsp;</td>
       <td>&nbsp;</td>
     </tr>
     <tr>
-      <td>`@field.input`</td>
+      <td><code>@field.input</code></td>
       <td>Use an input field to represent this column in a form</td>
       <td>&nbsp;</td>
       <td>&nbsp;</td>
     </tr>
     <tr>
-      <td>`@field.markdown(attributes?)`</td>
+      <td><code>@field.markdown(attributes?)</code></td>
       <td>Use a markdown editor to represent this column in a form</td>
       <td>numbers: boolean</td>
       <td>
-        `@field.markdown`
-        <br />`@field.markdown({ numbers true })`
+        <code>@field.markdown</code>
+        <br /><code>@field.markdown({ numbers true })</code>
       </td>
     </tr>
     <tr>
-      <td>`@field.mask(attributes)`</td>
+      <td><code>@field.mask(attributes)</code></td>
       <td>Use an input mask to represent this column in a form</td>
       <td>mask: string</td>
       <td>
-        `@field.mask`
-        <br />`@field.mask({ mask "999-999-999" })`
+        <code>@field.mask</code>
+        <br /><code>@field.mask({ mask "999-999-999" })</code>
       </td>
     </tr>
     <tr>
-      <td>`@field.metadata`</td>
+      <td><code>@field.metadata</code></td>
       <td>Use a key value fieldset to represent this column in a form</td>
       <td>&nbsp;</td>
       <td>&nbsp;</td>
     </tr>
     <tr>
-      <td>`@field.number(attributes?)`</td>
+      <td><code>@field.number(attributes?)</code></td>
       <td>Uses a number field to represent this column in a form</td>
       <td>
         min: number
@@ -598,18 +598,18 @@ name String @field.text
         <br />absolute: boolean
       </td>
       <td>
-        `@field.number`
-        <br />`@field.number({ min 0 max 10 step 0.01 separator "," decimal "." absolute true })`
+        <code>@field.number</code>
+        <br /><code>@field.number({ min 0 max 10 step 0.01 separator "," decimal "." absolute true })</code>
       </td>
     </tr>
     <tr>
-      <td>`@field.password`</td>
+      <td><code>@field.password</code></td>
       <td>Uses a password field to represent this column in a form</td>
       <td>&nbsp;</td>
       <td>&nbsp;</td>
     </tr>
     <tr>
-      <td>`@field.range(attributes?)`</td>
+      <td><code>@field.range(attributes?)</code></td>
       <td>Uses a range field to represent this column in a form</td>
       <td>
         min: number
@@ -618,30 +618,30 @@ name String @field.text
         <br />width: number
       </td>
       <td>
-        `@field.range`
-        <br />`@field.range({ min 0 max 10 step 0.01 width 100 })`
+        <code>@field.range</code>
+        <br /><code>@field.range({ min 0 max 10 step 0.01 width 100 })</code>
       </td>
     </tr>
     <tr>
-      <td>`@field.rating(attributes?)`</td>
+      <td><code>@field.rating(attributes?)</code></td>
       <td>Uses a rating field to represent this column in a form</td>
       <td>max: number</td>
       <td>
-        `@field.rating`
-        <br />`@field.rating({ max 5 })`
+        <code>@field.rating</code>
+        <br /><code>@field.rating({ max 5 })</code>
       </td>
     </tr>
     <tr>
-      <td>`@field.select(attributes?)`</td>
+      <td><code>@field.select(attributes?)</code></td>
       <td>Uses a select dropdown to represent this column in a form</td>
       <td>placeholder: string</td>
       <td>
-        `@field.select`
-        <br />`@field.select({ placeholder "Select Country" })`
+        <code>@field.select</code>
+        <br /><code>@field.select({ placeholder "Select Country" })</code>
       </td>
     </tr>
     <tr>
-      <td>`@field.slug`</td>
+      <td><code>@field.slug</code></td>
       <td>
         Uses an input field that transforms the value 
         into a slug to represent this column in a form
@@ -650,7 +650,7 @@ name String @field.text
       <td>&nbsp;</td>
     </tr>
     <tr>
-      <td>`@field.switch(attributes?)`</td>
+      <td><code>@field.switch(attributes?)</code></td>
       <td>Uses a switch toggle to represent this column in a form</td>
       <td>
         rounded: boolean
@@ -665,39 +665,39 @@ name String @field.text
         <br />green: boolean
       </td>
       <td>
-        `@field.switch`
-        <br />`@field.switch({ label "Enabled" yesno true })`
+        <code>@field.switch</code>
+        <br /><code>@field.switch({ label "Enabled" yesno true })</code>
       </td>
     </tr>
     <tr>
-      <td>`@field.textarea(attributes?)`</td>
+      <td><code>@field.textarea(attributes?)</code></td>
       <td>Uses a textarea field to represent this column in a form</td>
       <td>rows: number</td>
       <td>
-        `@field.textarea`
-        <br />`@field.textarea({ rows 10 })`
+        <code>@field.textarea</code>
+        <br /><code>@field.textarea({ rows 10 })</code>
       </td>
     </tr>
     <tr>
-      <td>`@field.taglist`</td>
+      <td><code>@field.taglist</code></td>
       <td>Uses a tag field to represent this column in a form</td>
       <td>&nbsp;</td>
       <td>&nbsp;</td>
     </tr>
     <tr>
-      <td>`@field.textlist`</td>
+      <td><code>@field.textlist</code></td>
       <td>Uses a text list fieldset to represent this column in a form</td>
       <td>&nbsp;</td>
       <td>&nbsp;</td>
     </tr>
     <tr>
-      <td>`@field.time`</td>
+      <td><code>@field.time</code></td>
       <td>Uses a time field to represent this column in a form</td>
       <td>&nbsp;</td>
       <td>&nbsp;</td>
     </tr>
     <tr>
-      <td>`@field.wysiwyg(attributes?)`</td>
+      <td><code>@field.wysiwyg(attributes?)</code></td>
       <td>Uses a WYSIWYG to represent this column in a form</td>
       <td>
         history: boolean
@@ -727,8 +727,8 @@ name String @field.text
         <br />dir: boolean
       </td>
       <td>
-        `@field.wysiwyg`
-        <br />`@field.wysiwyg({ font true size true format true })`
+        <code>@field.wysiwyg</code>
+        <br /><code>@field.wysiwyg({ font true size true format true })</code>
       </td>
     </tr>
   </tbody>
@@ -753,13 +753,13 @@ name String @field.text
   </thead>
   <tbody>
     <tr>
-      <td>`@filter.color`</td>
+      <td><code>@filter.color</code></td>
       <td>Use a color field to represent this column in a filter form</td>
       <td>&nbsp;</td>
       <td>&nbsp;</td>
     </tr>
     <tr>
-      <td>`@filter.checkbox(attributes?)`</td>
+      <td><code>@filter.checkbox(attributes?)</code></td>
       <td>Use a checkbox to represent this column in a filter form</td>
       <td>
         label: string 
@@ -771,63 +771,63 @@ name String @field.text
         <br />orange: boolean
       </td>
       <td>
-        `@filter.checkbox`
-        <br />`@filter.checkbox({ label "Enabled" circle true })`
+        <code>@filter.checkbox</code>
+        <br /><code>@filter.checkbox({ label "Enabled" circle true })</code>
       </td>
     </tr>
     <tr>
-      <td>`@filter.country(attributes?)`</td>
+      <td><code>@filter.country(attributes?)</code></td>
       <td>Use a country dropdown to represent this column in a filter form</td>
       <td>placeholder: string</td>
       <td>
-        `@filter.select`
-        <br />`@filter.select({ placeholder "Select Country" })`
+        <code>@filter.select</code>
+        <br /><code>@filter.select({ placeholder "Select Country" })</code>
       </td>
     </tr>
     <tr>
-      <td>`@filter.currency(attributes?)`</td>
+      <td><code>@filter.currency(attributes?)</code></td>
       <td>Use a currency dropdown to represent this column in a filter form</td>
       <td>placeholder: string</td>
       <td>
-        `@filter.currency`
-        <br />`@filter.currency({ placeholder "Select Currency" })`
+        <code>@filter.currency</code>
+        <br /><code>@filter.currency({ placeholder "Select Currency" })</code>
       </td>
     </tr>
     <tr>
-      <td>`@filter.date`</td>
+      <td><code>@filter.date</code></td>
       <td>Use a date field to represent this column in a filter form</td>
       <td>&nbsp;</td>
       <td>&nbsp;</td>
     </tr>
     <tr>
-      <td>`@filter.datetime`</td>
+      <td><code>@filter.datetime</code></td>
       <td>Use a date time field to represent this column in a filter form</td>
       <td>&nbsp;</td>
       <td>&nbsp;</td>
     </tr>
     <tr>
-      <td>`@filter.file`</td>
+      <td><code>@filter.file</code></td>
       <td>Use a file input to represent this column in a filter form</td>
       <td>&nbsp;</td>
       <td>&nbsp;</td>
     </tr>
     <tr>
-      <td>`@filter.input`</td>
+      <td><code>@filter.input</code></td>
       <td>Use an input field to represent this column in a filter form</td>
       <td>&nbsp;</td>
       <td>&nbsp;</td>
     </tr>
     <tr>
-      <td>`@filter.mask(attributes)`</td>
+      <td><code>@filter.mask(attributes)</code></td>
       <td>Use an input mask to represent this column in a filter form</td>
       <td>mask: string</td>
       <td>
-        `@filter.mask`
-        <br />`@filter.mask({ mask "999-999-999" })`
+        <code>@filter.mask</code>
+        <br /><code>@filter.mask({ mask "999-999-999" })</code>
       </td>
     </tr>
     <tr>
-      <td>`@filter.number(attributes?)`</td>
+      <td><code>@filter.number(attributes?)</code></td>
       <td>Uses a number field to represent this column in a filter form</td>
       <td>min: number
       <br />max: number
@@ -836,18 +836,18 @@ name String @field.text
       <br />decimal: string
       <br />absolute: boolean</td>
       <td>
-        `@filter.number`
-        <br />`@filter.number({ min 0 max 10 step 0.01 separator "," decimal "." absolute true })`
+        <code>@filter.number</code>
+        <br /><code>@filter.number({ min 0 max 10 step 0.01 separator "," decimal "." absolute true })</code>
       </td>
     </tr>
     <tr>
-      <td>`@filter.password`</td>
+      <td><code>@filter.password</code></td>
       <td>Uses a password field to represent this column in a filter form</td>
       <td>&nbsp;</td>
       <td>&nbsp;</td>
     </tr>
     <tr>
-      <td>`@filter.range(attributes?)`</td>
+      <td><code>@filter.range(attributes?)</code></td>
       <td>Uses a range field to represent this column in a filter form</td>
       <td>
         min: number
@@ -855,30 +855,30 @@ name String @field.text
         <br />step: number
         <br />width: number</td>
       <td>
-        `@filter.range`
-        <br />`@filter.range({ min 0 max 10 step 0.01 width 100 })`
+        <code>@filter.range</code>
+        <br /><code>@filter.range({ min 0 max 10 step 0.01 width 100 })</code>
       </td>
     </tr>
     <tr>
-      <td>`@filter.rating(attributes?)`</td>
+      <td><code>@filter.rating(attributes?)</code></td>
       <td>Uses a rating field to represent this column in a filter form</td>
       <td>max: number</td>
       <td>
-        `@filter.rating`
-        <br />`@filter.rating({ max 5 })`
+        <code>@filter.rating</code>
+        <br /><code>@filter.rating({ max 5 })</code>
       </td>
     </tr>
     <tr>
-      <td>`@filter.select(attributes?)`</td>
+      <td><code>@filter.select(attributes?)</code></td>
       <td>Uses a select dropdown to represent this column in a filter form</td>
       <td>placeholder: string</td>
       <td>
-        `@filter.select`
-        <br />`@filter.select({ placeholder "Select Country" })`
+        <code>@filter.select</code>
+        <br /><code>@filter.select({ placeholder "Select Country" })</code>
       </td>
     </tr>
     <tr>
-      <td>`@filter.slug`</td>
+      <td><code>@filter.slug</code></td>
       <td>
         Uses an input field that transforms the value into a slug to 
         represent this column in a filter form
@@ -887,7 +887,7 @@ name String @field.text
       <td>&nbsp;</td>
     </tr>
     <tr>
-      <td>`@filter.switch(attributes?)`</td>
+      <td><code>@filter.switch(attributes?)</code></td>
       <td>Uses a switch toggle to represent this column in a filter form</td>
       <td>
         rounded: boolean
@@ -902,12 +902,12 @@ name String @field.text
         <br />green: boolean
       </td>
       <td>
-        `@filter.switch`
-        <br />`@filter.switch({ label "Enabled" yesno true })`
+        <code>@filter.switch</code>
+        <br /><code>@filter.switch({ label "Enabled" yesno true })</code>
       </td>
     </tr>
     <tr>
-      <td>`@filter.time`</td>
+      <td><code>@filter.time</code></td>
       <td>Uses a time field to represent this column in a filter form</td>
       <td>&nbsp;</td>
       <td>&nbsp;</td>
@@ -928,7 +928,7 @@ name String @field.text
   </thead>
   <tbody>
     <tr>
-      <td>`@span.date`</td>
+      <td><code>@span.date</code></td>
       <td>
         Use a pair of date fields as a span to represent 
         this column in a filter form
@@ -937,7 +937,7 @@ name String @field.text
       <td>&nbsp;</td>
     </tr>
     <tr>
-      <td>`@span.datetime`</td>
+      <td><code>@span.datetime</code></td>
       <td>
         Use a pair of date time fields as a span to represent 
         this column in a filter form
@@ -946,7 +946,7 @@ name String @field.text
       <td>&nbsp;</td>
     </tr>
     <tr>
-      <td>`@span.input`</td>
+      <td><code>@span.input</code></td>
       <td>
         Use a pair of input fields as a span to represent 
         this column in a filter form
@@ -955,7 +955,7 @@ name String @field.text
       <td>&nbsp;</td>
     </tr>
     <tr>
-      <td>`@span.number(attributes?)`</td>
+      <td><code>@span.number(attributes?)</code></td>
       <td>
         Use a pair of number fields as a span to represent 
         this column in a filter form
@@ -969,12 +969,12 @@ name String @field.text
         <br />absolute: boolean
       </td>
       <td>
-        `@span.number`
-        <br />`@span.number({ min 0 max 10 step 0.01 separator "," decimal "." absolute true })`
+        <code>@span.number</code>
+        <br /><code>@span.number({ min 0 max 10 step 0.01 separator "," decimal "." absolute true })</code>
       </td>
     </tr>
     <tr>
-      <td>`@span.range(attributes?)`</td>
+      <td><code>@span.range(attributes?)</code></td>
       <td>Use a range field as a span to represent this column in a filter form</td>
       <td>
         min: number
@@ -983,33 +983,33 @@ name String @field.text
         <br />width: number
       </td>
       <td>
-        `@span.range`
-        <br />`@span.range({ min 0 max 10 step 0.01 width 100 })`
+        <code>@span.range</code>
+        <br /><code>@span.range({ min 0 max 10 step 0.01 width 100 })</code>
       </td>
     </tr>
     <tr>
-      <td>`@span.rating(attributes?)`</td>
+      <td><code>@span.rating(attributes?)</code></td>
       <td>
         Use a pair of rating fields as a span to represent 
         this column in a filter form
       </td>
       <td>max: number</td>
       <td>
-        `@span.rating`
-        <br />`@span.rating({ max 5 })`
+        <code>@span.rating</code>
+        <br /><code>@span.rating({ max 5 })</code>
       </td>
     </tr>
     <tr>
-      <td>`@span.select(attributes?)`</td>
+      <td><code>@span.select(attributes?)</code></td>
       <td>Use a pair of select dropdowns as a span to represent this column in a filter form</td>
       <td>placeholder: string</td>
       <td>
-        `@span.select`
-        <br />`@span.select({ placeholder "Select Country" })`
+        <code>@span.select</code>
+        <br /><code>@span.select({ placeholder "Select Country" })</code>
       </td>
     </tr>
     <tr>
-      <td>`@span.time`</td>
+      <td><code>@span.time</code></td>
       <td>
         Use a pair of time fields as a span to represent this 
         column in a filter form
@@ -1039,13 +1039,13 @@ created Datetime @list.date({ locale "en" })
   </thead>
   <tbody>
     <tr>
-      <td>`@list.hide`</td>
+      <td><code>@list.hide</code></td>
       <td>Hides this column in a formatted list of results</td>
       <td>&nbsp;</td>
       <td>&nbsp;</td>
     </tr>
     <tr>
-      <td>`@list.code(attributes?)`</td>
+      <td><code>@list.code(attributes?)</code></td>
       <td>
         Uses a code format to represent this column in a 
         formatted list of results
@@ -1059,36 +1059,36 @@ created Datetime @list.date({ locale "en" })
         <br />rtrim: boolean
       </td>
       <td>
-        `@list.code`
-        <br />`@list.code(lang "en" trim true)`
+        <code>@list.code</code>
+        <br /><code>@list.code(lang "en" trim true)</code>
       </td>
     </tr>
     <tr>
-      <td>`@list.color(attributes?)`</td>
+      <td><code>@list.color(attributes?)</code></td>
       <td>
         Uses a code color to represent this column in a 
         formatted list of results
       </td>
       <td>box: boolean<br />text: boolean</td>
       <td>
-        `@list.color`
-        <br />`@list.color(box true text true)`
+        <code>@list.color</code>
+        <br /><code>@list.color(box true text true)</code>
       </td>
     </tr>
     <tr>
-      <td>`@list.country(attributes?)`</td>
+      <td><code>@list.country(attributes?)</code></td>
       <td>
         Uses a country format to represent this column 
         in a formatted list of results
       </td>
       <td>flag: boolean<br />text: boolean</td>
       <td>
-        `@list.country`
-        <br />`@list.country(flag true text true)`
+        <code>@list.country</code>
+        <br /><code>@list.country(flag true text true)</code>
       </td>
     </tr>
     <tr>
-      <td>`@list.currency(attributes?)`</td>
+      <td><code>@list.currency(attributes?)</code></td>
       <td>
         Uses a currency format to represent this column 
         in a formatted list of results
@@ -1098,12 +1098,12 @@ created Datetime @list.date({ locale "en" })
         <br />text: boolean
       </td>
       <td>
-        `@list.currency`
-        <br />`@list.currency(flag true text true)`
+        <code>@list.currency</code>
+        <br /><code>@list.currency(flag true text true)</code>
       </td>
     </tr>
     <tr>
-      <td>`@list.date(attributes?)`</td>
+      <td><code>@list.date(attributes?)</code></td>
       <td>
         Uses a date format to represent this column 
         in a formatted list of results
@@ -1111,12 +1111,12 @@ created Datetime @list.date({ locale "en" })
       <td>locale: string
       <br />format: string</td>
       <td>
-        `@list.date`
-        <br />`@list.date(locale "en" format "MMMM D, YYYY, h:mm:ss a")`
+        <code>@list.date</code>
+        <br /><code>@list.date(locale "en" format "MMMM D, YYYY, h:mm:ss a")</code>
       </td>
     </tr>
     <tr>
-      <td>`@list.email`</td>
+      <td><code>@list.email</code></td>
       <td>
         Uses an email format to represent this column in a 
         formatted list of results
@@ -1125,7 +1125,7 @@ created Datetime @list.date({ locale "en" })
       <td>&nbsp;</td>
     </tr>
     <tr>
-      <td>`@list.formula(attributes)`</td>
+      <td><code>@list.formula(attributes)</code></td>
       <td>
         Outputs the value of the given formula in a formatted list of results
       </td>
@@ -1134,11 +1134,11 @@ created Datetime @list.date({ locale "en" })
         <br />data: object
       </td>
       <td>
-        `@list.formula(formula "{x} + {this} + {y}" data { x 3 y 4 })`
+        <code>@list.formula(formula "{x} + {this} + {y}" data { x 3 y 4 })</code>
       </td>
     </tr>
     <tr>
-      <td>`@list.html(attributes?)`</td>
+      <td><code>@list.html(attributes?)</code></td>
       <td>
         Uses a raw HTML format to represent this 
         column in a formatted list of results
@@ -1149,12 +1149,12 @@ created Datetime @list.date({ locale "en" })
         <br />spacing: number
       </td>
       <td>
-        `@list.html`
-        <br />`@list.html({ ordered true indent 10 spacing 10 })`
+        <code>@list.html</code>
+        <br /><code>@list.html({ ordered true indent 10 spacing 10 })</code>
       </td>
     </tr>
     <tr>
-      <td>`@list.image`</td>
+      <td><code>@list.image</code></td>
       <td>
         Uses a image format to represent this column 
         in a formatted list of results
@@ -1163,7 +1163,7 @@ created Datetime @list.date({ locale "en" })
       <td>&nbsp;</td>
     </tr>
     <tr>
-      <td>`@list.imagelist`</td>
+      <td><code>@list.imagelist</code></td>
       <td>
         Uses an image carousel to represent this column in a 
         formatted list of results. Ideally for an array of strings.
@@ -1172,7 +1172,7 @@ created Datetime @list.date({ locale "en" })
       <td>&nbsp;</td>
     </tr>
     <tr>
-      <td>`@list.json`</td>
+      <td><code>@list.json</code></td>
       <td>
         Uses a json format to represent this column in a formatted 
         list of results. Ideally for arrays or objects.
@@ -1181,7 +1181,7 @@ created Datetime @list.date({ locale "en" })
       <td>&nbsp;</td>
     </tr>
     <tr>
-      <td>`@list.link`</td>
+      <td><code>@list.link</code></td>
       <td>
         Uses a clickable link to represent this column 
         in a formatted list of results
@@ -1190,7 +1190,7 @@ created Datetime @list.date({ locale "en" })
       <td>&nbsp;</td>
     </tr>
     <tr>
-      <td>`@list.list`</td>
+      <td><code>@list.list</code></td>
       <td>
         Uses a list (ordered or unordered) to represent this 
         column in a formatted list of results. Ideally for an 
@@ -1200,7 +1200,7 @@ created Datetime @list.date({ locale "en" })
       <td>&nbsp;</td>
     </tr>
     <tr>
-      <td>`@list.markdown`</td>
+      <td><code>@list.markdown</code></td>
       <td>
         Converts the column value from markdown to raw HTML 
         to represent this column in a formatted list of results
@@ -1209,7 +1209,7 @@ created Datetime @list.date({ locale "en" })
       <td>&nbsp;</td>
     </tr>
     <tr>
-      <td>`@list.metadata(attributes?)`</td>
+      <td><code>@list.metadata(attributes?)</code></td>
       <td>
         Outputs the keys and values of the columns value in 
         tabular format. Ideally for a key value object.
@@ -1218,12 +1218,12 @@ created Datetime @list.date({ locale "en" })
       <br />align: left|right|center
       <br />format: boolean</td>
       <td>
-        `@list.metadata`
-        <br />`@list.metadata({ padding 10 align "left" format true })`
+        <code>@list.metadata</code>
+        <br /><code>@list.metadata({ padding 10 align "left" format true })</code>
       </td>
     </tr>
     <tr>
-      <td>`@list.number(attributes?)`</td>
+      <td><code>@list.number(attributes?)</code></td>
       <td>
         Uses a number format to represent this column in 
         a formatted list of results
@@ -1233,12 +1233,12 @@ created Datetime @list.date({ locale "en" })
       <br />decimals: number
       <br />absolute: boolean</td>
       <td>
-        `@list.number`
-        <br />`@list.number({ separator "," decimal "." decimals 4 absolute true })`
+        <code>@list.number</code>
+        <br /><code>@list.number({ separator "," decimal "." decimals 4 absolute true })</code>
       </td>
     </tr>
     <tr>
-      <td>`@list.overflow(attributes?)`</td>
+      <td><code>@list.overflow(attributes?)</code></td>
       <td>
         Uses a format that considers text overflows to represent 
         this column in a formatted list of results
@@ -1247,24 +1247,24 @@ created Datetime @list.date({ locale "en" })
       <br />words: boolean
       <br />hellip: boolean</td>
       <td>
-        `@list.overflow`
-        <br />`@list.overflow({ length 10 words true hellip true})`
+        <code>@list.overflow</code>
+        <br /><code>@list.overflow({ length 10 words true hellip true})</code>
       </td>
     </tr>
     <tr>
-      <td>`@list.phone(attributes?)`</td>
+      <td><code>@list.phone(attributes?)</code></td>
       <td>
         Uses a phone format to represent this column in a 
         formatted list of results
       </td>
       <td>label: string</td>
       <td>
-        `@list.phone`
-        <br />`@list.phone({ label "Call Me Maybe" })`
+        <code>@list.phone</code>
+        <br /><code>@list.phone({ label "Call Me Maybe" })</code>
       </td>
     </tr>
     <tr>
-      <td>`@list.rating(attributes?)`</td>
+      <td><code>@list.rating(attributes?)</code></td>
       <td>
         Uses a rating format to represent this column 
         in a formatted list of results
@@ -1274,24 +1274,24 @@ created Datetime @list.date({ locale "en" })
       <br />round: round|ceil|floor
       <br />spacing: number</td>
       <td>
-        `@list.rating`
-        <br />`@list.rating({ max 5 remainder true round "floor" spacing 10 })`
+        <code>@list.rating</code>
+        <br /><code>@list.rating({ max 5 remainder true round "floor" spacing 10 })</code>
       </td>
     </tr>
     <tr>
-      <td>`@list.separated(attributes?)`</td>
+      <td><code>@list.separated(attributes?)</code></td>
       <td>
         Uses a separator format to represent this column in a 
         formatted list of results. Ideally for an array of strings.
       </td>
       <td>separator: string</td>
       <td>
-        `@list.separated`
-        <br />`@list.separated({ separator ", " })`
+        <code>@list.separated</code>
+        <br /><code>@list.separated({ separator ", " })</code>
       </td>
     </tr>
     <tr>
-      <td>`@list.table(attributes?)`</td>
+      <td><code>@list.table(attributes?)</code></td>
       <td>
         Uses a tablular format to represent this column in a formatted 
         list of results. Ideally for an array of objects.
@@ -1308,12 +1308,12 @@ created Datetime @list.date({ locale "en" })
         <br />stripe: color
       </td>
       <td>
-        `@list.table`
-        <br />`@list.table({ align "left" top true padding 100 background "blue" header "#CCC" })`
+        <code>@list.table</code>
+        <br /><code>@list.table({ align "left" top true padding 100 background "blue" header "#CCC" })</code>
       </td>
     </tr>
     <tr>
-      <td>`@list.taglist(attributes?)`</td>
+      <td><code>@list.taglist(attributes?)</code></td>
       <td>
         Uses a tag list format to represent this column in a formatted 
         list of results. Ideally for an array of strings.
@@ -1335,21 +1335,21 @@ created Datetime @list.date({ locale "en" })
         <br />transparent: boolean
       </td>
       <td>
-        `@list.taglist`
-        <br />`@list.taglist({ curved true info true outline true })`
+        <code>@list.taglist</code>
+        <br /><code>@list.taglist({ curved true info true outline true })</code>
       </td>
     </tr>
     <tr>
-      <td>`@list.template(attributes)`</td>
+      <td><code>@list.template(attributes)</code></td>
       <td>
         Uses a template to generate a text to represent 
         this column in a formatted list of results
       </td>
       <td>template: string</td>
-      <td>`@list.template({ template "{{foo}} and {{bar}}" })`</td>
+      <td><code>@list.template({ template "{{foo}} and {{bar}}" })</code></td>
     </tr>
     <tr>
-      <td>`@list.text(attributes?)`</td>
+      <td><code>@list.text(attributes?)</code></td>
       <td>
         Uses a text format to represent this column in 
         a formatted list of results
@@ -1358,20 +1358,20 @@ created Datetime @list.date({ locale "en" })
       <br />lower: boolean
       <br />capital: boolean</td>
       <td>
-        `@list.text`
-        <br />`@list.text({ upper true })`
+        <code>@list.text</code>
+        <br /><code>@list.text({ upper true })</code>
       </td>
     </tr>
     <tr>
-      <td>`@list.yesno(attributes?)`</td>
+      <td><code>@list.yesno(attributes?)</code></td>
       <td>
         Converts a boolean to a string representation to 
         represent this column in a formatted list of results
       </td>
       <td>yes: string<br />no: string</td>
       <td>
-        `@list.yesno`
-        <br />`@list.yesno({ yes "Yep" no "Nah" })`
+        <code>@list.yesno</code>
+        <br /><code>@list.yesno({ yes "Yep" no "Nah" })</code>
       </td>
     </tr>
   </tbody>
@@ -1396,13 +1396,13 @@ created Datetime @view.date({ locale "en" })
   </thead>
   <tbody>
     <tr>
-      <td>`@view.hide`</td>
+      <td><code>@view.hide</code></td>
       <td>Hides this column in a view</td>
       <td>&nbsp;</td>
       <td>&nbsp;</td>
     </tr>
     <tr>
-      <td>`@view.code(attributes?)`</td>
+      <td><code>@view.code(attributes?)</code></td>
       <td>Uses a code format to represent this column in a view</td>
       <td>
         lang: string
@@ -1413,60 +1413,60 @@ created Datetime @view.date({ locale "en" })
         <br />rtrim: boolean
       </td>
       <td>
-        `@view.code`
-        <br />`@view.code(lang "en" trim true)`
+        <code>@view.code</code>
+        <br /><code>@view.code(lang "en" trim true)</code>
       </td>
     </tr>
     <tr>
-      <td>`@view.color(attributes?)`</td>
+      <td><code>@view.color(attributes?)</code></td>
       <td>Uses a code color to represent this column in a view</td>
       <td>box: boolean<br />text: boolean</td>
       <td>
-        `@view.color`
-        <br />`@view.color(box true text true)`
+        <code>@view.color</code>
+        <br /><code>@view.color(box true text true)</code>
       </td>
     </tr>
     <tr>
-      <td>`@view.country(attributes?)`</td>
+      <td><code>@view.country(attributes?)</code></td>
       <td>Uses a country format to represent this column in a view</td>
       <td>flag: boolean<br />text: boolean</td>
       <td>
-        `@view.country`
-        <br />`@view.country(flag true text true)`
+        <code>@view.country</code>
+        <br /><code>@view.country(flag true text true)</code>
       </td>
     </tr>
     <tr>
-      <td>`@view.currency(attributes?)`</td>
+      <td><code>@view.currency(attributes?)</code></td>
       <td>Uses a currency format to represent this column in a view</td>
       <td>flag: boolean<br />text: boolean</td>
       <td>
-        `@view.currency`
-        <br />`@view.currency(flag true text true)`
+        <code>@view.currency</code>
+        <br /><code>@view.currency(flag true text true)</code>
       </td>
     </tr>
     <tr>
-      <td>`@view.date(attributes?)`</td>
+      <td><code>@view.date(attributes?)</code></td>
       <td>Uses a date format to represent this column in a view</td>
       <td>locale: string<br />format: string</td>
       <td>
-        `@view.date`
-        <br />`@view.date(locale "en" format "MMMM D, YYYY, h:mm:ss a")`
+        <code>@view.date</code>
+        <br /><code>@view.date(locale "en" format "MMMM D, YYYY, h:mm:ss a")</code>
       </td>
     </tr>
     <tr>
-      <td>`@view.email`</td>
+      <td><code>@view.email</code></td>
       <td>Uses an email format to represent this column in a view</td>
       <td>&nbsp;</td>
       <td>&nbsp;</td>
     </tr>
     <tr>
-      <td>`@view.formula(attributes?)`</td>
+      <td><code>@view.formula(attributes?)</code></td>
       <td>Outputs the value of the given formula in a view</td>
       <td>formula: string</td>
-      <td>`@view.formula(formula "{x} + {this} + {y}" data { x 3 y 4 })`</td>
+      <td><code>@view.formula(formula "{x} + {this} + {y}" data { x 3 y 4 })</code></td>
     </tr>
     <tr>
-      <td>`@view.html(attributes?)`</td>
+      <td><code>@view.html(attributes?)</code></td>
       <td>Uses a raw HTML format to represent this column in a view</td>
       <td>
         ordered: boolean
@@ -1474,18 +1474,18 @@ created Datetime @view.date({ locale "en" })
         <br />spacing: number
       </td>
       <td>
-        `@view.html`
-        <br />`@view.html({ ordered true indent 10 spacing 10 })`
+        <code>@view.html</code>
+        <br /><code>@view.html({ ordered true indent 10 spacing 10 })</code>
       </td>
     </tr>
     <tr>
-      <td>`@view.image`</td>
+      <td><code>@view.image</code></td>
       <td>Uses a image format to represent this column in a view</td>
       <td>&nbsp;</td>
       <td>&nbsp;</td>
     </tr>
     <tr>
-      <td>`@view.imagelist`</td>
+      <td><code>@view.imagelist</code></td>
       <td>
         Uses an image carousel to represent this column in 
         a view. Ideally for an array of strings.
@@ -1494,7 +1494,7 @@ created Datetime @view.date({ locale "en" })
       <td>&nbsp;</td>
     </tr>
     <tr>
-      <td>`@view.json`</td>
+      <td><code>@view.json</code></td>
       <td>
         Uses a json format to represent this column in a view. 
         Ideally for arrays or objects.
@@ -1503,13 +1503,13 @@ created Datetime @view.date({ locale "en" })
       <td>&nbsp;</td>
     </tr>
     <tr>
-      <td>`@view.link`</td>
+      <td><code>@view.link</code></td>
       <td>Uses a clickable link to represent this column in a view</td>
       <td>&nbsp;</td>
       <td>&nbsp;</td>
     </tr>
     <tr>
-      <td>`@view.list`</td>
+      <td><code>@view.list</code></td>
       <td>
         Uses a list (ordered or unordered) to represent this 
         column in a view. Ideally for an array of strings
@@ -1518,7 +1518,7 @@ created Datetime @view.date({ locale "en" })
       <td>&nbsp;</td>
     </tr>
     <tr>
-      <td>`@view.markdown`</td>
+      <td><code>@view.markdown</code></td>
       <td>
         Converts the column value from markdown to raw HTML 
         to represent this column in a view
@@ -1527,7 +1527,7 @@ created Datetime @view.date({ locale "en" })
       <td>&nbsp;</td>
     </tr>
     <tr>
-      <td>`@view.metadata(attributes?)`</td>
+      <td><code>@view.metadata(attributes?)</code></td>
       <td>
         Outputs the keys and values of the columns value 
         in tabular format. Ideally for a key value object.
@@ -1538,12 +1538,12 @@ created Datetime @view.date({ locale "en" })
         <br />format: boolean
       </td>
       <td>
-        `@view.metadata`
-        <br />`@view.metadata({ padding 10 align "left" format true })`
+        <code>@view.metadata</code>
+        <br /><code>@view.metadata({ padding 10 align "left" format true })</code>
       </td>
     </tr>
     <tr>
-      <td>`@view.number(attributes?)`</td>
+      <td><code>@view.number(attributes?)</code></td>
       <td>Uses a number format to represent this column in a view</td>
       <td>
         separator: string
@@ -1552,12 +1552,12 @@ created Datetime @view.date({ locale "en" })
         <br />absolute: boolean
       </td>
       <td>
-        `@view.number`
-        <br />`@view.number({ separator "," decimal "." decimals 4 absolute true })`
+        <code>@view.number</code>
+        <br /><code>@view.number({ separator "," decimal "." decimals 4 absolute true })</code>
       </td>
     </tr>
     <tr>
-      <td>`@view.overflow(attributes?)`</td>
+      <td><code>@view.overflow(attributes?)</code></td>
       <td>
         Uses a format that considers text overflows to represent 
         this column in a view
@@ -1568,21 +1568,21 @@ created Datetime @view.date({ locale "en" })
         <br />hellip: boolean
       </td>
       <td>
-        `@view.overflow`
-        <br />`@view.overflow({ length 10 words true hellip true})`
+        <code>@view.overflow</code>
+        <br /><code>@view.overflow({ length 10 words true hellip true})</code>
       </td>
     </tr>
     <tr>
-      <td>`@view.phone(attributes?)`</td>
+      <td><code>@view.phone(attributes?)</code></td>
       <td>Uses a phone format to represent this column in a view</td>
       <td>label: string</td>
       <td>
-        `@view.phone`
-        <br />`@view.phone({ label "Call Me Maybe" })`
+        <code>@view.phone</code>
+        <br /><code>@view.phone({ label "Call Me Maybe" })</code>
       </td>
     </tr>
     <tr>
-      <td>`@view.rating(attributes?)`</td>
+      <td><code>@view.rating(attributes?)</code></td>
       <td>Uses a rating format to represent this column in a view</td>
       <td>
         max: number
@@ -1591,24 +1591,24 @@ created Datetime @view.date({ locale "en" })
         <br />spacing: number
       </td>
       <td>
-        `@view.rating`
-        <br />`@view.rating({ max 5 remainder true round "floor" spacing 10 })`
+        <code>@view.rating</code>
+        <br /><code>@view.rating({ max 5 remainder true round "floor" spacing 10 })</code>
       </td>
     </tr>
     <tr>
-      <td>`@view.separated(attributes?)`</td>
+      <td><code>@view.separated(attributes?)</code></td>
       <td>
         Uses a separator format to represent this column in a 
         view. Ideally for an array of strings.
       </td>
       <td>separator: string</td>
       <td>
-        `@view.separated`
-        <br />`@view.separated({ separator ", " })`
+        <code>@view.separated</code>
+        <br /><code>@view.separated({ separator ", " })</code>
       </td>
     </tr>
     <tr>
-      <td>`@view.table(attributes?)`</td>
+      <td><code>@view.table(attributes?)</code></td>
       <td>
         Uses a tablular format to represent this column 
         in a view. Ideally for an array of objects.
@@ -1625,12 +1625,12 @@ created Datetime @view.date({ locale "en" })
         <br />stripe: color
       </td>
       <td>
-        `@view.table`
-        <br />`@view.table({ align "left" top true padding 100 background "blue" header "#CCC" })`
+        <code>@view.table</code>
+        <br /><code>@view.table({ align "left" top true padding 100 background "blue" header "#CCC" })</code>
       </td>
     </tr>
     <tr>
-      <td>`@view.taglist(attributes?)`</td>
+      <td><code>@view.taglist(attributes?)</code></td>
       <td>
         Uses a tag list format to represent this column in 
         a view. Ideally for an array of strings.
@@ -1652,18 +1652,18 @@ created Datetime @view.date({ locale "en" })
         <br />transparent: boolean
       </td>
       <td>
-        `@view.taglist`
-        <br />`@view.taglist({ curved true info true outline true })`
+        <code>@view.taglist</code>
+        <br /><code>@view.taglist({ curved true info true outline true })</code>
       </td>
     </tr>
     <tr>
-      <td>`@view.template(attributes?)`</td>
+      <td><code>@view.template(attributes?)</code></td>
       <td>Uses a template to generate a text to represent this column in a view</td>
       <td>template: string</td>
-      <td>`@view.template({ template "{{foo}} and {{bar}}" })`</td>
+      <td><code>@view.template({ template "{{foo}} and {{bar}}" })</code></td>
     </tr>
     <tr>
-      <td>`@view.text(attributes?)`</td>
+      <td><code>@view.text(attributes?)</code></td>
       <td>Uses a text format to represent this column in a view</td>
       <td>
         upper: boolean
@@ -1671,20 +1671,20 @@ created Datetime @view.date({ locale "en" })
         <br />capital: boolean
       </td>
       <td>
-        `@view.text`
-        <br />`@view.text({ upper true })`
+        <code>@view.text</code>
+        <br /><code>@view.text({ upper true })</code>
       </td>
     </tr>
     <tr>
-      <td>`@view.yesno(attributes?)`</td>
+      <td><code>@view.yesno(attributes?)</code></td>
       <td>
         Converts a boolean to a string representation to 
         represent this column in a view
       </td>
       <td>yes: string<br />no: string</td>
       <td>
-        `@view.yesno`
-        <br />`@view.yesno({ yes "Yep" no "Nah" })`
+        <code>@view.yesno</code>
+        <br /><code>@view.yesno({ yes "Yep" no "Nah" })</code>
       </td>
     </tr>
   </tbody>
