@@ -2,7 +2,7 @@
   "name": "@stackpress/incept",
   "version": "0.1.10",
   "license": "MIT",
-  "description": "Incept is a code generator for content management systems.",
+  "description": "Incept is a content management framework.",
   "author": "Chris <chris@stackpress.io>",
   "homepage": "https://github.com/stackpress/incept",
   "bugs": "https://github.com/stackpress/incept/issues",
