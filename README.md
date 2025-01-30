@@ -64,11 +64,11 @@ model User @icon("user") @label("User" "Users") {}
         <code>@default(1)</code>
         <br /><code>@default("user")</code>
         <br /><code>@default(true)</code>
-        <br />`@default("now()")`
-        <br />`@default("nanoid()")`
-        <br />`@default("nanoid(10)")`
-        <br />`@default("cuid()")`
-        <br />`@default("cuid(10)")`
+        <br /><code>@default("now()")</code>
+        <br /><code>@default("nanoid()")</code>
+        <br /><code>@default("nanoid(10)")</code>
+        <br /><code>@default("cuid()")</code>
+        <br /><code>@default("cuid(10)")</code>
       </td>
     </tr>
     <tr>
@@ -235,7 +235,7 @@ name String @is.required @is.cgt(10)
     <tr>
       <td><code>@is.option(string|number[])</code></td>
       <td>Validates that the value is one of the given options</td>
-      <td>is.option([ 1 2 "foo" 3 "bar" ])</td>
+      <td><code>@is.option([ 1 2 "foo" 3 "bar" ])</code></td>
     </tr>
     <tr>
       <td><code>@is.regex(string)</code></td>
