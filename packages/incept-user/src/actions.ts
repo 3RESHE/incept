@@ -119,6 +119,7 @@ export async function signin(
   const actions = client.model.auth.actions(engine);
   //get form body
   const response = await actions.search({
+    columns: ['*', 'profile.*'],
     filter: { type: type, token: input[type] || '' }
   });
   const results = response.results?.[0] as AuthExtended;
