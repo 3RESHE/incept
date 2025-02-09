@@ -19,14 +19,14 @@ export function authorize(req: ServerRequest, res: Response) {
     unauthorized(res);
     return false;
   }
-  if (req.method.toUpperCase() !== 'GET' && !secret.trim().length) {
+  if (req.method.toUpperCase() !== 'GET' && !secret?.trim().length) {
     unauthorized(res);
     return false;
   }
   return { 
     token: token.trim(), 
     id: id.trim(), 
-    secret: secret.trim() 
+    secret: secret?.trim() || ''
   };
 }
 
