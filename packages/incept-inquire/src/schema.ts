@@ -213,30 +213,28 @@ export function numdata(column: Column) {
       minmax[1] = assertion.args[0] as number;
     }
   });
-
+  //check for @step(0.01)
+  const step = Array.isArray(column.attributes.step)
+    ? column.attributes.step[0]
+    : column.type.toLowerCase() === 'float'
+    ? 10000000.01
+    : 0;
+  const stepIntegerLength = step.toString().split('.')[0].length;
+  const stepDecimalLength = (step.toString().split('.')[1] || '').length;
+  //if minmax[1] is still 0, then default 10^(10 - decimalLength)
+  if (minmax[1] === 0) {
+    const minDecimalLength = (minmax[0].toString().split('.')[1] || '').length;
+    const maxDecimalLength = (minmax[1].toString().split('.')[1] || '').length;
+    const decimalLength = Math.max(minDecimalLength, maxDecimalLength, stepDecimalLength);
+    minmax[1] = Number('1'+'0'.repeat(9 - decimalLength));
+  }
   //determine the length of each min/max
   const minIntegerLength = minmax[0].toString().split('.')[0].length;
   const maxIntegerLength = minmax[1].toString().split('.')[0].length;
   const minDecimalLength = (minmax[0].toString().split('.')[1] || '').length;
   const maxDecimalLength = (minmax[1].toString().split('.')[1] || '').length;
-  //check for @step(0.01)
-  const step = Array.isArray(column.attributes.step) 
-    ? column.attributes.step[0] as number
-    : column.type.toLowerCase() === 'float'
-    ? 100000000.01
-    : 0;
-  const stepIntegerLength = step.toString().split('.')[0].length;
-  const stepDecimalLength = (step.toString().split('.')[1] || '').length;
-  const integerLength = Math.max(
-    minIntegerLength, 
-    maxIntegerLength, 
-    stepIntegerLength
-  );
-  const decimalLength = Math.max(
-    minDecimalLength, 
-    maxDecimalLength, 
-    stepDecimalLength
-  );
+  const integerLength = Math.max(minIntegerLength, maxIntegerLength, stepIntegerLength);
+  const decimalLength = Math.max(minDecimalLength, maxDecimalLength, stepDecimalLength);
 
   return {
     step,
