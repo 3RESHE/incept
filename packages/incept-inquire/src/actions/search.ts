@@ -383,14 +383,17 @@ export default async function search<M extends UnknownNest = UnknownNest>(
   });
   //sort
   Object.entries(sort).forEach(([ key, value ]) => {
-    if (value.toLowerCase() !== 'asc' && value.toLowerCase() !== 'desc') {
+    const direction = typeof value === 'string' ? value : '';
+    if (direction.toLowerCase() !== 'asc' 
+      && direction.toLowerCase() !== 'desc'
+    ) {
       return;
     }
     const info = getColumnInfo(key, model).last;
     if (!info) return;
     const q = engine.dialect.q;
     const selector = `${q}${info.model.snake}${q}.${q}${info.column.snake}${q}`;
-    select.order(selector, value.toUpperCase());
+    select.order(selector, direction.toUpperCase() as 'ASC' | 'DESC');
   });
 
   try {
