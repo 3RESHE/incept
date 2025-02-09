@@ -49,18 +49,21 @@ export default async function batch<M extends UnknownNest = UnknownNest>(
     let error = false;
     //start a transaction
     await engine.transaction(async () => {
-      //get all the rows that already exists
-      const exists = await engine
-        .select<Record<string, string|number>>(columns)
-        .from(`${q}${model.snake}${q}`)
-        .where(where, values);
-      //update the check actions rows to create or update
-      for (const action of actions) {
-        if (action.action !== 'check') continue;
-        //determine the action, update if every id is found
-        action.action = exists.some(
-          exist => ids.every(id => exist[id] === action.row[id])
-        ) ? 'update' : 'create';
+      //if there are rows to check
+      if (where.length > 0 && values.length > 0) {
+        //get all the rows that already exists
+        const exists = await engine
+          .select<Record<string, string|number>>(columns)
+          .from(model.snake)
+          .where(where, values);
+        //update the check actions rows to create or update
+        for (const action of actions) {
+          if (action.action !== 'check') continue;
+          //determine the action, update if every id is found
+          action.action = exists.some(
+            exist => ids.every(id => exist[id] === action.row[id])
+          ) ? 'update' : 'create';
+        }
       }
       //now loop through actions and create or update
       for (const { row, action } of actions) {
