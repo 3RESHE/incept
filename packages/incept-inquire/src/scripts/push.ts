@@ -31,7 +31,7 @@ export default async function push(server: Server<any, any, any>, database: Engi
     const order = sequence(models);
     //add drop queries
     for (const model of order) {
-      queries.push(database.dialect.drop(model.name));
+      queries.push(database.dialect.drop(model.snake));
     }
     //add create queries
     for (const model of order.reverse()) {
@@ -45,7 +45,7 @@ export default async function push(server: Server<any, any, any>, database: Engi
     }
     if (queries.length) {
       //start a new transaction
-      database.transaction(async connection => {
+      await database.transaction(async connection => {
         //loop through all the queries
         for (const query of queries) {
           //execute the query
