@@ -16,11 +16,11 @@
   ],
   "scripts": {
     "build": "tsc",
-    "dev": "NODE_ENV=development dotenv -e .env.local -- yarn incept",
-    "generate": "dotenv -e .env.local -- ts-node scripts/generate.ts",
+    "dev": "NODE_ENV=development dotenv -e .env.local -- ts-node src/modules/util/event.ts",
+    "generate": "dotenv -e .env.local -- ts-node src/modules/util/event.ts transform",
     "live": "NODE_ENV=production dotenv -e .env.local -- yarn incept",
-    "migrate": "dotenv -e .env.local -- ts-node scripts/migrate.ts",
-    "serve": "dotenv -e .env.local -- ts-node scripts/serve.ts",
+    "migrate": "dotenv -e .env.local -- ts-node src/modules/util/migrate.ts",
+    "serve": "dotenv -e .env.local -- ts-node src/modules/util/serve.ts",
     "test": "NODE_ENV=integration nyc ts-mocha tests/*.test.ts"
   },
   "dependencies": {

@@ -26,6 +26,7 @@ export type ServerConfig = {
   server: { 
     cwd: string, 
     mode: string, 
+    port: number,
     bodySize: number 
   },
   cookie: CookieOptions

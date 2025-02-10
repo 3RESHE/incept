@@ -28,6 +28,9 @@ export default function plugin(server: Server<SessionConfig>) {
   server.on('listen', req => {
     const server = req.context;
     
+    server.on('auth-search', path.join(__dirname, 'events/search'), -10000);
+    server.on('auth-detail', path.join(__dirname, 'events/detail'), -10000);
+    server.on('auth-get', path.join(__dirname, 'events/detail'), -10000);
     server.on('auth-signup', path.join(__dirname, 'events/signup'));
     server.on('auth-signin', path.join(__dirname, 'events/signin'));
     server.on('auth-signout', path.join(__dirname, 'events/signout'));

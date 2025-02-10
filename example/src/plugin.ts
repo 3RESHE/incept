@@ -12,23 +12,27 @@ export default function plugin(server: HTTPServer<Config>) {
   server.on('config', async req => {
     const server = req.context;
     const database = config.server.mode === 'production' 
-      ? await import('./stores/production') 
+      ? await import('./modules/store') 
       : config.server.mode === 'integration'
-      ? await import('./stores/integration')
-      : await import('./stores/development');
+      ? await import('./modules/store/integration')
+      : await import('./modules/store/development');
     server.register('database', await database.default());
   });
   //on listen, register the app routes
   server.on('listen', req => {
     const server = req.context;
-    server.get('/', path.join(__dirname, 'routes/home'));
-    server.get('/**.*', path.join(__dirname, 'routes/assets'));
-    server.on('error', path.join(__dirname, 'events/error'));
-    server.on('install', path.join(__dirname, 'events/install'));
-    server.on('populate', path.join(__dirname, 'events/populate'));
-    server.on('purge', path.join(__dirname, 'events/purge'));
-    server.on('push', path.join(__dirname, 'events/push'));
-    server.on('query', path.join(__dirname, 'events/query'));
+    const modules = path.join(__dirname, 'modules');
+    //utils
+    server.on('error', path.join(modules, 'app/pages/error'));
+    server.on('install', path.join(modules, 'util/install'));
+    server.on('migrate', path.join(modules, 'util/migrate'));
+    server.on('populate', path.join(modules, 'util/populate'));
+    server.on('purge', path.join(modules, 'util/purge'));
+    server.on('push', path.join(modules, 'util/push'));
+    server.on('query', path.join(modules, 'util/query'));
+    //routes
+    server.get('/', path.join(modules, 'app/pages/home'));
+    server.get('/**.*', path.join(modules, 'app/pages/assets'));
   });
 
   server.on('response', async (req, res) => {

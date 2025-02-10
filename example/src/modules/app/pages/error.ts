@@ -6,6 +6,9 @@ import type { ServerRequest } from '@stackpress/ingest/dist/types';
 import type Response from '@stackpress/ingest/dist/Response';
 import type { TemplatePlugin } from '@stackpress/incept-ink/dist/types';
 
+const template500 = '@/modules/app/templates/500';
+const template404 = '@/modules/app/templates/404';
+
 export default async function ErrorPage(req: ServerRequest, res: Response) {
   //if there is already a body
   if (res.body) return;
@@ -13,6 +16,13 @@ export default async function ErrorPage(req: ServerRequest, res: Response) {
   const server = req.context;
   //get the renderer
   const { render } = server.plugin<TemplatePlugin>('template');
+
+  if (res.code === 404) {
+    const html = await render(template404, { url: req.url.pathname });
+    res.setHTML(html, res.code, res.status);
+    return;
+  }
+
   //general settings
   const response = res.toStatusResponse();
   response.stack = res.stack || [];
@@ -25,7 +35,7 @@ export default async function ErrorPage(req: ServerRequest, res: Response) {
     return { ...trace, source: fs.readFileSync(file, 'utf8') };
   });
   //render the template
-  const html = await render('@/templates/500', { 
+  const html = await render(template500, { 
     ...response, 
     url: req.url.pathname 
   });

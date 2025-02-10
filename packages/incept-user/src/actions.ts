@@ -20,13 +20,15 @@ import type {
   SigninType, 
   SigninInput
 } from './types';
+import { encrypt, hash } from './helpers';
 
 /**
  * Signup action
  */
 export async function signup(
   input: Partial<SignupInput>,
-  engine: Engine
+  engine: Engine,
+  seed: string
 ): Promise<Partial<StatusResponse<ProfileAuth>>> {
   let client;
   try {
@@ -46,6 +48,7 @@ export async function signup(
   //create profile
   const response = await client.model.profile.actions(engine).create({
     name: input.name as string,
+    type: input.type || 'person',
     roles: input.roles || []
   });
   //if error, return response
@@ -57,13 +60,18 @@ export async function signup(
   };
   results.auth = {};
   const actions = client.model.auth.actions(engine);
+  //salt the secret
+  const secret = hash(String(input.secret));
   //if email
   if (input.email) {
+    //encrypt email
+    const token = encrypt(String(input.email), seed);
+    //create email auth
     const auth = await actions.create({
       profileId: results.id,
       type: 'email',
-      token: String(input.email),
-      secret: String(input.secret)
+      token: token,
+      secret: secret
     });
     if (auth.code !== 200) {
       return auth as StatusResponse<ProfileAuth>;
@@ -72,11 +80,14 @@ export async function signup(
   } 
   //if phone
   if (input.phone) {
+    //encrypt phone
+    const token = encrypt(String(input.phone), seed);
+    //create phone auth
     const auth = await actions.create({
       profileId: results.id,
       type: 'phone',
-      token: String(input.phone),
-      secret: String(input.secret)
+      token: token,
+      secret: secret
     });
     if (auth.code !== 200) {
       return auth as StatusResponse<ProfileAuth>;
@@ -85,11 +96,14 @@ export async function signup(
   }
   //if username
   if (input.username) {
+    //encrypt username
+    const token = encrypt(String(input.username), seed);
+    //create username auth
     const auth = await actions.create({
       profileId: results.id,
       type: 'username',
-      token: String(input.username),
-      secret: String(input.secret)
+      token: token,
+      secret: secret
     });
     if (auth.code !== 200) {
       return auth as StatusResponse<ProfileAuth>;
@@ -106,7 +120,8 @@ export async function signup(
 export async function signin(
   type: SigninType, 
   input: Partial<SigninInput>,
-  engine: Engine
+  engine: Engine,
+  seed: string
 ): Promise<Partial<StatusResponse<AuthExtended>>> {
   let client;
   try {
@@ -117,18 +132,29 @@ export async function signin(
     return Exception.upgrade(error as Error).toResponse();
   }
   const actions = client.model.auth.actions(engine);
+  const token = encrypt(String(input[type]), seed);
   //get form body
   const response = await actions.search({
     columns: ['*', 'profile.*'],
-    filter: { type: type, token: input[type] || '' }
+    filter: { type, token }
   });
   const results = response.results?.[0] as AuthExtended;
   if (response.code !== 200) {
     return { ...response, results };
   } else if (!results) {
-    return { code: 404, status: 'Not Found', error: 'User Not Found' };
-  } else if (String(input.secret) !== String(results.secret)) {
-    return { code: 401, status: 'Unauthorized', error: 'Invalid Password' };
+    return { 
+      code: 404, 
+      status: 'Not Found', 
+      error: 'User Not Found' 
+    };
+  } 
+  const secret = hash(String(input.secret));
+  if (secret !== String(results.secret)) {
+    return { 
+      code: 401, 
+      status: 'Unauthorized', 
+      error: 'Invalid Password' 
+    };
   }
   //update consumed
   await actions.update({ id: results.id }, {

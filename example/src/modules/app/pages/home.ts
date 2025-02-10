@@ -2,6 +2,8 @@ import type { ServerRequest } from '@stackpress/ingest/dist/types';
 import type Response from '@stackpress/ingest/dist/Response';
 import type { TemplatePlugin } from '@stackpress/incept-ink/dist/types';
 
+const template = '@/modules/app/templates/home';
+
 export default async function HomePage(req: ServerRequest, res: Response) {  
   //get the server
   const server = req.context;
@@ -14,7 +16,7 @@ export default async function HomePage(req: ServerRequest, res: Response) {
   //get the renderer
   const { render } = server.plugin<TemplatePlugin>('template');
   //show form
-  res.setHTML(await render('@/templates/home', { 
+  res.setHTML(await render(template, { 
     url: req.url.pathname,
     session: authorized.results
   }));

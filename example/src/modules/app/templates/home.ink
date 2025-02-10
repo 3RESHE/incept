@@ -1,5 +1,5 @@
-<link rel="import" type="template" href="@stackpress/incept-admin/dist/components/head.ink" name="html-head" />
-<link rel="import" type="template" href="@/components/header.ink" name="app-head" />
+<link rel="import" type="template" href="@/modules/app/components/head.ink" name="html-head" />
+<link rel="import" type="template" href="@/modules/app/components/header.ink" name="app-head" />
 <link rel="import" type="component" href="@stackpress/ink-ui/element/icon.ink" name="element-icon" />
 <style>
   @ink theme;
@@ -16,12 +16,6 @@
 
   const { url, session } = props('document');
   const title = _('Home Page');
-
-  const toggleUserMenu = (e: MouseEvent) => {
-    const userMenu = document.getElementById('user-menu');
-    if (!userMenu) return;
-    userMenu.classList.toggle('none');
-  };
 </script>
 <html>
   <html-head />

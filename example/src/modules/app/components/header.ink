@@ -1,3 +1,10 @@
+<script>
+  const toggleUserMenu = (e: MouseEvent) => {
+    const userMenu = document.getElementById('user-menu');
+    if (!userMenu) return;
+    userMenu.classList.toggle('none');
+  };
+</script>
 <header class="flex flex-center-y p-10 relative bg-t-0">
   <div class="flex-grow">
     <img src="/images/incept-logo-long.png" height="30" alt="incept logo" />

@@ -4,16 +4,21 @@ import type { ServerRequest } from '@stackpress/ingest/dist/types';
 //incept
 import type { DatabasePlugin } from '@stackpress/incept-inquire/dist/types';
 //common
+import type { SessionConfig } from '../types';
 import { signup } from '../actions';
 
 export default async function AuthSignup(req: ServerRequest, res: Response) {
   //get the roles from the config
   const roles = req.context.config<string[]>('session', 'auth', 'roles') || [];
-  //get the database engine
-  const store = req.context.plugin<DatabasePlugin>('database');
+  //get the server
+  const server = req.context;
+  //get the database engine 
+  const store = server.plugin<DatabasePlugin>('database');
+  //get the session seed
+  const { seed = 'abc123' } = server.config<SessionConfig['session']>('session');
   //get input
-  const input = { ...req.data(), roles };
-  const response = await signup(input, store);
+  const input = { roles, ...req.data() };
+  const response = await signup(input, store, seed);
   //if good
   if (response.code === 200) {
     //get server
@@ -31,5 +36,21 @@ export default async function AuthSignup(req: ServerRequest, res: Response) {
       });
     }
   }
+  //if there is an email
+  if (response.results?.auth.email) {
+    //remove sensitive data
+    delete response.results.auth.email.secret;
+  }
+  //if there is an phone
+  if (response.results?.auth.phone) {
+    //remove sensitive data
+    delete response.results.auth.phone.secret;
+  }
+  //if there is an username
+  if (response.results?.auth.username) {
+    //remove sensitive data
+    delete response.results.auth.username.secret;
+  }
+  
   res.fromStatusResponse(response);
 }

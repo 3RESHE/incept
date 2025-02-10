@@ -56,6 +56,7 @@ export type SessionConfig = {
 
 export type SignupInput = {
   name: string,
+  type?: string,
   username?: string,
   email?: string,
   phone?: string,
@@ -104,6 +105,7 @@ export type Auth = {
   id: string;
   profileId: string;
   type: string;
+  nonce: string;
   token: string;
   secret: string;
   verified: boolean;
@@ -127,4 +129,4 @@ export type AuthInput = {
   created?: Date;
   updated?: Date;
 };
-export type ProfileAuth = Profile & { auth: Record<string, Auth> };
+export type ProfileAuth = Profile & { auth: Record<string, Partial<Auth>> };
