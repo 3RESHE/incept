@@ -4,8 +4,8 @@ import crypto from 'crypto';
 /**
  * Used to decrypt sensitive info from the database
  */
-export function decrypt(token: string, seed: string) {
-  const challenge = Buffer.from(token, 'hex');
+export function decrypt(encrypted: string, seed: string) {
+  const value = Buffer.from(encrypted, 'hex');
   //make a hash based on the seed
   const hash = crypto
     .createHash('sha256')
@@ -15,9 +15,8 @@ export function decrypt(token: string, seed: string) {
   //make an iv based on the hash
   const iv = hash.substring(0, 16);
   const decipher = crypto.createDecipheriv('aes-256-cbc', hash, iv);
-  
   return Buffer.concat([
-    decipher.update(challenge), 
+    decipher.update(value), 
     decipher.final()
   ]).toString();
 };

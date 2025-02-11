@@ -14,10 +14,12 @@ export default async function AuthDetail(req: ServerRequest, res: Response) {
   const seed = session.seed;
   const results = res.body as Partial<AuthExtended>;
   //decode token
-  results.token = decrypt(
-    results.token as string, 
-    seed
-  );
+  try {
+    results.token = decrypt(
+      results.token as string, 
+      seed
+    );
+  } catch (e) {}
   //remove sensitive data
   delete results.secret;
 };

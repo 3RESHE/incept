@@ -14,10 +14,12 @@ export default async function AuthSearch(req: ServerRequest, res: Response) {
   const rows = res.body as Partial<AuthExtended>[];
   res.body = rows.map(row => {
     //decode token
-    row.token = decrypt(
-      row.token as string, 
-      seed
-    );
+    try {
+      row.token = decrypt(
+        row.token as string, 
+        seed
+      );
+    } catch (e) {}
     //remove sensitive data
     delete row.secret;
     return row;
