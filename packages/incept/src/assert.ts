@@ -127,7 +127,7 @@ export function hex(value: any) {
 };
 
 export function price(value: any) { 
-  return regex(value.toString(), /^(\d*.\d{2})|(\d+)$/);
+  return regex(value.toString(), /^(\d*(\.\d{2}){0, 1})|(\d+)$/);
 };
 
 export function url(value: any) { 
@@ -143,15 +143,15 @@ export function string(value: any) {
 };
 
 export function number(value: any) { 
-  return regex(value.toString(), /^\d+(\.\d+)*$/);
+  return typeof value === 'number' || regex(value.toString(), /^\d+(\.\d+)*$/);
 };
 
 export function float(value: any) { 
-  return regex(value.toString(), /^\d+\.\d+$/);
+  return typeof value === 'number' || regex(value.toString(), /^\d+\.\d+$/);
 };
 
 export function integer(value: any) { 
-  return regex(value.toString(), /^\d+$/);
+  return typeof value === 'number' || regex(value.toString(), /^\d+$/);
 };
 
 export function object(value: any) {
