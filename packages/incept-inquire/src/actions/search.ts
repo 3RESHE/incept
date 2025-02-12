@@ -64,6 +64,9 @@ export function getColumns(
       );
     }
   }
+  if (prefixes.length > 0) {
+    return [ `${prefixes.join('.')}.${column}` ];
+  }
   return [ column ];
 }
 

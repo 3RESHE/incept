@@ -31,8 +31,12 @@ export default function getEventFactory(model: Model) {
     if (typeof value === 'undefined') return;
     //get the key
     const key = req.data('key');
-
-    const response = await get(model, engine, key, value);
+    //get the columns
+    const columns = req.data<string[]>('columns');
+    const selectors = Array.isArray(columns) && columns.every(
+      column => typeof column === 'string'
+    ) ? columns : [ '*' ];
+    const response = await get(model, engine, key, value, selectors);
 
     if (response.code === 200 && !response.results) {
       response.code = 404;

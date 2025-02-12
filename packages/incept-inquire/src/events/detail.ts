@@ -30,7 +30,11 @@ export default function detailEventFactory(model: Model) {
       .map(column => [ column.name, req.data(column.name) ])
       .filter(entry => Boolean(entry[1]))
     ) as Record<string, string | number>;
-    const response = await detail(model, engine, ids);
+    const columns = req.data<string[]>('columns');
+    const selectors = Array.isArray(columns) && columns.every(
+      column => typeof column === 'string'
+    ) ? columns : [ '*' ];
+    const response = await detail(model, engine, ids, selectors);
 
     if (response.code === 200 && !response.results) {
       response.code = 404;

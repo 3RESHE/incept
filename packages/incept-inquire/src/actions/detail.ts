@@ -15,7 +15,8 @@ import search from './search';
 export default async function detail<M extends UnknownNest = UnknownNest>(
   model: Model, 
   engine: Engine,
-  ids: Record<string, string|number>
+  ids: Record<string, string|number>,
+  columns = [ '*' ]
 ): Promise<StatusResponse<M|null>> {
   const filter = Object.fromEntries(
     model.ids.map(column => [ 
@@ -26,7 +27,7 @@ export default async function detail<M extends UnknownNest = UnknownNest>(
   if (model.active) {
     filter[model.active.name] = -1;
   }
-  const response = await search<M>(model, engine, { filter, take: 1 });
+  const response = await search<M>(model, engine, { columns, filter, take: 1 });
   //if error
   if (response.code !== 200) {
     return response as unknown as StatusResponse<M>;
