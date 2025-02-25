@@ -2,7 +2,10 @@
 import type { CLIProps } from '@stackpress/idea-transformer/dist/types';
 import type Transformer from '@stackpress/idea-transformer/dist/Transformer';
 import type Server from '@stackpress/ingest/dist/Server';
+//incept
 import type { ClientPlugin } from '@stackpress/incept/dist';
+import type { TemplatePlugin } from '@stackpress/incept-ink/dist/types';
+//admin
 import type { ClientWithRoutesPlugin } from './types';
 
 type Client = ClientPlugin<ClientWithRoutesPlugin>;
@@ -11,8 +14,38 @@ type Client = ClientPlugin<ClientWithRoutesPlugin>;
  * This interface is intended for the Incept library.
  */
 export default function plugin(server: Server) {
-  //on listen, add admin routes
-  server.on('listen', req => {
+  //on config, add templates
+  server.on('config', req => {
+    const server = req.context;
+    //get the client (to determine the model page templates)
+    const client = server.plugin<ClientPlugin>('client');
+    //get the template plugin
+    const { templates } = server.plugin<TemplatePlugin>('template')
+    if (!client || !templates) return;
+    //get all the models and add the page templates
+    Object.values(client.model).forEach(model => {
+      templates.add(
+        `@stackpress/.incept/${model.config.name}/admin/templates/create.ink`
+      );
+      templates.add(
+        `@stackpress/.incept/${model.config.name}/admin/templates/detail.ink`
+      );
+      templates.add(
+        `@stackpress/.incept/${model.config.name}/admin/templates/remove.ink`
+      );
+      templates.add(
+        `@stackpress/.incept/${model.config.name}/admin/templates/restore.ink`
+      );
+      templates.add(
+        `@stackpress/.incept/${model.config.name}/admin/templates/search.ink`
+      );
+      templates.add(
+        `@stackpress/.incept/${model.config.name}/admin/templates/update.ink`
+      );
+    });
+  });
+  //on route, add admin routes
+  server.on('route', req => {
     const server = req.context;
     try {
       //it's possible that the client isnt generated yet...

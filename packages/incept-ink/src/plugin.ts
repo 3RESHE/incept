@@ -5,39 +5,39 @@ import type { CLIProps } from '@stackpress/idea-transformer/dist/types';
 import type Transformer from '@stackpress/idea-transformer/dist/Transformer';
 import type { IM, SR } from '@stackpress/ingest/dist/types';
 import type Server from '@stackpress/ingest/dist/Server';
-import type { ServerConfig } from '@stackpress/incept/dist/types';
 import RefreshServer from '@stackpress/ink-dev/dist/RefreshServer';
 import ink, { cache } from '@stackpress/ink/compiler';
 import { plugin as css } from '@stackpress/ink-css';
 //local
 import type {
   InkPlugin,
-  TemplateConfig, 
   TemplateDevConfig, 
   TemplateEngineConfig
 } from './types';
 
-export type Config = ServerConfig & TemplateConfig;
-
 /**
  * This interface is intended for the Incept library.
  */
-export default function plugin(server: Server<Config>) {
+export default function plugin(server: Server) {
   //on config, register template plugin
   server.on('config', req => {
     const server = req.context;
+    const config = server.config.withPath;
     //get server environment
-    const environment = server.config<string>(
-      'server', 'mode'
-    ) || 'development';
+    const environment = config.get<string>('server.mode') || 'development';
+    //get template engine config
     const { 
       cwd, 
-      minify, 
-      buildPath, 
-      brand = '' 
-    } = server.config<TemplateEngineConfig>(
-      'template', 'config'
-    ) || {};
+      minify,
+      brand = '', 
+      clientPath, 
+      serverPath,
+      manifestPath
+    } = config.get<TemplateEngineConfig>('template.config') || {};
+    //get templates
+    const templates = new Set(
+      config.get<string[]>('template.templates') || []
+    );
     //make a new refresh server
     const refresh = new RefreshServer({ cwd });
     //create ink compiler
@@ -45,7 +45,9 @@ export default function plugin(server: Server<Config>) {
     //use ink css
     compiler.use(css());
     //use build cache
-    compiler.use(cache({ environment, buildPath }));
+    if (environment !== 'development') {
+      compiler.use(cache({ clientPath, serverPath, manifestPath }));
+    }
     //common render function
     const render = function(
       filePath: string, 
@@ -60,33 +62,30 @@ export default function plugin(server: Server<Config>) {
       return compiler.render(filePath, props);
     };
     //add ink as a project plugin
-    server.register('ink', { compiler, refresh, render });
+    server.register('ink', { compiler, refresh, render, templates });
     //add renderer to the project
-    server.register('template', { render });
+    server.register('template', { render, templates });
   });
-  //on listen, add dev routes
-  server.on('listen', req => {
+  //on route, add dev routes
+  server.on('route', req => {
     const server = req.context;
+    const config = server.config.withPath;
     //get server environment
-    const environment = server.config<string>('server', 'mode');
+    const environment = config.get<string>('server.mode');
     //dont add dev routes if not in development mode
-    if (environment !== 'development') {
-      return;
-    }
+    if (environment !== 'development') return;
     const { compiler, refresh } = server.plugin<InkPlugin>('ink');
     const {
       buildRoute = '/build/client', 
       socketRoute = '/__ink_dev__'
-    } = server.config<TemplateDevConfig>(
-      'template', 'config', 'dev'
-    ) || {};
+    } = config.get<TemplateDevConfig>('template.config.dev') || {};
     server.all('/dev.js', function DevClient(req, res) {
       const script = compiler.fs.readFileSync(
         require.resolve('@stackpress/ink-dev/client.js'),
         'utf-8'
       );
       const id = 'InkAPI.BUILD_ID';
-      const start = `;ink_dev.default(${id}, {path: '${socketRoute}'});`;
+      const start = `;ink_dev.default(${id}, { path: '${socketRoute}' });`;
       res.setBody('text/javascript', script + start);
     });
     server.all(socketRoute, function SSE(req, res) {

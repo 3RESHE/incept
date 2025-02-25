@@ -10,8 +10,8 @@ import { authorize, unauthorized } from './helpers';
  * This interface is intended for the Incept library.
  */
 export default function plugin(server: Server) {
-  //on listen, add user routes
-  server.on('listen', req => {
+  //on route, add user routes
+  server.on('route', req => {
     const server = req.context;
     server.all('/auth/oauth/token', path.join(__dirname, 'pages/token'));
     server.all('/auth/oauth', path.join(__dirname, 'pages/oauth'));
