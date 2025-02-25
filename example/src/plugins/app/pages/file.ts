@@ -17,11 +17,10 @@ const mime: Record<string, string> = {
   '.ico': 'image/x-icon'
 };
 
-export default async function Assets(req: ServerRequest, res: Response) {
-  if (res.code || res.status || res.body) return;
+export default async function StaticFile(req: ServerRequest, res: Response) {
   const resource = req.url.pathname.substring(1).replace(/\/\//, '/'); 
   if (resource.length === 0) return;
-  const file = path.resolve(process.cwd(), 'assets', resource); 
+  const file = path.resolve(process.cwd(), 'public', resource); 
   if (fs.existsSync(file)) {
     const ext = path.extname(file);
     const type = mime[ext] || 'application/octet-stream';

@@ -75,6 +75,7 @@ export default class InceptTerminal extends EventTerminal {
     await this.server.bootstrap();
     await this.server.call('config');
     await this.server.call('listen');
+    await this.server.call('route');
     return this;
   }
 

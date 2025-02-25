@@ -18,11 +18,14 @@
     "build:api": "yarn --cwd packages/incept-api build",
     "build:email": "yarn --cwd packages/incept-email build",
     "build:example": "yarn --cwd example build",
-    "dev": "yarn --cwd example dev",
+    "dev": "yarn --cwd example develop",
+    "emit": "yarn --cwd example emit",
     "generate": "yarn --cwd example generate",
-    "live": "yarn --cwd example live",
     "migrate": "yarn --cwd example migrate",
-    "serve": "yarn --cwd example serve",
+    "populate": "yarn --cwd example populate",
+    "purge": "yarn --cwd example purge",
+    "push": "yarn --cwd example push",
+    "query": "yarn --cwd example query",
     "test": "yarn --cwd example test"
   },
   "devDependencies": {

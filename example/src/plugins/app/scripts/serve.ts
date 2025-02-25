@@ -1,8 +1,8 @@
 //stackpress
 import { server } from '@stackpress/ingest/http';
 //common
-import type { Config } from '../../config';
-import { config } from '../../config';
+import type { Config } from '../../../config';
+import { config } from '../../../config';
 
 async function serve() {
   const port = config.server.port;
@@ -13,6 +13,7 @@ async function serve() {
   await app.bootstrap();
   await app.call('config');
   await app.call('listen');
+  await app.call('route');
 
   //start the server
   app.create().listen(port, () => {

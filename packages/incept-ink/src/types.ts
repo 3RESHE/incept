@@ -9,11 +9,13 @@ export type Renderer = (
 export type InkPlugin = {
   compiler: InkCompiler,
   refresh: RefreshServer,
-  render: Renderer
+  render: Renderer,
+  templates: Set<string>
 };
 
 export type TemplatePlugin = {
-  render: Renderer
+  render: Renderer,
+  templates: Set<string>
 };
 
 export type TemplateDevConfig = {
@@ -24,7 +26,9 @@ export type TemplateDevConfig = {
 export type TemplateEngineConfig = {
   brand: string,
   minify: boolean,
-  buildPath: string,
+  clientPath?: string,
+  serverPath?: string,
+  manifestPath?: string,
   cwd: string,
   dev: TemplateDevConfig
 };
@@ -32,6 +36,7 @@ export type TemplateEngineConfig = {
 export type TemplateConfig = { 
   template: {
     engine: string,
-    config: TemplateEngineConfig
+    config: TemplateEngineConfig,
+    templates: string[]
   }
 };

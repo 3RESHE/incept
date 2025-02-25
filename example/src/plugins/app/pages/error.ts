@@ -6,8 +6,8 @@ import type { ServerRequest } from '@stackpress/ingest/dist/types';
 import type Response from '@stackpress/ingest/dist/Response';
 import type { TemplatePlugin } from '@stackpress/incept-ink/dist/types';
 
-const template500 = '@/modules/app/templates/500';
-const template404 = '@/modules/app/templates/404';
+const template500 = '@/plugins/app/templates/500';
+const template404 = '@/plugins/app/templates/404';
 
 export default async function ErrorPage(req: ServerRequest, res: Response) {
   //if there is already a body

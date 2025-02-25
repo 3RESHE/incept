@@ -2,7 +2,7 @@ import type { ServerRequest } from '@stackpress/ingest/dist/types';
 import type Response from '@stackpress/ingest/dist/Response';
 import type { TemplatePlugin } from '@stackpress/incept-ink/dist/types';
 
-const template = '@/modules/app/templates/home';
+const template = '@/plugins/app/templates/home';
 
 export default async function HomePage(req: ServerRequest, res: Response) {  
   //get the server
