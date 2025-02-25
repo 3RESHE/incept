@@ -61,9 +61,9 @@
   ],
   "dependencies": {
     "@paralleldrive/cuid2": "2.2.2",
-    "@stackpress/idea-transformer": "0.3.30",
-    "@stackpress/ingest": "0.3.30",
-    "@stackpress/lib": "0.3.30",
+    "@stackpress/idea-transformer": "0.3.31",
+    "@stackpress/ingest": "0.3.31",
+    "@stackpress/lib": "0.3.31",
     "fast-glob": "3.3.2",
     "mustache": "4.2.0",
     "nanoid": "3.3.8"
