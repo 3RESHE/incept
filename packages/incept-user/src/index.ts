@@ -1,7 +1,19 @@
-export type * from './types';
-
-
 import Session from './Session';
-import { signup, signin } from './actions';
+import * as events from './events';
+import * as pages from './pages';
+import * as actions from './actions';
 
-export { Session, signup, signin };
+import { decrypt, encrypt, hash } from './helpers';
+import plugin from './plugin';
+
+export type * from './types';
+export { 
+  Session, 
+  actions, 
+  events, 
+  pages, 
+  decrypt, 
+  encrypt, 
+  hash, 
+  plugin 
+};

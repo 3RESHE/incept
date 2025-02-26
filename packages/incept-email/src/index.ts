@@ -1,3 +1,4 @@
 import emitter from './events';
+import plugin from './plugin';
 
-export { emitter };
+export { plugin, emitter };

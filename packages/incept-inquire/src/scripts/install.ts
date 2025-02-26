@@ -12,10 +12,11 @@ import type { ClientWithDatabasePlugin } from '../types';
 import { sequence } from '../helpers';
 
 type Client = ClientPlugin<ClientWithDatabasePlugin>;
+type Build = ServerConfig['server']['build'];
 
 export default async function install(server: Server<any, any, any>, database: Engine) {
   //get config and client
-  const config = server.config<ServerConfig['build']>('build') || {};
+  const config = server.config<Build>('server', 'build') || {};
   const client = server.plugin<Client>('client') || {};
   //get models
   const models = Object.values(client.model);

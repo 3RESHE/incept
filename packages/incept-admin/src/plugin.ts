@@ -18,7 +18,7 @@ export default function plugin(server: Server) {
   server.on('config', req => {
     const server = req.context;
     const config = server.config.withPath;
-    const module = config.get<string>('build.module');
+    const module = config.get<string>('server.build.module');
     //get the client (to determine the model page templates)
     const client = server.plugin<ClientPlugin>('client');
     //get the template plugin

@@ -15,6 +15,7 @@
     "build:ts": "tsc",
     "build:ink": "copyfiles -u 1 ./src/**/*.ink ./src/**/**/*.ink ./dist"
   },
+  "main": "index.js",
   "files": [
     "dist",
     "LICENSE",

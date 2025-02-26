@@ -13,6 +13,7 @@
   "scripts": {
     "build": "tsc"
   },
+  "main": "index.js",
   "files": [
     "dist",
     "LICENSE",

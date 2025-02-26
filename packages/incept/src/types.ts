@@ -23,14 +23,14 @@ export type ServerConfig = {
     cwd: string, 
     mode: string, 
     port: number,
-    bodySize: number 
-  },
-  build: {
-    lang: string,
-    revisions: string,
-    path: string,
-    module: string,
-    tsconfig: string
+    bodySize: number,
+    build: {
+      lang: string,
+      revisions: string,
+      path: string,
+      module: string,
+      tsconfig: string
+    }
   },
   cookie: CookieOptions
 };

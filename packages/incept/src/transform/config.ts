@@ -5,7 +5,6 @@ import type { Directory } from 'ts-morph';
 import type { SchemaConfig } from '@stackpress/idea-parser';
 import type Server from '@stackpress/ingest/dist/Server';
 //common
-import type { ServerConfig } from '../types';
 import Revisions from '../Revisions';
 
 /**
@@ -16,8 +15,9 @@ export default function generate(
   schema: SchemaConfig, 
   server: Server
 ) {
+  const config = server.config.withPath;
   //need revisions path
-  const { revisions } = server.config<ServerConfig['build']>('build') || {};
+  const revisions = config.get<string>('server.build.revisions');
   //if can revision
   if (revisions) {
     //add a new revision

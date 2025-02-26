@@ -11,7 +11,7 @@ export default function plugin(server: Server) {
   server.on('config', req => {
     const server = req.context;
     const config = server.config.withPath;
-    const module = config.get<string>('build.module');
+    const module = config.get<string>('server.build.module');
     try {
       const client = server.loader.require(module);
       server.register('client', client);

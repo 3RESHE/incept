@@ -1,7 +1,8 @@
-import install from './scripts/install';
-import migrate from './scripts/migrate';
-import purge from './scripts/purge';
-import push from './scripts/push';
+import * as actions from './actions';
+import * as events from './events';
+import * as scripts from './scripts';
+import schema, { field, clen, numdata } from './schema';
+import plugin from './plugin';
 
 import {
   toResponse,
@@ -14,13 +15,15 @@ import {
 } from './helpers';
 
 export type * from './types';
-export const scripts = {
-  install,
-  migrate,
-  purge,
-  push
-};
 export {
+  actions,
+  events,
+  scripts,
+  schema,
+  field,
+  clen,
+  numdata,
+  plugin,
   toResponse,
   toErrorResponse,
   toSqlString,

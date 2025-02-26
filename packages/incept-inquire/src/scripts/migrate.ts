@@ -1,7 +1,6 @@
 //modules
 import path from 'node:path';
 //stackpress
-import type { ServerConfig } from '@stackpress/incept/dist/types';
 import type { QueryObject } from '@stackpress/inquire/dist/types';
 import type Server from '@stackpress/ingest/dist/Server';
 import type Engine from '@stackpress/inquire/dist/Engine';
@@ -13,7 +12,8 @@ import { sequence } from '../helpers';
 
 export default async function migrate(server: Server<any, any, any>, database: Engine) {
   //get config
-  const { revisions: root } = server.config<ServerConfig['build']>('build') || {}; 
+  const config = server.config.withPath;
+  const root = config.get<string>('server.build.revisions');
   const { migrations } = server.config<DatabaseConfig['database']>('database') || {}; 
   //if there is not a migrations or revisions folder
   if (!migrations || !root) {

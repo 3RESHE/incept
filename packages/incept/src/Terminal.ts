@@ -40,8 +40,8 @@ export default class InceptTerminal extends EventTerminal {
     this.server.on('transform', async (req, res) => {
       const server = req.context;
       const config = server.config.withPath;
-      const client = config.get<string>('build.path');
-      const tsconfig = config.get<string>('build.tsconfig');
+      const client = config.get<string>('server.build.path');
+      const tsconfig = config.get<string>('server.build.tsconfig');
       //make a new project
       const project = this.project(client, tsconfig);
       //create the directory
@@ -49,7 +49,7 @@ export default class InceptTerminal extends EventTerminal {
       //transform (generate the code)
       await this.transformer.transform({ cli: this, project: directory });
       //get the output language
-      const lang = config.get<string>('build.lang') || 'js';
+      const lang = config.get<string>('server.build.lang') || 'js';
       //if you want ts, tsx files
       if (lang === 'ts') {
         project.saveSync();

@@ -8,9 +8,11 @@ import Revisions from '@stackpress/incept/dist/Revisions';
 import create from '../schema';
 import { sequence } from '../helpers';
 
+type Build = ServerConfig['server']['build'];
+
 export default async function push(server: Server<any, any, any>, database: Engine) {
   //get config
-  const config = server.config<ServerConfig['build']>('build') || {}; 
+  const config = server.config<Build>('server', 'build') || {}; 
   //if there is a revisions folder
   if (!config.revisions) {
     return;
