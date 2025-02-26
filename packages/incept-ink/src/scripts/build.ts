@@ -2,7 +2,6 @@
 import path from 'node:path';
 //stackpress
 import type Server from '@stackpress/ingest/dist/Server';
-import { serialize } from '@stackpress/ink/dist/helpers';
 import ink from '@stackpress/ink/compiler';
 import { plugin as css } from '@stackpress/ink-css';
 //ink
@@ -43,7 +42,7 @@ export default async function build(server: Server<any, any, any>) {
     const builder = compiler.fromSource(template);
     //update the manifest
     compiler.manifest.set(
-      serialize(builder.document.source), 
+      builder.document.id, 
       builder.document.source
     );
     //if there's a server path
