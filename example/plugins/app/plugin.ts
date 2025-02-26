@@ -5,8 +5,8 @@ import type Server from '@stackpress/ingest/dist/Server';
 //incept
 import type { TemplatePlugin } from '@stackpress/incept-ink/dist/types';
 //local
-import { config } from '../../config';
-import file from './pages/file';
+import { config } from '../config';
+import dmz from './pages/public';
 
 export default function plugin(server: Server) {
   server.config.set(config);
@@ -26,7 +26,7 @@ export default function plugin(server: Server) {
     server.on('error', path.join(pages, 'error'));
     server.on('request', async (req, res) => {  
       if (!res.body && (!res.code || res.code === 404)) {
-        await file(req, res);
+        await dmz(req, res);
       }
     });
     server.on('response', async (req, res) => {  

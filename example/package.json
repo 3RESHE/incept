@@ -3,8 +3,8 @@
   "version": "1.0.0",
   "private": true,
   "plugins": [
-    "./src/plugins/app/plugin",
-    "./src/plugins/store/plugin",
+    "./plugins/app/plugin",
+    "./plugins/store/plugin",
     "@stackpress/incept",
     "@stackpress/incept-types",
     "@stackpress/incept-inquire",
@@ -16,15 +16,17 @@
     "@stackpress/incept-email"
   ],
   "scripts": {
-    "build": "tsc",
-    "develop": "dotenv -e .env.local -- ts-node src/plugins/app/scripts/serve.ts",
-    "emit": "dotenv -e .env.local -- ts-node src/plugins/app/scripts/event.ts",
-    "generate": "dotenv -e .env.local -- ts-node src/plugins/app/scripts/event.ts transform",
-    "migrate": "dotenv -e .env.local -- ts-node src/plugins/store/scripts/migrate.ts",
-    "populate": "dotenv -e .env.local -- ts-node src/plugins/app/scripts/event.ts populate",
-    "purge": "dotenv -e .env.local -- ts-node src/plugins/app/scripts/event.ts purge",
-    "push": "dotenv -e .env.local -- ts-node src/plugins/app/scripts/event.ts push",
-    "query": "dotenv -e .env.local -- ts-node src/plugins/app/scripts/event.ts query",
+    "build": "yarn build:ts && yarn build:app",
+    "build:ts": "tsc",
+    "build:app": "dotenv -e .env.local -- ts-node plugins/app/scripts/build.ts",
+    "develop": "dotenv -e .env.local -- ts-node plugins/app/scripts/serve.ts",
+    "emit": "dotenv -e .env.local -- ts-node plugins/app/scripts/event.ts",
+    "generate": "dotenv -e .env.local -- ts-node plugins/app/scripts/event.ts transform",
+    "migrate": "dotenv -e .env.local -- ts-node plugins/store/scripts/migrate.ts",
+    "populate": "dotenv -e .env.local -- ts-node plugins/app/scripts/event.ts populate",
+    "purge": "dotenv -e .env.local -- ts-node plugins/app/scripts/event.ts purge",
+    "push": "dotenv -e .env.local -- ts-node plugins/app/scripts/event.ts push",
+    "query": "dotenv -e .env.local -- ts-node plugins/app/scripts/event.ts query",
     "test": "dotenv -e .env.local -- nyc ts-mocha tests/*.test.ts"
   },
   "dependencies": {

@@ -1,8 +1,8 @@
 //stackpress
 import { server } from '@stackpress/ingest/http';
 //common
-import type { Config } from '../../../config';
-import { config } from '../../../config';
+import type { Config } from '../../config';
+import { config } from '../../config';
 
 async function serve() {
   const port = config.server.port;

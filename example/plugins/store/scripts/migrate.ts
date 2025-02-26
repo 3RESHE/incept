@@ -3,8 +3,8 @@ import { server } from '@stackpress/ingest/http';
 import { scripts } from '@stackpress/incept-inquire';
 //common
 import database from '../connect';
-import type { Config } from '../../../config';
-import { config } from '../../../config';
+import type { Config } from '../../config';
+import { config } from '../../config';
 
 async function migrate() {
   const app = server<Config>({ 

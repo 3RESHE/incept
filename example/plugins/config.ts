@@ -13,6 +13,26 @@ const cwd = process.cwd();
 const seed = process.env.SESSION_SEED || 'abc123';
 const environment = process.env.NODE_ENV || 'development';
 
+//File Structure:
+// - [project]/public
+const assets = path.join(cwd, 'public');
+// - [project]/public/client
+const client = path.join(assets, 'client');
+// - [project]/build
+const build = path.join(cwd, 'build');
+// - [project]/build/migrations
+const migrations = path.join(build, 'migrations');
+// - [project]/build/revisions
+const revisions = path.join(build, 'revisions');
+// - [project]/build/templates
+const templates = path.join(build, 'templates');
+// - [project]/build/templates/manifest.json
+const manifest = path.join(templates, 'manifest.json');
+// - [project]/node_modules
+const modules = path.join(cwd, 'node_modules');
+// - [project]/tsconfig.json
+const tsconfig = path.join(cwd, 'tsconfig.json');
+
 export type Config = ServerConfig 
   & DatabaseConfig
   & LanguageConfig 
@@ -23,21 +43,21 @@ export type Config = ServerConfig
   & EmailConfig;
 
 export const config: Config = {
-  build: { 
-    lang: 'js',
-    module: '@stackpress/.incept',
-    revisions: path.join(cwd, 'revisions'),
-    path: path.join(cwd, 'node_modules', '@stackpress', '.incept'),
-    tsconfig: path.join(cwd, 'tsconfig.json')
-  },
   server: {
     port: 3000,
     cwd: cwd,
     mode: environment,
-    bodySize: 0
+    bodySize: 0,
+    build: { 
+      lang: 'js',
+      module: '@stackpress/.incept',
+      revisions: revisions,
+      path: path.join(modules, '@stackpress', '.incept'),
+      tsconfig: tsconfig
+    }
   },
   database: {
-    migrations: path.join(cwd, 'migrations'),
+    migrations: migrations,
     schema: {
       onDelete: 'CASCADE',
       onUpdate: 'RESTRICT'
@@ -48,11 +68,10 @@ export const config: Config = {
     config: {
       brand: '',
       minify: environment !== 'development',
-      serverPath: path.join(cwd, 'build/template'),
-      manifestPath: path.join(cwd, 'build/template/manifest.json'),
-      cwd: environment === 'development' 
-        ? path.join(cwd, 'src')
-        : path.join(cwd, 'dist'),
+      serverPath: templates,
+      clientPath: client,
+      manifestPath: manifest,
+      cwd: environment === 'development' ? cwd : build,
       dev: { 
         buildRoute: '/client',
         socketRoute: '/__ink_dev__'

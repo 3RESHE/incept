@@ -6,10 +6,10 @@
   <link rel="shortcut icon" type="image/png" href="/favicon.png" />
   <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" />
   <link rel="stylesheet" type="text/css" href="/styles/global.css" />
-  <link rel="stylesheet" type="text/css" href={`/build/client/${env('BUILD_ID')}.css`} />
+  <link rel="stylesheet" type="text/css" href={`/client/${env('BUILD_ID')}.css`} />
   
   <script data-template type="text/json">__TEMPLATE_DATA__</script>
-  <script type="text/javascript" src={`/build/client/${env('BUILD_ID')}.js`}></script>
+  <script type="text/javascript" src={`/client/${env('BUILD_ID')}.js`}></script>
   <if true={env('PUBLIC_ENV') === 'development'}>
     <script src="/dev.js"></script>
   </if>
