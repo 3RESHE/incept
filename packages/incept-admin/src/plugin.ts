@@ -23,7 +23,7 @@ export default function plugin(server: Server) {
     const client = server.plugin<ClientPlugin>('client');
     //get the template plugin
     const { templates } = server.plugin<TemplatePlugin>('template');
-    templates.add('@stackpress/incept-admin/dist/components/error');
+    templates.add('@stackpress/incept-admin/dist/components/error.ink');
     if (!client || !templates) return;
     //get all the models and add the page templates
     Object.values(client.model).forEach(model => {

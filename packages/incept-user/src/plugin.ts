@@ -29,9 +29,8 @@ export default function plugin(server: Server) {
     const server = req.context;
     const { templates } = server.plugin<TemplatePlugin>('template');
     if (templates) {
-      templates.add('@stackpress/incept-user/dist/templates/signup');
-      templates.add('@stackpress/incept-user/dist/templates/signin');
-      templates.add('@stackpress/incept-user/dist/templates/signout');
+      templates.add('@stackpress/incept-user/dist/templates/signup.ink');
+      templates.add('@stackpress/incept-user/dist/templates/signin.ink');
     }
   }, -10);
   //on listen, add user events
