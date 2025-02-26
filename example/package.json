@@ -27,6 +27,7 @@
     "purge": "dotenv -e .env.local -- ts-node plugins/app/scripts/event.ts purge",
     "push": "dotenv -e .env.local -- ts-node plugins/app/scripts/event.ts push",
     "query": "dotenv -e .env.local -- ts-node plugins/app/scripts/event.ts query",
+    "start": "dotenv -e .env.local -- yarn --cwd build node plugins/app/scripts/serve.js",
     "test": "dotenv -e .env.local -- nyc ts-mocha tests/*.test.ts"
   },
   "dependencies": {

@@ -12,14 +12,16 @@ import path from 'path';
 const cwd = process.cwd();
 const seed = process.env.SESSION_SEED || 'abc123';
 const environment = process.env.NODE_ENV || 'development';
-
+const development = environment === 'development';
 //File Structure:
 // - [project]/public
-const assets = path.join(cwd, 'public');
+const assets = development 
+  ? path.join(cwd, 'public') 
+  : path.resolve(cwd, '..', 'public');
 // - [project]/public/client
 const client = path.join(assets, 'client');
 // - [project]/build
-const build = path.join(cwd, 'build');
+const build = development ? path.join(cwd, 'build') : cwd;
 // - [project]/build/migrations
 const migrations = path.join(build, 'migrations');
 // - [project]/build/revisions
@@ -40,21 +42,24 @@ export type Config = ServerConfig
   & SessionConfig 
   & AdminConfig
   & APIConfig
-  & EmailConfig;
+  & EmailConfig
+  & { assets: string };
 
 export const config: Config = {
+  assets,
   server: {
     port: 3000,
     cwd: cwd,
+    build: build,
     mode: environment,
-    bodySize: 0,
-    build: { 
-      lang: 'js',
-      module: '@stackpress/.incept',
-      revisions: revisions,
-      path: path.join(modules, '@stackpress', '.incept'),
-      tsconfig: tsconfig
-    }
+    bodySize: 0
+  },
+  client: { 
+    lang: 'js',
+    module: '@stackpress/.incept',
+    revisions: revisions,
+    build: path.join(modules, '@stackpress', '.incept'),
+    tsconfig: tsconfig
   },
   database: {
     migrations: migrations,
@@ -71,7 +76,7 @@ export const config: Config = {
       serverPath: templates,
       clientPath: client,
       manifestPath: manifest,
-      cwd: environment === 'development' ? cwd : build,
+      cwd: cwd,
       dev: { 
         buildRoute: '/client',
         socketRoute: '/__ink_dev__'
@@ -93,7 +98,7 @@ export const config: Config = {
     seed: seed,
     access: {
       ADMIN: [
-        { method: 'GET', route: '/build/**' },
+        { method: 'GET', route: '/client/**' },
         { method: 'GET', route: '/__ink_dev__' },
         { method: 'GET', route: '/dev.js' },
         { method: 'GET', route: '/images/**' },
@@ -106,7 +111,7 @@ export const config: Config = {
         { method: 'ALL', route: '/api/**' }
       ],
       USER: [
-        { method: 'GET', route: '/build/**' },
+        { method: 'GET', route: '/client/**' },
         { method: 'GET', route: '/__ink_dev__' },
         { method: 'GET', route: '/dev.js' },
         { method: 'GET', route: '/images/**' },
@@ -118,7 +123,7 @@ export const config: Config = {
         { method: 'ALL', route: '/api/**' }
       ],
       GUEST: [
-        { method: 'GET', route: '/build/**' },
+        { method: 'GET', route: '/client/**' },
         { method: 'GET', route: '/__ink_dev__' },
         { method: 'GET', route: '/dev.js' },
         { method: 'GET', route: '/images/**' },

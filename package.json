@@ -26,6 +26,7 @@
     "purge": "yarn --cwd example purge",
     "push": "yarn --cwd example push",
     "query": "yarn --cwd example query",
+    "start": "yarn --cwd example start",
     "test": "yarn --cwd example test"
   },
   "devDependencies": {

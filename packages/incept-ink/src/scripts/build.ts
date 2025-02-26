@@ -50,7 +50,7 @@ export default async function build(server: Server<any, any, any>) {
       //save the server build
       fs.writeFileSync(
         path.join(paths.server, `${builder.document.id}.js`),
-        await builder.server()
+        (await builder.server()) + ';module.exports = InkAPI;'
       );
     }
     //if there's a client path

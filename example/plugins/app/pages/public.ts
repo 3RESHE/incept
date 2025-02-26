@@ -20,7 +20,13 @@ const mime: Record<string, string> = {
 export default async function StaticFile(req: ServerRequest, res: Response) {
   const resource = req.url.pathname.substring(1).replace(/\/\//, '/'); 
   if (resource.length === 0) return;
-  const file = path.resolve(process.cwd(), 'public', resource); 
+  const server = req.context;
+  const assets = server.config.get<string>('assets');
+  const environment = server.config.get<string>('server', 'environment');
+  const development = environment === 'development';
+  const file = development 
+    ? path.resolve(assets, resource)
+    : path.resolve(assets, resource); 
   if (fs.existsSync(file)) {
     const ext = path.extname(file);
     const type = mime[ext] || 'application/octet-stream';

@@ -17,7 +17,7 @@ export default function generate(
 ) {
   const config = server.config.withPath;
   //need revisions path
-  const revisions = config.get<string>('server.build.revisions');
+  const revisions = config.get<string>('client.revisions');
   //if can revision
   if (revisions) {
     //add a new revision
