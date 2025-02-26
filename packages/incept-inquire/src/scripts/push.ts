@@ -10,12 +10,11 @@ import { sequence } from '../helpers';
 
 export default async function push(server: Server<any, any, any>, database: Engine) {
   //get config
-  const config = server.config<ServerConfig['idea']>('idea'); 
+  const config = server.config<ServerConfig['build']>('build') || {}; 
   //if there is a revisions folder
   if (!config.revisions) {
     return;
   }
-
   //this is where we are going to store all the queries
   const queries: QueryObject[] = [];
   const revisions = new Revisions(config.revisions, server.loader);

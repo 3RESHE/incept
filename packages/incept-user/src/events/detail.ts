@@ -15,10 +15,7 @@ export default async function AuthDetail(req: ServerRequest, res: Response) {
   const results = res.body as Partial<AuthExtended>;
   //decode token
   try {
-    results.token = decrypt(
-      results.token as string, 
-      seed
-    );
+    results.token = decrypt(results.token as string, seed);
   } catch (e) {}
   //remove sensitive data
   delete results.secret;

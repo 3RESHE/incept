@@ -1,5 +1,4 @@
 //modules
-import path from 'path';
 import { Project, IndentationText } from 'ts-morph';
 //stackpress
 import type Server from '@stackpress/ingest/dist/Server';
@@ -39,21 +38,18 @@ export default class InceptTerminal extends EventTerminal {
     });
     this.server = server;
     this.server.on('transform', async (req, res) => {
+      const server = req.context;
+      const config = server.config.withPath;
+      const client = config.get<string>('build.path');
+      const tsconfig = config.get<string>('build.tsconfig');
       //make a new project
-      const project = this.project();
-      //get client directory
-      const client = path.resolve(
-        this.server.loader.cwd,
-        'node_modules',
-        '@stackpress',
-        '.incept'
-      );
+      const project = this.project(client, tsconfig);
       //create the directory
       const directory = project.createDirectory(client);
       //transform (generate the code)
       await this.transformer.transform({ cli: this, project: directory });
       //get the output language
-      const lang = this.server.config('idea', 'lang') || 'js';
+      const lang = config.get<string>('build.lang') || 'js';
       //if you want ts, tsx files
       if (lang === 'ts') {
         project.saveSync();
@@ -62,9 +58,9 @@ export default class InceptTerminal extends EventTerminal {
       } else {
         await project.emit();
         await this.server.emit('transformed', req, res);
-        //sometimes this hangs...
-        process.exit(0);
       }
+      //sometimes this hangs...
+      process.exit(0);
     });
   }
 
@@ -82,20 +78,12 @@ export default class InceptTerminal extends EventTerminal {
   /**
    * Makes a new ts-morph project
    */
-  public project() {
+  public project(output: string, tsconfig: string) {
     return new Project({
-      tsConfigFilePath: path.resolve(
-        __dirname, 
-        '../tsconfig.json'
-      ),
+      tsConfigFilePath: tsconfig,
       skipAddingFilesFromTsConfig: true,
       compilerOptions: {
-        outDir: path.resolve(
-          this.server.loader.cwd,
-          'node_modules',
-          '@stackpress',
-          '.incept'
-        ),
+        outDir: output,
         declaration: true, 
         declarationMap: true, 
         sourceMap: true, 

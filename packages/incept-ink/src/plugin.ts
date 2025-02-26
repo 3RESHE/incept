@@ -9,11 +9,7 @@ import RefreshServer from '@stackpress/ink-dev/dist/RefreshServer';
 import ink, { cache } from '@stackpress/ink/compiler';
 import { plugin as css } from '@stackpress/ink-css';
 //local
-import type {
-  InkPlugin,
-  TemplateDevConfig, 
-  TemplateEngineConfig
-} from './types';
+import type { InkPlugin } from './types';
 
 /**
  * This interface is intended for the Incept library.
@@ -26,18 +22,15 @@ export default function plugin(server: Server) {
     //get server environment
     const environment = config.get<string>('server.mode') || 'development';
     //get template engine config
-    const { 
-      cwd, 
-      minify,
-      brand = '', 
-      clientPath, 
-      serverPath,
-      manifestPath
-    } = config.get<TemplateEngineConfig>('template.config') || {};
-    //get templates
-    const templates = new Set(
-      config.get<string[]>('template.templates') || []
-    );
+    const cwd = config.get<string>('template.config.cwd') || process.cwd();
+    const minify = config.get<boolean>('template.config.minify');
+    const brand = config.get<string>('template.config.brand') || '';
+    const clientPath = config.get<string>('template.config.clientPath');
+    const serverPath = config.get<string>('template.config.serverPath');
+    const manifestPath = config.get<string>('template.config.manifestPath');
+    const files = config.get<string[]>('template.templates') || [];
+    //make a template set
+    const templates = new Set(files);
     //make a new refresh server
     const refresh = new RefreshServer({ cwd });
     //create ink compiler
@@ -75,10 +68,12 @@ export default function plugin(server: Server) {
     //dont add dev routes if not in development mode
     if (environment !== 'development') return;
     const { compiler, refresh } = server.plugin<InkPlugin>('ink');
-    const {
-      buildRoute = '/build/client', 
-      socketRoute = '/__ink_dev__'
-    } = config.get<TemplateDevConfig>('template.config.dev') || {};
+    const buildRoute = config.get<string>(
+      'template.config.dev.buildRoute'
+    ) || '/build/client';
+    const socketRoute = config.get<string>(
+      'template.config.dev.socketRoute'
+    ) || '/__ink_dev__';
     server.all('/dev.js', function DevClient(req, res) {
       const script = compiler.fs.readFileSync(
         require.resolve('@stackpress/ink-dev/client.js'),

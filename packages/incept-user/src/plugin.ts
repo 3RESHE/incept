@@ -5,7 +5,7 @@ import type Server from '@stackpress/ingest/dist/Server';
 //incept
 import type { TemplatePlugin } from '@stackpress/incept-ink/dist/types';
 //user
-import type { SessionConfig } from './types';
+import type { PermissionList } from './types';
 import Session from './Session';
 
 /**
@@ -15,25 +15,25 @@ export default function plugin(server: Server) {
   //on config, register session plugin
   server.on('config', req => {
     const server = req.context;
-    //get the project config
-    const {
-      name = 'session',
-      seed = 'abc123',
-      access = {}
-    } = server.config<SessionConfig['session']>('session');
+    const config = server.config.withPath;
+    const name = config.get<string>('session.name') || 'session';
+    const seed = config.get<string>('session.seed') || 'abc123';
+    const access = config.get<PermissionList>('session.access') || {};
     //make a new session
     const session = new Session(name, seed, access);
     //add session as a project plugin
     server.register('session', session);
-    //get the template plugin
+  });
+  //on config (low priority), add user templates
+  server.on('config', req => {
+    const server = req.context;
     const { templates } = server.plugin<TemplatePlugin>('template');
-    //add user templates
     if (templates) {
       templates.add('@stackpress/incept-user/dist/templates/signup');
       templates.add('@stackpress/incept-user/dist/templates/signin');
       templates.add('@stackpress/incept-user/dist/templates/signout');
     }
-  });
+  }, -10);
   //on listen, add user events
   server.on('listen', req => {
     const server = req.context;

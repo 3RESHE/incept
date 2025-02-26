@@ -6,18 +6,16 @@ import { serialize } from '@stackpress/ink/dist/helpers';
 import ink from '@stackpress/ink/compiler';
 import { plugin as css } from '@stackpress/ink-css';
 //ink
-import type { TemplateConfig, TemplatePlugin } from '../types';
+import type { TemplatePlugin } from '../types';
 
 export default async function build(server: Server<any, any, any>) {
   //get the compiler options
-  const { config } = server.config<TemplateConfig['template']>('template') || {};
-  const { 
-    cwd, 
-    brand = '' , 
-    serverPath,
-    clientPath,
-    manifestPath
-  } = config || {};
+  const config = server.config.withPath;
+  const cwd = config.get<string>('template.config.cwd') || process.cwd();
+  const brand = config.get<string>('template.config.brand') || '';
+  const clientPath = config.get<string>('template.config.clientPath');
+  const serverPath = config.get<string>('template.config.serverPath');
+  const manifestPath = config.get<string>('template.config.manifestPath');
   //get paths
   const paths = {
     client: clientPath,

@@ -9,7 +9,6 @@ import type Model from '@stackpress/incept/dist/schema/Model';
 import type { AdminConfig } from '../types';
 
 export default function AdminCreatePageFactory(model: Model) {
-  const template = `@stackpress/.incept/${model.name}/admin/templates/create`;
   return async function AdminCreatePage(req: ServerRequest, res: Response) {
     //if there is a response body or there is an error code
     if (res.body || (res.code && res.code !== 200)) {
@@ -23,6 +22,10 @@ export default function AdminCreatePageFactory(model: Model) {
     //get the admin config
     const admin = server.config<AdminConfig['admin']>('admin') || {};
     const root = admin.root || '/admin';
+    //determine the template
+    const config = server.config.withPath;
+    const module = config.get<string>('build.module');
+    const template = `${module}/${model.name}/admin/templates/create`;
     //get the renderer
     const { render } = server.plugin<TemplatePlugin>('template');
     //if form submitted

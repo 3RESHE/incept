@@ -7,7 +7,7 @@ import typeGenerator from './types';
 
 
 /**
- * @stackpress/.incept (file structure)
+ * Client File Structure
  * - profile/
  * | - index.ts
  * | - types.ts

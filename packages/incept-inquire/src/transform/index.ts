@@ -8,7 +8,7 @@ import generateEvents from './events';
 import generateTests from './tests';
 
 /**
- * @stackpress/.incept (file structure)
+ * Client File Structure
  * - profile/
  * | - actions/
  * | | - batch.ts

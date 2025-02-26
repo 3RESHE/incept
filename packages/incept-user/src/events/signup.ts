@@ -4,7 +4,7 @@ import type { ServerRequest } from '@stackpress/ingest/dist/types';
 //incept
 import type { DatabasePlugin } from '@stackpress/incept-inquire/dist/types';
 //common
-import type { SessionConfig } from '../types';
+import type { Client } from '../types';
 import { signup } from '../actions';
 
 export default async function AuthSignup(req: ServerRequest, res: Response) {
@@ -12,13 +12,16 @@ export default async function AuthSignup(req: ServerRequest, res: Response) {
   const roles = req.context.config<string[]>('session', 'auth', 'roles') || [];
   //get the server
   const server = req.context;
+  const config = server.config.withPath;
   //get the database engine 
-  const store = server.plugin<DatabasePlugin>('database');
+  const engine = server.plugin<DatabasePlugin>('database');
+  //get the client
+  const client = server.plugin<Client>('client');
   //get the session seed
-  const { seed = 'abc123' } = server.config<SessionConfig['session']>('session');
+  const seed = config.get<string>('session.seed') || 'abc123';
   //get input
   const input = { roles, ...req.data() };
-  const response = await signup(input, store, seed);
+  const response = await signup(input, seed, engine, client);
   //if good
   if (response.code === 200) {
     //get server

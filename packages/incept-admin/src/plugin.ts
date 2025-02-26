@@ -17,33 +17,24 @@ export default function plugin(server: Server) {
   //on config, add templates
   server.on('config', req => {
     const server = req.context;
+    const config = server.config.withPath;
+    const module = config.get<string>('build.module');
     //get the client (to determine the model page templates)
     const client = server.plugin<ClientPlugin>('client');
     //get the template plugin
-    const { templates } = server.plugin<TemplatePlugin>('template')
+    const { templates } = server.plugin<TemplatePlugin>('template');
+    templates.add('@stackpress/incept-admin/dist/components/error');
     if (!client || !templates) return;
     //get all the models and add the page templates
     Object.values(client.model).forEach(model => {
-      templates.add(
-        `@stackpress/.incept/${model.config.name}/admin/templates/create.ink`
-      );
-      templates.add(
-        `@stackpress/.incept/${model.config.name}/admin/templates/detail.ink`
-      );
-      templates.add(
-        `@stackpress/.incept/${model.config.name}/admin/templates/remove.ink`
-      );
-      templates.add(
-        `@stackpress/.incept/${model.config.name}/admin/templates/restore.ink`
-      );
-      templates.add(
-        `@stackpress/.incept/${model.config.name}/admin/templates/search.ink`
-      );
-      templates.add(
-        `@stackpress/.incept/${model.config.name}/admin/templates/update.ink`
-      );
+      templates.add(`${module}/${model.config.name}/admin/templates/create.ink`);
+      templates.add(`${module}/${model.config.name}/admin/templates/detail.ink`);
+      templates.add(`${module}/${model.config.name}/admin/templates/remove.ink`);
+      templates.add(`${module}/${model.config.name}/admin/templates/restore.ink`);
+      templates.add(`${module}/${model.config.name}/admin/templates/search.ink`);
+      templates.add(`${module}/${model.config.name}/admin/templates/update.ink`);
     });
-  });
+  }, -10);
   //on route, add admin routes
   server.on('route', req => {
     const server = req.context;

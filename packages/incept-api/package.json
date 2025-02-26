@@ -1,6 +1,6 @@
 {
   "name": "@stackpress/incept-api",
-  "version": "0.1.19",
+  "version": "0.1.20",
   "license": "MIT",
   "description": "This package is a user interface that enables oauth and rest APIs to be used in an Incept app.",
   "author": "Chris <chris@stackpress.io>",
@@ -26,8 +26,8 @@
     "tsconfig.json"
   ],
   "dependencies": {
-    "@stackpress/incept": "0.1.19",
-    "@stackpress/incept-user": "0.1.19",
+    "@stackpress/incept": "0.1.20",
+    "@stackpress/incept-user": "0.1.20",
     "@stackpress/ingest": "0.3.31",
     "@stackpress/inquire": "0.3.31",
     "jsonwebtoken": "9.0.2"

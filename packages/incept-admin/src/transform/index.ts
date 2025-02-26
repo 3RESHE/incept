@@ -7,7 +7,7 @@ import generateTemplates from './templates';
 import generateRoutes from './routes';
 
 /**
- * @stackpress/.incept (file structure)
+ * Client File Structure
  * - profile/
  * | - admin/
  * | | - pages/

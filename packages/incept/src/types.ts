@@ -19,15 +19,18 @@ export type ProjectProps = {
 export type PluginWithProject = PluginProps<ProjectProps>;
 
 export type ServerConfig = {
-  idea: {
-    lang: string,
-    revisions: string
-  },
   server: { 
     cwd: string, 
     mode: string, 
     port: number,
     bodySize: number 
+  },
+  build: {
+    lang: string,
+    revisions: string,
+    path: string,
+    module: string,
+    tsconfig: string
   },
   cookie: CookieOptions
 };

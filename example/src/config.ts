@@ -23,9 +23,12 @@ export type Config = ServerConfig
   & EmailConfig;
 
 export const config: Config = {
-  idea: { 
+  build: { 
     lang: 'js',
-    revisions: path.join(cwd, 'revisions')
+    module: '@stackpress/.incept',
+    revisions: path.join(cwd, 'revisions'),
+    path: path.join(cwd, 'node_modules', '@stackpress', '.incept'),
+    tsconfig: path.join(cwd, 'tsconfig.json')
   },
   server: {
     port: 3000,

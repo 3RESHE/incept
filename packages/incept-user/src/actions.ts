@@ -3,16 +3,12 @@ import type {
   StatusResponse,
   ErrorResponse
 } from '@stackpress/lib/dist/types';
-import type { ClientPlugin } from '@stackpress/incept/dist/types';
-import type { 
-  ClientWithDatabasePlugin 
-} from '@stackpress/incept-inquire/dist/types';
 import type Engine from '@stackpress/inquire/dist/Engine';
 import { email } from '@stackpress/incept/dist/assert';
-import Exception from '@stackpress/incept/dist/Exception';
 //common
 import type { 
   Auth,
+  Client,
   Profile, 
   ProfileAuth, 
   AuthExtended,
@@ -27,17 +23,10 @@ import { encrypt, hash } from './helpers';
  */
 export async function signup(
   input: Partial<SignupInput>,
+  seed: string,
   engine: Engine,
-  seed: string
+  client: Client
 ): Promise<Partial<StatusResponse<ProfileAuth>>> {
-  let client;
-  try {
-    client = (
-      await import('@stackpress/incept/client')
-    ) as unknown as ClientPlugin<ClientWithDatabasePlugin>;
-  } catch (error) {
-    return Exception.upgrade(error as Error).toResponse();
-  }
   //validate input
   const errors = assert(input);
   //if there are errors
@@ -120,17 +109,10 @@ export async function signup(
 export async function signin(
   type: SigninType, 
   input: Partial<SigninInput>,
+  seed: string,
   engine: Engine,
-  seed: string
+  client: Client
 ): Promise<Partial<StatusResponse<AuthExtended>>> {
-  let client;
-  try {
-    client = (
-      await import('@stackpress/incept/client')
-    ) as unknown as ClientPlugin<ClientWithDatabasePlugin>;
-  } catch (error) {
-    return Exception.upgrade(error as Error).toResponse();
-  }
   const actions = client.model.auth.actions(engine);
   const token = encrypt(String(input[type]), seed);
   //get form body

@@ -1,5 +1,12 @@
+//stackpress
+import type { ClientPlugin } from '@stackpress/incept/dist/types';
+import type { 
+  ClientWithDatabasePlugin 
+} from '@stackpress/incept-inquire/dist/types';
 //local
 import type SessionType from './Session';
+
+export type Client = ClientPlugin<ClientWithDatabasePlugin>;
 
 //--------------------------------------------------------------------//
 // Permission Types

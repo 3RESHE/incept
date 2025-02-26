@@ -9,7 +9,7 @@ import generateTable from './table';
 
 
 /**
- * @stackpress/.incept (file structure)
+ * Client File Structure
  * - profile/
  * | - components/
  * | | - filter.ink

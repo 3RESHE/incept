@@ -8,8 +8,6 @@ import type Model from '@stackpress/incept/dist/schema/Model';
 import type { AdminConfig } from '../types';
 
 export default function AdminSearchPageFactory(model: Model) {
-  const error = '@stackpress/incept-admin/dist/components/error';
-  const template = `@stackpress/.incept/${model.name}/admin/templates/search`;
   return async function AdminSearchPage(req: ServerRequest, res: Response) {
     //if there is a response body or there is an error code
     if (res.body || (res.code && res.code !== 200)) {
@@ -24,6 +22,11 @@ export default function AdminSearchPageFactory(model: Model) {
     const admin = server.config<AdminConfig['admin']>('admin') || {};
     //get the renderer
     const { render } = server.plugin<TemplatePlugin>('template');
+    //determine the templates
+    const config = server.config.withPath;
+    const module = config.get<string>('build.module');
+    const error = '@stackpress/incept-admin/dist/components/error';
+    const template = `${module}/${model.name}/admin/templates/search`;
     //extract filters from url query
     let { q, filter, span, sort, skip, take } = req.data<{
       q?: string,

@@ -4,7 +4,7 @@ import type { ServerRequest } from '@stackpress/ingest/dist/types';
 //incept
 import type { DatabasePlugin } from '@stackpress/incept-inquire/dist/types';
 //common
-import type { SessionConfig, SessionPlugin, AuthExtended } from '../types';
+import type { Client, AuthExtended, SessionPlugin } from '../types';
 import { signin } from '../actions';
 
 export default async function AuthSignin(req: ServerRequest, res: Response) {
@@ -12,12 +12,15 @@ export default async function AuthSignin(req: ServerRequest, res: Response) {
   const type = req.data('type') || 'username';
   //get the server
   const server = req.context;
+  const config = server.config.withPath;
   //get the database engine 
-  const store = server.plugin<DatabasePlugin>('database');
+  const engine = server.plugin<DatabasePlugin>('database');
+  //get the client
+  const client = server.plugin<Client>('client');
   //get the session seed
-  const { seed = 'abc123' } = server.config<SessionConfig['session']>('session');
+  const seed = config.get<string>('session.seed') || 'abc123';
   //get the user from the database
-  const response = await signin(type, req.data(), store, seed);
+  const response = await signin(type, req.data(), seed, engine, client);
   //if there are results
   if (response.results) {
     //remove sensitive data

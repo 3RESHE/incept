@@ -13,7 +13,7 @@ import { sequence } from '../helpers';
 
 export default async function migrate(server: Server<any, any, any>, database: Engine) {
   //get config
-  const { revisions: root } = server.config<ServerConfig['idea']>('idea') || {}; 
+  const { revisions: root } = server.config<ServerConfig['build']>('build') || {}; 
   const { migrations } = server.config<DatabaseConfig['database']>('database') || {}; 
   //if there is not a migrations or revisions folder
   if (!migrations || !root) {

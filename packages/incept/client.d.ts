@@ -1,1 +1,0 @@
-export * from '@stackpress/.incept/index';

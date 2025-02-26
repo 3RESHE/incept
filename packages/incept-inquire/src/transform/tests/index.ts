@@ -8,7 +8,7 @@ import { sequence } from '../../helpers';
 import generateActions from './actions';
 import generateEvents from './events';
 /**
- * @stackpress/.incept (file structure)
+ * Client File Structure
  * - profile/
  * | - tests/
  * | | - actions.ts

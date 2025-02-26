@@ -15,10 +15,7 @@ export default async function AuthSearch(req: ServerRequest, res: Response) {
   res.body = rows.map(row => {
     //decode token
     try {
-      row.token = decrypt(
-        row.token as string, 
-        seed
-      );
+      row.token = decrypt(row.token as string, seed);
     } catch (e) {}
     //remove sensitive data
     delete row.secret;

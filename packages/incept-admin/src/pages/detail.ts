@@ -9,8 +9,6 @@ import type Model from '@stackpress/incept/dist/schema/Model';
 import type { AdminConfig } from '../types';
 
 export default function AdminDetailPageFactory(model: Model) {
-  const error = '@stackpress/incept-admin/dist/components/error';
-  const template = `@stackpress/.incept/${model.name}/admin/templates/detail`;
   return async function AdminDetailPage(req: ServerRequest, res: Response) {
     //if there is a response body or there is an error code
     if (res.body || (res.code && res.code !== 200)) {
@@ -25,6 +23,11 @@ export default function AdminDetailPageFactory(model: Model) {
     const admin = server.config<AdminConfig['admin']>('admin') || {};
     //get the renderer
     const { render } = server.plugin<TemplatePlugin>('template');
+    //determine the templates
+    const config = server.config.withPath;
+    const module = config.get<string>('build.module');
+    const error = '@stackpress/incept-admin/dist/components/error';
+    const template = `${module}/${model.name}/admin/templates/detail`;
     //get id from url params
     const ids = model.ids.map(column => req.data(column.name)).filter(Boolean);
     if (ids.length === model.ids.length) {

@@ -17,7 +17,7 @@ export default function generate(
   server: Server
 ) {
   //need revisions path
-  const { revisions } = server.config<ServerConfig['idea']>('idea') || {};
+  const { revisions } = server.config<ServerConfig['build']>('build') || {};
   //if can revision
   if (revisions) {
     //add a new revision

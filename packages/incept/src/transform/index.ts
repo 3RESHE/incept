@@ -9,7 +9,7 @@ import generateConfig from './config';
 import generateRegistry from './registry';
 
 /**
- * @stackpress/.incept (file structure)
+ * Client File Structure
  * - profile/
  * | - actions/
  * | | - batch.ts
@@ -78,7 +78,7 @@ import generateRegistry from './registry';
  */
 
 /**
- * @stackpress/.incept (file structure)
+ * Client File Structure
  * - profile/
  * | - config.ts
  * | - index.ts
