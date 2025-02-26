@@ -131,8 +131,5 @@ dist
 
 .DS_Store
 example/build
+example/public/client
 archives
-packages/incept/components
-example/migrations
-example/revisions
-example/database
