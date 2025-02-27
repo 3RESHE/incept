@@ -1,6 +1,6 @@
 {
   "name": "@stackpress/incept-admin",
-  "version": "0.1.21",
+  "version": "0.1.22",
   "license": "MIT",
   "description": "This package manages the theme of the admin in an Incept app.",
   "author": "Chris <chris@stackpress.io>",
@@ -24,7 +24,7 @@
   ],
   "dependencies": {
     "@stackpress/idea-transformer": "0.3.32",
-    "@stackpress/incept": "0.1.21",
+    "@stackpress/incept": "0.1.22",
     "@stackpress/ingest": "0.3.32",
     "@stackpress/ink": "0.3.32",
     "@stackpress/ink-ui": "0.3.32",

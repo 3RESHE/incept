@@ -1,6 +1,6 @@
 {
   "name": "@stackpress/incept-types",
-  "version": "0.1.21",
+  "version": "0.1.22",
   "license": "MIT",
   "description": "This package generates enums and Typescript types per model and fieldset in an Incept client.",
   "author": "Chris <chris@stackpress.io>",
@@ -22,7 +22,7 @@
   ],
   "dependencies": {
     "@stackpress/idea-transformer": "0.3.32",
-    "@stackpress/incept": "0.1.21",
+    "@stackpress/incept": "0.1.22",
     "@stackpress/ingest": "0.3.32",
     "ts-morph": "24.0.0"
   },
