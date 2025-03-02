@@ -1,5 +1,3 @@
-//modules
-import path from 'node:path';
 //stackpress
 import type Server from '@stackpress/ingest/dist/Server';
 //local
@@ -13,8 +11,9 @@ export default function plugin(server: Server) {
   //on route, add user routes
   server.on('route', req => {
     const server = req.context;
-    server.all('/auth/oauth/token', path.join(__dirname, 'pages/token'));
-    server.all('/auth/oauth', path.join(__dirname, 'pages/oauth'));
+    const router = server.withImports;
+    router.all('/auth/oauth/token', () => import('./pages/token'));
+    router.all('/auth/oauth', () => import('./pages/oauth'));
     const { endpoints = [] } = server.config<APIConfig['api']>('api') || {};
     for (const endpoint of endpoints) {
       if (endpoint.type === 'session') {
@@ -29,7 +28,7 @@ export default function plugin(server: Server) {
 };
 
 export function session(endpoint: Endpoint, server: Server) {
-  server.route(endpoint.method, endpoint.route, async (req, res) => {
+  server.route(endpoint.method, endpoint.route, async function SessionAPI(req, res) {
     const server = req.context;
     //authorization check
     const authorization = authorize(req, res);
@@ -61,7 +60,7 @@ export function session(endpoint: Endpoint, server: Server) {
 };
 
 export function app(endpoint: Endpoint, server: Server) {
-  server.route(endpoint.method, endpoint.route, async (req, res) => {
+  server.route(endpoint.method, endpoint.route, async function AppAPI(req, res) {
     const server = req.context;
     //authorization check
     const authorization = authorize(req, res);
@@ -92,7 +91,7 @@ export function app(endpoint: Endpoint, server: Server) {
 };
 
 export function open(endpoint: Endpoint, server: Server) {
-  server.route(endpoint.method, endpoint.route, async (req, res) => {
+  server.route(endpoint.method, endpoint.route, async function PublicAPI(req, res) {
     const server = req.context;
     req.data.set(endpoint.data || {});
     await server.emit(endpoint.event, req, res);

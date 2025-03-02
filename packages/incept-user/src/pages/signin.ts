@@ -33,12 +33,13 @@ export default async function SignInPage(req: ServerRequest, res: Response) {
   if (req.method === 'POST') {
     const response = await server.call('auth-signin', req);
     if (response.code !== 200) {
-      return res.setHTML(await render(template, { 
+      res.setHTML(await render(template, { 
         ...response, 
         input: req.data(),
         type, 
         config 
       }));
+      return;
     }
     const { profile } = response.results as {
       profile: {
@@ -56,10 +57,12 @@ export default async function SignInPage(req: ServerRequest, res: Response) {
       roles: profile.roles
     }));
     //redirect
-    return res.redirect(redirect);
+    res.redirect(redirect);
+    return;
   } else if (me) {
-    return res.redirect(redirect);
+    res.redirect(redirect);
+    return;
   }
 
-  return res.setHTML(await render(template, { type, config }));
+  res.setHTML(await render(template, { type, config }));
 };

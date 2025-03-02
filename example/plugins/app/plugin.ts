@@ -1,5 +1,3 @@
-//modules
-import path from 'node:path';
 //stackpress
 import type Server from '@stackpress/ingest/dist/Server';
 //incept
@@ -10,7 +8,6 @@ import dmz from './pages/public';
 
 export default function plugin(server: Server) {
   server.config.set(config);
-  const pages = path.join(__dirname, 'pages');
   //on config (low priority), add app templates
   server.on('config', req => {
     const server = req.context;
@@ -23,7 +20,7 @@ export default function plugin(server: Server) {
   }, -10);
   server.on('listen', async req => {
     const server = req.context;
-    server.on('error', path.join(pages, 'error'));
+    server.withImports.on('error', () => import('./pages/error'));
     server.on('request', async (req, res) => {  
       if (!res.body && (!res.code || res.code === 404)) {
         await dmz(req, res);
@@ -37,7 +34,6 @@ export default function plugin(server: Server) {
     });
   });
   server.on('route', async req => {
-    const server = req.context;
-    server.get('/', path.join(pages, 'home'));
+    req.context.withImports.get('/', () => import('./pages/home'));
   });
 };

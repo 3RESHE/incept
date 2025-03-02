@@ -23,17 +23,17 @@
     "tsconfig.json"
   ],
   "dependencies": {
-    "@stackpress/idea-transformer": "0.3.32",
+    "@stackpress/idea-transformer": "0.3.34",
     "@stackpress/incept": "0.1.22",
-    "@stackpress/ingest": "0.3.32",
-    "@stackpress/ink": "0.3.32",
-    "@stackpress/ink-ui": "0.3.32",
+    "@stackpress/ingest": "0.3.34",
+    "@stackpress/ink": "0.3.34",
+    "@stackpress/ink-ui": "0.3.34",
     "papaparse": "5.5.1",
     "ts-morph": "24.0.0"
   },
   "devDependencies": {
-    "@stackpress/ink-css": "0.3.32",
-    "@stackpress/ink-dev": "0.3.32",
+    "@stackpress/ink-css": "0.3.34",
+    "@stackpress/ink-dev": "0.3.34",
     "@types/papaparse": "5.3.15",
     "@types/node": "22.9.3",
     "copyfiles": "2.4.1",

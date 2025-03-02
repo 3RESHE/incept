@@ -49,9 +49,10 @@ export default async function OAuth(req: ServerRequest, res: Response) {
   const session = await server.call('me', req);
   if (!session.results) {
     const redirect = encodeURIComponent(req.url.pathname + req.url.search);
-    return res.redirect(
+    res.redirect(
       `/auth/signin?redirect_uri=${redirect}`
     );
+    return;
   }
   const application = await server.call('application-detail', { id });
   //if no applcation found
@@ -78,7 +79,7 @@ export default async function OAuth(req: ServerRequest, res: Response) {
       expires: new Date(Date.now() + expires)
     });
     if (response.code !== 200) {
-      return res.setHTML(await render(template, { 
+      res.setHTML(await render(template, { 
         ...response, 
         revert,
         scopes,
@@ -87,6 +88,7 @@ export default async function OAuth(req: ServerRequest, res: Response) {
         session: session.results,
         application: application.results
       }));
+      return;
     }
     const results = response.results as Session;
 
@@ -97,10 +99,11 @@ export default async function OAuth(req: ServerRequest, res: Response) {
       params.set('state', state);
     }
     //redirect
-    return res.redirect(`${uri}?${params.toString()}`);
+    res.redirect(`${uri}?${params.toString()}`);
+    return;
   }
   //render the template
-  return res.setHTML(await render(template, { 
+  res.setHTML(await render(template, { 
     revert,
     scopes,
     endpoints,

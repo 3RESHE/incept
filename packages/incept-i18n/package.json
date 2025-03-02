@@ -26,7 +26,7 @@
   ],
   "dependencies": {
     "@stackpress/incept": "0.1.22",
-    "@stackpress/ingest": "0.3.32"
+    "@stackpress/ingest": "0.3.34"
   },
   "devDependencies": {
     "@types/node": "22.9.3",

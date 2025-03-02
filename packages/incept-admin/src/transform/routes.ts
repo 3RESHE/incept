@@ -21,11 +21,6 @@ export default function generate(directory: Directory, registry: Registry) {
       moduleSpecifier: '@stackpress/ingest/dist/Server',
       defaultImport: 'Server'
     });
-    //import path from 'path';
-    source.addImportDeclaration({
-      moduleSpecifier: 'path',
-      defaultImport: 'path'
-    });
     //export default function route(server: Server) {}
     source.addFunction({
       isDefaultExport: true,
@@ -37,14 +32,15 @@ export default function generate(directory: Directory, registry: Registry) {
         //get the admin config
         const admin = server.config<AdminConfig['admin']>('admin') || {};
         const root = admin.root || '/admin';
-        server.all(\`\${root}/${model.dash}/search\`, path.resolve(__dirname, 'pages/search'));
-        server.all(\`\${root}/${model.dash}/create\`, path.resolve(__dirname, 'pages/create'));
-        server.all(\`\${root}/${model.dash}/detail/${ids}\`, path.resolve(__dirname, 'pages/detail'));
-        server.all(\`\${root}/${model.dash}/export\`, path.resolve(__dirname, 'pages/export'));
-        server.all(\`\${root}/${model.dash}/import\`, path.resolve(__dirname, 'pages/import'));
-        server.all(\`\${root}/${model.dash}/update/${ids}\`, path.resolve(__dirname, 'pages/update'));
-        server.all(\`\${root}/${model.dash}/remove/${ids}\`, path.resolve(__dirname, 'pages/remove'));
-        server.all(\`\${root}/${model.dash}/restore/${ids}\`, path.resolve(__dirname, 'pages/restore'));
+        const router = server.withImports;
+        router.all(\`\${root}/${model.dash}/search\`, () => import('./pages/search'));
+        router.all(\`\${root}/${model.dash}/create\`, () => import('./pages/create'));
+        router.all(\`\${root}/${model.dash}/detail/${ids}\`, () => import('./pages/detail'));
+        router.all(\`\${root}/${model.dash}/export\`, () => import('./pages/export'));
+        router.all(\`\${root}/${model.dash}/import\`, () => import('./pages/import'));
+        router.all(\`\${root}/${model.dash}/update/${ids}\`, () => import('./pages/update'));
+        router.all(\`\${root}/${model.dash}/remove/${ids}\`, () => import('./pages/remove'));
+        router.all(\`\${root}/${model.dash}/restore/${ids}\`, () => import('./pages/restore'));
       `.trim()
     });
   }

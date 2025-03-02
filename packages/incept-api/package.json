@@ -28,8 +28,8 @@
   "dependencies": {
     "@stackpress/incept": "0.1.22",
     "@stackpress/incept-user": "0.1.22",
-    "@stackpress/ingest": "0.3.32",
-    "@stackpress/inquire": "0.3.32",
+    "@stackpress/ingest": "0.3.34",
+    "@stackpress/inquire": "0.3.34",
     "jsonwebtoken": "9.0.2"
   },
   "devDependencies": {

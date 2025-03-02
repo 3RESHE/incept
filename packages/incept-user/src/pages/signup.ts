@@ -29,16 +29,20 @@ export default async function SignupPage(req: ServerRequest, res: Response) {
   if (req.method === 'POST') {
     const response = await server.call('auth-signup', req);
     if (response.code !== 200) {
-      return res.setHTML(await render(template, { 
+      res.setHTML(await render(template, { 
         ...response, 
         input: req.data(), 
         config 
       }));
+      return;
     }
-    return res.redirect(redirect);
+    res.redirect(redirect);
+    return;
   } else if (me) {
-    return res.redirect(redirect);
+    res.redirect(redirect);
+    return;
   }
 
-  return res.setHTML(await render(template, { config }));
+  res.setHTML(await render(template, { config }));
+  return;
 };

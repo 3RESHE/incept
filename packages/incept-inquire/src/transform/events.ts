@@ -33,11 +33,6 @@ export default function generate(directory: Directory, registry: Registry) {
       '', 
       { overwrite: true }
     );
-    //import path from 'path';
-    source.addImportDeclaration({
-      moduleSpecifier: 'path',
-      defaultImport: 'path'
-    });
     //import { ServerRouter } from '@stackpress/ingest/dist/Router';
     source.addImportDeclaration({
       moduleSpecifier: '@stackpress/ingest/dist/Router',
@@ -45,18 +40,18 @@ export default function generate(directory: Directory, registry: Registry) {
     });
     //const emitter = new ServerRouter();
     source.addStatements(`
-      const emitter = new ServerRouter();
-
-      emitter.on('${model.dash}-batch', path.resolve(__dirname, 'batch'));
-      emitter.on('${model.dash}-create', path.resolve(__dirname, 'create'));
-      emitter.on('${model.dash}-detail', path.resolve(__dirname, 'detail'));
-      emitter.on('${model.dash}-get', path.resolve(__dirname, 'get'));
-      emitter.on('${model.dash}-purge', path.resolve(__dirname, 'purge'));
-      emitter.on('${model.dash}-remove', path.resolve(__dirname, 'remove'));
-      emitter.on('${model.dash}-restore', path.resolve(__dirname, 'restore'));
-      emitter.on('${model.dash}-search', path.resolve(__dirname, 'search'));
-      emitter.on('${model.dash}-update', path.resolve(__dirname, 'update'));
-      emitter.on('${model.dash}-upsert', path.resolve(__dirname, 'upsert'));
+      const router = new ServerRouter();
+      const imports = router.withImports;
+      imports.on('${model.dash}-batch', () => import('./batch'));
+      imports.on('${model.dash}-create', () => import('./create'));
+      imports.on('${model.dash}-detail', () => import('./detail'));
+      imports.on('${model.dash}-get', () => import('./get'));
+      imports.on('${model.dash}-purge', () => import('./purge'));
+      imports.on('${model.dash}-remove', () => import('./remove'));
+      imports.on('${model.dash}-restore', () => import('./restore'));
+      imports.on('${model.dash}-search', () => import('./search'));
+      imports.on('${model.dash}-update', () => import('./update'));
+      imports.on('${model.dash}-upsert', () => import('./upsert'));
 
       export default emitter;
     `);

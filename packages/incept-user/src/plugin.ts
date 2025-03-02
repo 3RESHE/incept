@@ -1,5 +1,3 @@
-//modules
-import path from 'path';
 //stackpress
 import type Server from '@stackpress/ingest/dist/Server';
 //incept
@@ -35,23 +33,23 @@ export default function plugin(server: Server) {
   }, -10);
   //on listen, add user events
   server.on('listen', req => {
-    const server = req.context;
-    server.on('auth-search', path.join(__dirname, 'events/search'), -10000);
-    server.on('auth-detail', path.join(__dirname, 'events/detail'), -10000);
-    server.on('auth-get', path.join(__dirname, 'events/detail'), -10000);
-    server.on('auth-signup', path.join(__dirname, 'events/signup'));
-    server.on('auth-signin', path.join(__dirname, 'events/signin'));
-    server.on('auth-signout', path.join(__dirname, 'events/signout'));
-    server.on('authorize', path.join(__dirname, 'events/authorize'));
-    server.on('me', path.join(__dirname, 'events/session'));
-    server.on('request', path.join(__dirname, 'pages/authorize'));
+    const router = req.context.withImports;
+    router.on('auth-search', () => import('./events/search'), -10000);
+    router.on('auth-detail', () => import('./events/detail'), -10000);
+    router.on('auth-get', () => import('./events/detail'), -10000);
+    router.on('auth-signup', () => import('./events/signup'));
+    router.on('auth-signin', () => import('./events/signin'));
+    router.on('auth-signout', () => import('./events/signout'));
+    router.on('authorize', () => import('./events/authorize'));
+    router.on('me', () => import('./events/session'));
+    router.on('request', () => import('./pages/authorize'));
   });
   //on route, add user routes
   server.on('route', req => {
-    const server = req.context;
-    server.all('/auth/signin', path.join(__dirname, 'pages/signin'));
-    server.all('/auth/signin/:type', path.join(__dirname, 'pages/signin'));
-    server.all('/auth/signup', path.join(__dirname, 'pages/signup'));
-    server.all('/auth/signout', path.join(__dirname, 'pages/signout'));
+    const router = req.context.withImports;
+    router.all('/auth/signin', () => import('./pages/signin'));
+    router.all('/auth/signin/:type', () => import('./pages/signin'));
+    router.all('/auth/signup', () => import('./pages/signup'));
+    router.all('/auth/signout', () => import('./pages/signout'));
   });
 };
