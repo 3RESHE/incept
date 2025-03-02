@@ -7,7 +7,7 @@ import drop from '@stackpress/incept-inquire/dist/scripts/drop';
 import install from '@stackpress/incept-inquire/dist/scripts/install';
 import tests from '@stackpress/.incept/tests';
 //src
-import type { Config } from '../src/config';
+import type { Config } from '../plugins/config';
 
 async function make() {
   const app = server<Config>();

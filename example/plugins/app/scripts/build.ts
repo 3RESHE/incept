@@ -13,7 +13,7 @@ async function build() {
   await server.call('listen');
   await server.call('route');
   //get config
-  const config  = server.config.withPath;
+  const config = server.config.withPath;
   const cwd = config.get<string>('server.cwd');
   const build = config.get<string>('server.build');
   //make server, client and styles

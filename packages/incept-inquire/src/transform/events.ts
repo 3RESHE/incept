@@ -38,7 +38,7 @@ export default function generate(directory: Directory, registry: Registry) {
       moduleSpecifier: '@stackpress/ingest/dist/Router',
       namedImports: [ 'ServerRouter' ]
     });
-    //const emitter = new ServerRouter();
+    //const router = new ServerRouter();
     source.addStatements(`
       const router = new ServerRouter();
       const imports = router.withImports;
@@ -53,7 +53,7 @@ export default function generate(directory: Directory, registry: Registry) {
       imports.on('${model.dash}-update', () => import('./update'));
       imports.on('${model.dash}-upsert', () => import('./upsert'));
 
-      export default emitter;
+      export default router;
     `);
     //export { create, detail, ... }
     source.addExportDeclaration({
