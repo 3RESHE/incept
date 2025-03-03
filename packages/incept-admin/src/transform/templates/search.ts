@@ -56,7 +56,7 @@ const template = `
     detail: \`\${settings.root}/{{lower}}/detail/{{ids}}\`,
     export: \`\${settings.root}/{{lower}}/export\`,
     import: \`\${settings.root}/{{lower}}/import\`,
-    detail: \`\${settings.root}/{{lower}}/update/{{ids}}\`
+    update: \`\${settings.root}/{{lower}}/update/{{ids}}\`
   };
   const crumbs = [
     { icon: 'home', label: 'Home', href: settings.root },

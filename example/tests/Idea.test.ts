@@ -1,6 +1,5 @@
 import { describe, before } from 'mocha';
 //stackpress
-import type Server from '@stackpress/ingest/dist/Server';
 import type Engine from '@stackpress/inquire/dist/Engine';
 import { server as http } from '@stackpress/ingest/http';
 //incept
