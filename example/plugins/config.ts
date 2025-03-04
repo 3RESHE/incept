@@ -35,6 +35,8 @@ const templates = path.join(build, 'templates');
 const manifest = path.join(templates, 'manifest.json');
 // - [project]/tsconfig.json
 const tsconfig = path.join(cwd, 'tsconfig.json');
+// - [project]/node_modules
+const modules = path.join(cwd, 'node_modules');
 
 export type Config = ServerConfig 
   & DatabaseConfig
@@ -57,9 +59,9 @@ export const config: Config = {
   },
   client: { 
     lang: 'js',
-    module: path.join(build, 'client'),
+    module: '@stackpress/.incept',
     revisions: revisions,
-    build: path.join(build, 'client'),
+    build: path.join(modules, '@stackpress', '.incept'),
     tsconfig: tsconfig
   },
   database: {
@@ -157,6 +159,8 @@ export const config: Config = {
   },
   cookie: { path: '/' },
   admin: {
+    name: 'Admin',
+    logo: '/images/incept-logo-square-1.png',
     root: '/admin',
     menu: [
       {

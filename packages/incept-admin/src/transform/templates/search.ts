@@ -46,6 +46,8 @@ const template = `
     },
     settings = { 
       root: '/admin',
+      name: 'Admin', 
+      logo: '/images/logo-square.png',
       menu: []
     }
   } = props('document');

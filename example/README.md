@@ -8,14 +8,14 @@ Copy `.env.sample` to `./env`, then run the following commands in terminal.
 
 ```bash
 $ yarn
-$ yarn build
+$ yarn generate
 $ yarn push
 $ yarn populate
 $ yarn develop
 ```
 
  - `yarn` - Install node module dependencies
- - `yarn build` - Compiles example TS to JS to `build` folder
+ - `yarn generate` - Generates `@stackpress/.incept` based on `schema.idea`
  - `yarn push` - Creates example database tables
  - `yarn populate` - Populates example database
  - `yarn develop` - Starts the example development server

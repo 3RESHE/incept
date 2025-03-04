@@ -10,7 +10,7 @@
   
   <script data-template type="text/json">__TEMPLATE_DATA__</script>
   <script type="text/javascript" src={`/client/${env('BUILD_ID')}.js`}></script>
-  <if true={env('PUBLIC_ENV') === 'development'}>
+  <if true={env('PUBLIC_ENV') !== 'production'}>
     <script src="/dev.js"></script>
   </if>
 </head>

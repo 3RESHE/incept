@@ -16,10 +16,10 @@
     },
     settings = { 
       root: '/admin',
+      name: 'Admin', 
+      logo: '/images/logo-square.png',
       menu: []
-    },
-    brand = 'Admin', 
-    logo = '/images/incept-logo-square-1.png'
+    }
   } = this.props;
   //states
   const theme = Cookies.get('theme') || 'dark';
@@ -207,8 +207,8 @@
 </header>
 <aside left class={className.left}>
   <header class="h-50 px-10 bg-t-1 flex flex-center-y">
-    <img class="h-26 mr-10" src={logo} />
-    <h3 class="flex-grow tx-upper">{brand}</h3>
+    <img class="h-26 mr-10" src={settings.logo} />
+    <h3 class="flex-grow tx-upper">{settings.name}</h3>
     <a class="p-10 cursor-pointer none md-inline-block" click={this.toggle.left}>
       <element-icon name="chevron-left" />
     </a>

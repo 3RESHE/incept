@@ -75,8 +75,8 @@ export default function plugin(server: Server) {
   server.on('config', req => {
     const server = req.context;
     //get server environment
-    const environment = server.config.path('server.mode', 'development');
-    const development = environment === 'development';
+    const environment = server.config.path('server.mode', 'production');
+    const development = environment !== 'production';
     //get template engine config
     const cwd = server.config.path('template.config.cwd', process.cwd());
     const minify = server.config.path('template.config.minify', false);
@@ -108,8 +108,8 @@ export default function plugin(server: Server) {
   server.on('route', req => {
     const server = req.context;
     //get server environment
-    const environment = server.config.path('server.mode', 'development');
-    const development = environment === 'development';
+    const environment = server.config.path('server.mode', 'production');
+    const development = environment !== 'production';
     //dont add dev routes if not in development mode
     if (!development) return;
     const { compiler, refresh } = server.plugin<InkPlugin>('ink');
