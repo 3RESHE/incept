@@ -1,6 +1,6 @@
 {
   "name": "@stackpress/incept-email",
-  "version": "0.1.25",
+  "version": "0.1.26",
   "license": "MIT",
   "description": "This package is enables email in an Incept app.",
   "author": "Chris <chris@stackpress.io>",

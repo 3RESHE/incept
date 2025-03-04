@@ -4,13 +4,13 @@ import type Engine from '@stackpress/inquire/dist/Engine';
 //incept
 import drop from '@stackpress/incept-inquire/dist/scripts/drop';
 import install from '@stackpress/incept-inquire/dist/scripts/install';
-import clientTests from '../build/client/tests';
+import clientTests from '@stackpress/.incept/tests';
 //src
 import bootstrap from '../plugins/bootstrap';
 
 describe('Idea Tests', async () => {
   //make a new server
-  const server = await bootstrap('integration');
+  const server = await bootstrap('production');
   //before all tests...
   before(async () => {  
     //get database
