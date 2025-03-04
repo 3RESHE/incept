@@ -4,7 +4,7 @@ import type Engine from '@stackpress/inquire/dist/Engine';
 //incept
 import drop from '@stackpress/incept-inquire/dist/scripts/drop';
 import install from '@stackpress/incept-inquire/dist/scripts/install';
-import clientTests from '@stackpress/.incept/tests';
+import clientTests from '../build/client/tests';
 //src
 import bootstrap from '../plugins/bootstrap';
 

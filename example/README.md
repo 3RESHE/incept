@@ -9,14 +9,16 @@ Copy `.env.sample` to `./env`, then run the following commands in terminal.
 ```bash
 $ yarn
 $ yarn build
-$ yarn install
+$ yarn push
+$ yarn populate
 $ yarn develop
 ```
 
  - `yarn` - Install node module dependencies
- - `yarn build` - Compiles TS to JS to `build` folder
- - `yarn install` - Creates and populates database
- - `yarn develop` - Starts the development server
+ - `yarn build` - Compiles example TS to JS to `build` folder
+ - `yarn push` - Creates example database tables
+ - `yarn populate` - Populates example database
+ - `yarn develop` - Starts the example development server
 
 Goto `http://localhost:3000/auth/signin` and login with `admin/admin`.
 
