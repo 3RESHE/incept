@@ -5,7 +5,7 @@
     "lib": [ "es2021", "es7", "es6", "dom" ],
     "module": "commonjs",
     "noUnusedLocals": true,
-    "outDir": "./build/plugins",
+    "outDir": "./build",
     "preserveConstEnums": true,
     "resolveJsonModule": true,
     "removeComments": true,
@@ -14,6 +14,6 @@
     "target": "es6",
     "skipLibCheck": true
   },
-  "include": [ "plugins/**/*.ts" ],
+  "include": [ "plugins/**/*.ts", "scripts/**/*.ts" ],
   "exclude": [ "dist", "docs", "node_modules", "test", "incept" ]
 }

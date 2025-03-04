@@ -2,25 +2,32 @@
 import fs from 'node:fs';
 import path from 'node:path';
 //stackpress
-import { server as http } from '@stackpress/ingest/http';
+import Terminal from '@stackpress/incept/dist/Terminal';
 import cache from '@stackpress/incept-ink/dist/scripts/build';
+//plugins
+import bootstrap from '../plugins/bootstrap';
+
+Terminal.brand = '[EXAMPLE]';
 
 async function build() {
-  const server = http({ cache: false });
-  //load the plugins
-  await server.bootstrap();
-  await server.call('config');
-  await server.call('listen');
-  await server.call('route');
+  const server = await bootstrap('production');
   //get config
-  const config = server.config.withPath;
-  const cwd = config.get<string>('server.cwd');
-  const build = config.get<string>('server.build');
+  const cwd = server.config.path(
+    'server.cwd',
+    process.cwd()
+  );
+  const build = server.config.path(
+    'server.build', 
+    path.join(cwd, 'build')
+  );
   //make server, client and styles
+  Terminal.warning('Building server, client and styles...');
   await cache(server);
   //copy ink files to build
+  Terminal.warning('Copying ink files to build...');
   copyInkFiles(cwd, build);
   //make a package.json
+  Terminal.warning('Building package.json...');
   buildPackageJSON(cwd, build);
 };
 
@@ -57,8 +64,11 @@ export function buildPackageJSON(cwd: string, build: string) {
   const destination = path.join(build, 'package.json');
   const contents = fs.readFileSync(source, 'utf8');
   const settings = JSON.parse(contents);
-  delete settings.scripts;
   delete settings.devDependencies;
+  settings.scripts = {
+    generate: 'node scripts/generate.js',
+    start: 'node scripts/serve.js'
+  };
   fs.writeFileSync(destination, JSON.stringify(settings, null, 2));
 }
 
