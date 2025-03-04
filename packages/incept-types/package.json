@@ -21,9 +21,9 @@
     "tsconfig.json"
   ],
   "dependencies": {
-    "@stackpress/idea-transformer": "0.3.34",
+    "@stackpress/idea-transformer": "0.3.36",
     "@stackpress/incept": "0.1.24",
-    "@stackpress/ingest": "0.3.34",
+    "@stackpress/ingest": "0.3.36",
     "ts-morph": "24.0.0"
   },
   "devDependencies": {

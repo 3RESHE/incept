@@ -27,8 +27,8 @@
   ],
   "dependencies": {
     "@stackpress/incept": "0.1.24",
-    "@stackpress/ingest": "0.3.34",
-    "@stackpress/inquire": "0.3.34",
+    "@stackpress/ingest": "0.3.36",
+    "@stackpress/inquire": "0.3.36",
     "jsonwebtoken": "9.0.2"
   },
   "devDependencies": {

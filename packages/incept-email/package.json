@@ -23,7 +23,7 @@
     "tsconfig.json"
   ],
   "dependencies": {
-    "@stackpress/ingest": "0.3.34",
+    "@stackpress/ingest": "0.3.36",
     "nodemailer": "6.9.16"
   },
   "devDependencies": {
