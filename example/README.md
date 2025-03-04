@@ -4,11 +4,13 @@ A basic boilerplate for incept.
 
 ## Install
 
+Copy `.env.sample` to `./env`, then run the following commands in terminal.
+
 ```bash
 $ yarn
-$ yarn generate
-$ yarn dev install
-$ yarn serve
+$ yarn push
+$ yarn populate
+$ yarn develop
 ```
 
 ## Utilities
@@ -18,19 +20,45 @@ pattern of `yarn [block]:[migrate|test|dev|live] [?event] [...params]`.
 The following are example commands.
 
 ```bash
+$ yarn develop
+$ yarn emit
+$ yarn generate
 $ yarn migrate
+$ yarn populate
+$ yarn purge
+$ yarn push
+$ yarn query
 $ yarn test
-$ yarn dev install
-$ yarn dev populate
-$ yarn dev purge
-$ yarn dev push
-$ yarn dev query
-$ yarn live install
-$ yarn live populate
-$ yarn live purge
-$ yarn live push
-$ yarn live query
 ```
+
+### Develop
+
+```bash
+$ yarn develop
+```
+
+Starts the development server
+
+### Events
+
+```bash
+$ yarn emit [event-name] [?data]
+```
+
+Emits an event. For example, you can query the profile table 
+using the following command.
+
+```bash
+$ yarn emit profile-search take=1
+```
+
+### Generate
+
+```bash
+$ yarn generate
+```
+
+Generates client code
 
 ### Migrate
 
@@ -43,13 +71,42 @@ generates an SQL file based on the `development` database only.
 
 > It does not push these changes to the database.
 
-### Serve
+### Populate
 
 ```bash
-$ yarn serve [?port]
+$ yarn populate
 ```
 
-Starts the development server
+Populates database defined in `src/modules/util/populate.ts`
+
+### Purge
+
+```bash
+$ yarn purge
+```
+
+Purges database.
+
+### Push
+
+```bash
+$ yarn push
+```
+
+Pushes schema changes to the database.
+
+### Query
+
+```bash
+$ yarn query [query]
+```
+
+Queries the database. For example, you can query the profile table 
+using the following command.
+
+```bash
+$ yarn query "SELECT * from profile"
+```
 
 ### Test
 
@@ -59,27 +116,3 @@ $ yarn test
 
 Tests are automatically generated, but you can add special tests in the 
 `tests` folder.
-
-### Events
-
-All events can be ran from the command line and follow a common 
-pattern of `yarn [dev|live] [event] [...params]`. Where `dev`
-events are ran in the development environment and `live` events are ran
-in the production envionment.
-
-> `yarn live [event]` events are ran on production.
-
-For example, you can query the profile table using the following commands.
-
-```bash
-$ yarn dev profile-search
-$ yarn dev query "select * from profile"
-```
-
-The following are pre-defined events.
-
- - `$ yarn dev install` - Creates all tables in the database
- - `$ yarn dev populate` - Populates the database
- - `$ yarn dev purge` - Truncates all table rows in the database
- - `$ yarn dev push` - Pushes the latest table schema changes to the database
- - `$ yarn dev query "[query]"` - SQL raw query
