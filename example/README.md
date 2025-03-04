@@ -13,6 +13,8 @@ $ yarn populate
 $ yarn develop
 ```
 
+Goto `http://localhost:3000/auth/signin` and login with `admin/admin`.
+
 ## Utilities
 
 The following utilities are available per block and follow a common 
@@ -86,6 +88,8 @@ $ yarn purge
 ```
 
 Purges database.
+
+> Use a combination of purge/populate to reset the data inside the database.
 
 ### Push
 
