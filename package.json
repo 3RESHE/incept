@@ -21,6 +21,7 @@
     "develop": "yarn --cwd example develop",
     "emit": "yarn --cwd example emit",
     "generate": "yarn --cwd example generate",
+    "install": "yarn --cwd example install",
     "migrate": "yarn --cwd example migrate",
     "populate": "yarn --cwd example populate",
     "purge": "yarn --cwd example purge",

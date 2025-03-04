@@ -67,7 +67,8 @@ export function buildPackageJSON(cwd: string, build: string) {
   delete settings.devDependencies;
   settings.scripts = {
     generate: 'node scripts/generate.js',
-    start: 'node scripts/serve.js'
+    start: 'node scripts/serve.js',
+    postinstall: 'node scripts/generate.js'
   };
   fs.writeFileSync(destination, JSON.stringify(settings, null, 2));
 }

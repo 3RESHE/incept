@@ -21,6 +21,9 @@ const assets = development
 // - [project]/public/client
 const client = path.join(assets, 'client');
 // - [project]/build
+// - [project]/build/client?
+// - [project]/build/plugins
+// - [project]/build/scripts
 const build = development ? path.join(cwd, 'build') : cwd;
 // - [project]/build/migrations
 const migrations = path.join(build, 'migrations');
@@ -30,8 +33,6 @@ const revisions = path.join(build, 'revisions');
 const templates = path.join(build, 'templates');
 // - [project]/build/templates/manifest.json
 const manifest = path.join(templates, 'manifest.json');
-// - [project]/node_modules
-const modules = path.join(cwd, 'node_modules');
 // - [project]/tsconfig.json
 const tsconfig = path.join(cwd, 'tsconfig.json');
 
@@ -56,9 +57,9 @@ export const config: Config = {
   },
   client: { 
     lang: 'js',
-    module: '@stackpress/.incept',
+    module: path.join(build, 'client'),
     revisions: revisions,
-    build: path.join(modules, '@stackpress', '.incept'),
+    build: path.join(build, 'client'),
     tsconfig: tsconfig
   },
   database: {
