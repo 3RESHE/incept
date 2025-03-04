@@ -15,9 +15,8 @@ export default function generate(
   schema: SchemaConfig, 
   server: Server
 ) {
-  const config = server.config.withPath;
   //need revisions path
-  const revisions = config.get<string>('client.revisions');
+  const revisions = server.config.path<string>('client.revisions');
   //if can revision
   if (revisions) {
     //add a new revision

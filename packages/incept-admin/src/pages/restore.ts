@@ -24,8 +24,7 @@ export default function AdminRestorePageFactory(model: Model) {
     //get the renderer
     const { render } = server.plugin<TemplatePlugin>('template');
     //determine the templates
-    const config = server.config.withPath;
-    const module = config.get<string>('client.module');
+    const module = server.config.path<string>('client.module');
     const error = '@stackpress/incept-admin/dist/components/error';
     const template = `${module}/${model.name}/admin/templates/restore`;
     //get id from url params

@@ -74,18 +74,17 @@ export default function plugin(server: Server) {
   //on config, register template plugin
   server.on('config', req => {
     const server = req.context;
-    const config = server.config.withPath;
     //get server environment
-    const environment = config.get<string>('server.mode') || 'development';
+    const environment = server.config.path('server.mode', 'development');
     const development = environment === 'development';
     //get template engine config
-    const cwd = config.get<string>('template.config.cwd') || process.cwd();
-    const minify = config.get<boolean>('template.config.minify');
-    const brand = config.get<string>('template.config.brand') || '';
-    const clientPath = config.get<string>('template.config.clientPath');
-    const serverPath = config.get<string>('template.config.serverPath');
-    const manifestPath = config.get<string>('template.config.manifestPath');
-    const files = config.get<string[]>('template.templates') || [];
+    const cwd = server.config.path('template.config.cwd', process.cwd());
+    const minify = server.config.path('template.config.minify', false);
+    const brand = server.config.path('template.config.brand', '');
+    const clientPath = server.config.path('template.config.clientPath');
+    const serverPath = server.config.path('template.config.serverPath');
+    const manifestPath = server.config.path('template.config.manifestPath');
+    const files = server.config.path<string[]>('template.templates', []);
     //make a template set
     const templates = new Set(files);
     //make a new refresh server
@@ -108,18 +107,20 @@ export default function plugin(server: Server) {
   //on route, add dev routes
   server.on('route', req => {
     const server = req.context;
-    const config = server.config.withPath;
     //get server environment
-    const environment = config.get<string>('server.mode');
+    const environment = server.config.path('server.mode', 'development');
+    const development = environment === 'development';
     //dont add dev routes if not in development mode
-    if (environment !== 'development') return;
+    if (!development) return;
     const { compiler, refresh } = server.plugin<InkPlugin>('ink');
-    const buildRoute = config.get<string>(
-      'template.config.dev.buildRoute'
-    ) || '/build/client';
-    const socketRoute = config.get<string>(
-      'template.config.dev.socketRoute'
-    ) || '/__ink_dev__';
+    const buildRoute = server.config.path(
+      'template.config.dev.buildRoute',
+      '/build/client'
+    );
+    const socketRoute = server.config.path(
+      'template.config.dev.socketRoute',
+      '/__ink_dev__'
+    );
     server.all('/dev.js', function DevClient(req, res) {
       const script = compiler.fs.readFileSync(
         require.resolve('@stackpress/ink-dev/client.js'),

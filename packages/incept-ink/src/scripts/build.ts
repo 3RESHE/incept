@@ -9,12 +9,11 @@ import type { TemplatePlugin } from '../types';
 
 export default async function build(server: Server<any, any, any>) {
   //get the compiler options
-  const config = server.config.withPath;
-  const cwd = config.get<string>('template.config.cwd') || process.cwd();
-  const brand = config.get<string>('template.config.brand') || '';
-  const clientPath = config.get<string>('template.config.clientPath');
-  const serverPath = config.get<string>('template.config.serverPath');
-  const manifestPath = config.get<string>('template.config.manifestPath');
+  const cwd = server.config.path('template.config.cwd', process.cwd());
+  const brand = server.config.path('template.config.brand', '');
+  const clientPath = server.config.path<string>('template.config.clientPath');
+  const serverPath = server.config.path<string>('template.config.serverPath');
+  const manifestPath = server.config.path<string>('template.config.manifestPath');
   //get paths
   const paths = {
     client: clientPath,

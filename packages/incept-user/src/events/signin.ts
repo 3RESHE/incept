@@ -12,13 +12,12 @@ export default async function AuthSignin(req: ServerRequest, res: Response) {
   const type = req.data('type') || 'username';
   //get the server
   const server = req.context;
-  const config = server.config.withPath;
   //get the database engine 
   const engine = server.plugin<DatabasePlugin>('database');
   //get the client
   const client = server.plugin<Client>('client');
   //get the session seed
-  const seed = config.get<string>('session.seed') || 'abc123';
+  const seed = server.config.path('session.seed', 'abc123');
   //get the user from the database
   const response = await signin(type, req.data(), seed, engine, client);
   //if there are results

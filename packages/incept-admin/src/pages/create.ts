@@ -23,8 +23,7 @@ export default function AdminCreatePageFactory(model: Model) {
     const admin = server.config<AdminConfig['admin']>('admin') || {};
     const root = admin.root || '/admin';
     //determine the template
-    const config = server.config.withPath;
-    const module = config.get<string>('client.module');
+    const module = server.config.path<string>('client.module');
     const template = `${module}/${model.name}/admin/templates/create`;
     //get the renderer
     const { render } = server.plugin<TemplatePlugin>('template');

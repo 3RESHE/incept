@@ -13,10 +13,9 @@ export default function plugin(server: Server) {
   //on config, register session plugin
   server.on('config', req => {
     const server = req.context;
-    const config = server.config.withPath;
-    const name = config.get<string>('session.name') || 'session';
-    const seed = config.get<string>('session.seed') || 'abc123';
-    const access = config.get<PermissionList>('session.access') || {};
+    const name = server.config.path('session.name', 'session');
+    const seed = server.config.path('session.seed', 'abc123');
+    const access = server.config.path<PermissionList>('session.access', {});
     //make a new session
     const session = new Session(name, seed, access);
     //add session as a project plugin

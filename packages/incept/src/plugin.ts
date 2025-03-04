@@ -10,8 +10,7 @@ export default function plugin(server: Server) {
   //on config, register the client as a plugin
   server.on('config', req => {
     const server = req.context;
-    const config = server.config.withPath;
-    const module = config.get<string>('client.module');
+    const module = server.config.path('client.module', '@stackpress/.incept');
     try {
       const client = server.loader.require(module);
       server.register('client', client);

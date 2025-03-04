@@ -17,8 +17,7 @@ export default function plugin(server: Server) {
   //on config, add templates
   server.on('config', req => {
     const server = req.context;
-    const config = server.config.withPath;
-    const module = config.get<string>('client.module');
+    const module = server.config.path('client.module', '@stackpress/.incept');
     //get the client (to determine the model page templates)
     const client = server.plugin<ClientPlugin>('client');
     //get the template plugin

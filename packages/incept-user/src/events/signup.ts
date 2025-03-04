@@ -12,13 +12,12 @@ export default async function AuthSignup(req: ServerRequest, res: Response) {
   const roles = req.context.config<string[]>('session', 'auth', 'roles') || [];
   //get the server
   const server = req.context;
-  const config = server.config.withPath;
   //get the database engine 
   const engine = server.plugin<DatabasePlugin>('database');
   //get the client
   const client = server.plugin<Client>('client');
   //get the session seed
-  const seed = config.get<string>('session.seed') || 'abc123';
+  const seed = server.config.path('session.seed', 'abc123');
   //get input
   const input = { roles, ...req.data() };
   const response = await signup(input, seed, engine, client);
