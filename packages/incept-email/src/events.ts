@@ -2,7 +2,7 @@
 import type { SendMailOptions, SentMessageInfo } from 'nodemailer';
 import nodemailer from 'nodemailer';
 //stackpress
-import { ServerRouter } from '@stackpress/ingest/dist/Router';
+import ServerRouter from '@stackpress/ingest/dist/router/ServerRouter';
 import type { EmailConfig } from './types';
 
 const emitter = new ServerRouter();

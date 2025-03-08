@@ -130,6 +130,6 @@ dist
 .pnp.*
 
 .DS_Store
-example/build
+example/.build
 example/public/client
 archives

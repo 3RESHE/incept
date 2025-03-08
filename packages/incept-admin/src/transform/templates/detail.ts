@@ -7,12 +7,12 @@ import type Registry from '@stackpress/incept/dist/schema/Registry';
 import { render } from '@stackpress/incept/dist/schema/helpers';
 
 const template = `
-<link rel="import" type="template" href="@stackpress/incept-admin/dist/components/head.ink" name="html-head" />
-<link rel="import" type="component" href="@stackpress/ink-ui/element/icon.ink" name="element-icon" />
-<link rel="import" type="component" href="@stackpress/ink-ui/element/crumbs.ink" name="element-crumbs" />
-<link rel="import" type="component" href="@stackpress/ink-ui/form/button.ink" name="form-button" />
-<link rel="import" type="component" href="../../components/view.ink" name="{{lower}}-view" />
-<link rel="import" type="component" href="@stackpress/incept-admin/dist/components/app.ink" name="admin-app" />
+<link rel="import" type="template" href="@stackpress/incept-admin/dist/components/head" name="html-head" />
+<link rel="import" type="component" href="@stackpress/ink-ui/element/icon" name="element-icon" />
+<link rel="import" type="component" href="@stackpress/ink-ui/element/crumbs" name="element-crumbs" />
+<link rel="import" type="component" href="@stackpress/ink-ui/form/button" name="form-button" />
+<link rel="import" type="component" href="../../components/view" name="{{lower}}-view" />
+<link rel="import" type="component" href="@stackpress/incept-admin/dist/components/app" name="admin-app" />
 <style>
   @ink theme;
   @ink reset;
@@ -25,23 +25,30 @@ const template = `
   import { _ } from '@stackpress/incept-i18n';
 
   const { 
-    error,
-    code = 200, 
-    status = 'OK', 
-    results = {},
+    config = {},
     session = { 
       id: 0, 
       token: '', 
       roles: [ 'GUEST' ], 
       permissions: [] 
     },
-    settings = { 
-      root: '/admin',
-      name: 'Admin', 
-      logo: '/images/logo-square.png',
-      menu: []
-    }
+    response = {}
   } = props('document');
+
+  const {
+    error,
+    code = 200,
+    status = 'OK',
+    results = {}
+  } = response;
+
+  const settings = config.admin || { 
+    root: '/admin',
+    name: 'Admin', 
+    logo: '/images/logo-square.png',
+    menu: []
+  };
+
   const detail = mustache.render('{{template}}', results);
   const url = \`\${settings.root}/{{lower}}/detail/{{ids}}\`;
   const title = detail || _('Profile Detail');

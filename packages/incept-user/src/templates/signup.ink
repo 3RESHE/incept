@@ -1,10 +1,10 @@
-<link rel="import" type="template" href="@stackpress/incept-admin/dist/components/head.ink" name="html-head" />
-<link rel="import" type="component" href="@stackpress/ink-ui/element/icon.ink" name="element-icon" />
-<link rel="import" type="component" href="@stackpress/ink-ui/form/control.ink" name="form-control" />
-<link rel="import" type="component" href="@stackpress/ink-ui/form/button.ink" name="form-button" />
-<link rel="import" type="component" href="@stackpress/ink-ui/field/input.ink" name="field-input" />
-<link rel="import" type="component" href="@stackpress/ink-ui/field/password.ink" name="field-password" />
-<link rel="import" type="component" href="@stackpress/incept-admin/dist/components/blank.ink" name="blank-app" />
+<link rel="import" type="template" href="@stackpress/incept-admin/dist/components/head" name="html-head" />
+<link rel="import" type="component" href="@stackpress/ink-ui/element/icon" name="element-icon" />
+<link rel="import" type="component" href="@stackpress/ink-ui/form/control" name="form-control" />
+<link rel="import" type="component" href="@stackpress/ink-ui/form/button" name="form-button" />
+<link rel="import" type="component" href="@stackpress/ink-ui/field/input" name="field-input" />
+<link rel="import" type="component" href="@stackpress/ink-ui/field/password" name="field-password" />
+<link rel="import" type="component" href="@stackpress/incept-admin/dist/components/blank" name="blank-app" />
 <style>
   @ink theme;
   @ink reset;
@@ -16,12 +16,16 @@
   import { _ } from '@stackpress/incept-i18n';
 
   const { 
-    code = 200, 
-    status = 'OK', 
-    errors = {}, 
-    input = {},
-    config = {}
+    config = {},
+    request = {},
+    response = {}
   } = props('document');
+
+  const code = response.code || 200;
+  const error = response.error;
+  const errors = response.errors || {};
+  const input = request.data || {};
+  const settings = config.auth || {};
 
   const url = '/auth/signup';
   const title = _('Sign Up');
@@ -29,12 +33,12 @@
 <html>
   <html-head />
   <body class="relative dark bg-t-0 tx-t-1 tx-arial scroll-auto">
-    <blank-app {code} {status} {errors} class="flex flex-col flex-center">
-      <if true={config.logo}>
-        <img height="50" alt={config.name} src={config.logo} class="block mx-auto mb-10" />
-      <elif true={config.name} />
+    <blank-app {code} status={error} {errors} class="flex flex-col flex-center">
+      <if true={settings.logo}>
+        <img height="50" alt={settings.name} src={settings.logo} class="block mx-auto mb-10" />
+      <elif true={settings.name} />
         <h2 class="mb-10 tx-5xl tx-center">
-          {config.name}
+          {settings.name}
         </h2>
       </if>
       <section class="bg-t-1 b-solid b-t-3 b-1 w-360">

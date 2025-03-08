@@ -2,10 +2,7 @@
 import type { ServerRequest } from '@stackpress/ingest/dist/types';
 import type Response from '@stackpress/ingest/dist/Response';
 //incept
-import type { TemplatePlugin } from '@stackpress/incept-ink/dist/types';
 import type Model from '@stackpress/incept/dist/schema/Model';
-//common
-import type { AdminConfig } from '../types';
 
 export default function AdminSearchPageFactory(model: Model) {
   return async function AdminSearchPage(req: ServerRequest, res: Response) {
@@ -16,16 +13,6 @@ export default function AdminSearchPageFactory(model: Model) {
     }
     //get the server
     const server = req.context;
-    //get session
-    const session = await server.call('me', req);
-    //get the admin config
-    const admin = server.config<AdminConfig['admin']>('admin') || {};
-    //get the renderer
-    const { render } = server.plugin<TemplatePlugin>('template');
-    //determine the templates
-    const module = server.config.path<string>('client.module');
-    const error = '@stackpress/incept-admin/dist/components/error';
-    const template = `${module}/${model.name}/admin/templates/search`;
     //extract filters from url query
     let { q, filter, span, sort, skip, take } = req.data<{
       q?: string,
@@ -44,33 +31,10 @@ export default function AdminSearchPageFactory(model: Model) {
       take = Number(take);
     }
     //search using the filters
-    const response = await server.call(
+    await server.call(
       `${model.dash}-search`,
-      { q, filter, span, sort, skip, take }
+      { q, filter, span, sort, skip, take },
+      res
     );
-    //if successfully searched
-    if (response.code === 200) {
-      if (req.query.has('json')) {
-        return res.setJSON(response);
-      }
-      //render the search page
-      return res.setHTML(await render(template, { 
-        q,
-        filter, 
-        span, 
-        sort, 
-        skip, 
-        take, 
-        settings: admin,
-        session: session.results,
-        ...response
-      }));
-    }
-    //it did not search, render error page
-    res.setHTML(await render(error, { 
-      ...response, 
-      settings: admin,
-      session: session.results 
-    }));
   };
 };

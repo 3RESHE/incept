@@ -9,12 +9,6 @@ export default function generate(directory: Directory, registry: Registry) {
     const ids = model.ids.map(column => `:${column.name}`).join('/')
     const file = `${model.name}/admin/routes.ts`;
     const source = directory.createSourceFile(file, '', { overwrite: true });
-    // import type { AdminConfig } from '@stackpress/incept-admin/dist/types';
-    source.addImportDeclaration({
-      isTypeOnly: true,
-      moduleSpecifier: '@stackpress/incept-admin/dist/types',
-      namedImports: [ 'AdminConfig' ]
-    });
     //import type Server from '@stackpress/ingest/dist/Server';
     source.addImportDeclaration({
       isTypeOnly: true,
@@ -29,18 +23,71 @@ export default function generate(directory: Directory, registry: Registry) {
         { name: 'server', type: 'Server' }
       ],
       statements: `
-        //get the admin config
-        const admin = server.config<AdminConfig['admin']>('admin') || {};
-        const root = admin.root || '/admin';
-        const router = server.withImports;
-        router.all(\`\${root}/${model.dash}/search\`, () => import('./pages/search'));
-        router.all(\`\${root}/${model.dash}/create\`, () => import('./pages/create'));
-        router.all(\`\${root}/${model.dash}/detail/${ids}\`, () => import('./pages/detail'));
-        router.all(\`\${root}/${model.dash}/export\`, () => import('./pages/export'));
-        router.all(\`\${root}/${model.dash}/import\`, () => import('./pages/import'));
-        router.all(\`\${root}/${model.dash}/update/${ids}\`, () => import('./pages/update'));
-        router.all(\`\${root}/${model.dash}/remove/${ids}\`, () => import('./pages/remove'));
-        router.all(\`\${root}/${model.dash}/restore/${ids}\`, () => import('./pages/restore'));
+        const root = server.config.path('admin.root', '/admin');
+        server.imports.all(
+          \`\${root}/${model.dash}/create\`, 
+          () => import('./pages/create')
+        );
+        server.imports.all(
+          \`\${root}/${model.dash}/detail/${ids}\`, 
+          () => import('./pages/detail')
+        );
+        server.imports.all(
+          \`\${root}/${model.dash}/export\`, 
+          () => import('./pages/export')
+        );
+        server.imports.all(
+          \`\${root}/${model.dash}/import\`, 
+          () => import('./pages/import')
+        );
+        server.imports.all(
+          \`\${root}/${model.dash}/remove/${ids}\`, 
+          () => import('./pages/remove')
+        );
+        server.imports.all(
+          \`\${root}/${model.dash}/restore/${ids}\`, 
+          () => import('./pages/restore')
+        );
+        server.imports.all(
+          \`\${root}/${model.dash}/search\`, 
+          () => import('./pages/search')
+        );
+        server.imports.all(
+          \`\${root}/${model.dash}/update/${ids}\`, 
+          () => import('./pages/update')
+        );
+
+        const module = server.config.path('client.module', '@stackpress/.incept');
+        server.view.all(
+          \`\${root}/${model.dash}/create\`, 
+          \`\${module}/${model.name}/admin/templates/create\`,
+          -100
+        );
+        server.view.all(
+          \`\${root}/${model.dash}/detail/${ids}\`, 
+          \`\${module}/${model.name}/admin/templates/detail\`,
+          -100
+        );
+        server.view.all(
+          \`\${root}/${model.dash}/remove/${ids}\`, 
+          \`\${module}/${model.name}/admin/templates/remove\`,
+          -100
+        );
+        server.view.all(
+          \`\${root}/${model.dash}/restore/${ids}\`, 
+          \`\${module}/${model.name}/admin/templates/restore\`,
+          -100
+        );
+        server.view.all(
+          \`\${root}/${model.dash}/search\`, 
+          \`\${module}/${model.name}/admin/templates/search\`,
+          -100
+        );
+        server.view.all(
+          \`\${root}/${model.dash}/update/${ids}\`, 
+          \`\${module}/${model.name}/admin/templates/update\`,
+          -100
+        );
       `.trim()
     });
   }

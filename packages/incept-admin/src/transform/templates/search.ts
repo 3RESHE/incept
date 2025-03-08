@@ -7,15 +7,15 @@ import type Registry from '@stackpress/incept/dist/schema/Registry';
 import { render } from '@stackpress/incept/dist/schema/helpers';
 
 const template = `
-<link rel="import" type="template" href="@stackpress/incept-admin/dist/components/head.ink" name="html-head" />
-<link rel="import" type="component" href="@stackpress/ink-ui/element/icon.ink" name="element-icon" />
-<link rel="import" type="component" href="@stackpress/ink-ui/element/crumbs.ink" name="element-crumbs" />
-<link rel="import" type="component" href="@stackpress/ink-ui/element/pager.ink" name="element-pager" />
-<link rel="import" type="component" href="@stackpress/ink-ui/field/input.ink" name="field-input" />
-<link rel="import" type="component" href="@stackpress/ink-ui/form/button.ink" name="form-button" />
-<link rel="import" type="component" href="../../components/table.ink" name="{{lower}}-table" />
-<link rel="import" type="component" href="../../components/filters.ink" name="{{lower}}-filters" />
-<link rel="import" type="component" href="@stackpress/incept-admin/dist/components/app.ink" name="admin-app" />
+<link rel="import" type="template" href="@stackpress/incept-admin/dist/components/head" name="html-head" />
+<link rel="import" type="component" href="@stackpress/ink-ui/element/icon" name="element-icon" />
+<link rel="import" type="component" href="@stackpress/ink-ui/element/crumbs" name="element-crumbs" />
+<link rel="import" type="component" href="@stackpress/ink-ui/element/pager" name="element-pager" />
+<link rel="import" type="component" href="@stackpress/ink-ui/field/input" name="field-input" />
+<link rel="import" type="component" href="@stackpress/ink-ui/form/button" name="form-button" />
+<link rel="import" type="component" href="../../components/table" name="{{lower}}-table" />
+<link rel="import" type="component" href="../../components/filters" name="{{lower}}-filters" />
+<link rel="import" type="component" href="@stackpress/incept-admin/dist/components/app" name="admin-app" />
 <style>
   @ink theme;
   @ink reset;
@@ -28,29 +28,41 @@ const template = `
   import { _ } from '@stackpress/incept-i18n';
   import { addQueryParam } from '@stackpress/incept-ink/dist/helpers';
   const { 
-    q,
-    error,
-    code = 200, 
-    status = 'OK',
-    span = {}, 
-    filter = {},
-    results = [],
-    total = 0,
-    skip = 0,
-    take = 50,
+    config = {},
     session = { 
       id: 0, 
       token: '', 
       roles: [ 'GUEST' ], 
       permissions: [] 
     },
-    settings = { 
-      root: '/admin',
-      name: 'Admin', 
-      logo: '/images/logo-square.png',
-      menu: []
-    }
+    request = {},
+    response = {}
   } = props('document');
+
+  const {
+    q,
+    span = {}, 
+    filter = {},
+    skip = 0,
+    take = 50,
+  } = request.data || {};
+
+  const {
+    error,
+    code = 200,
+    status = 'OK',
+    errors = {},
+    results = [],
+    total = 0
+  } = response;
+
+  const settings = config.admin || { 
+    root: '/admin',
+    name: 'Admin', 
+    logo: '/images/logo-square.png',
+    menu: []
+  };
+
   const url = \`\${settings.root}/{{lower}}/search\`;
   const title = _('{{plural}}');
   const links = { 

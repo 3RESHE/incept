@@ -3,19 +3,19 @@ export function addQueryParam(search: string, name: string, value: string) {
   const params = new URLSearchParams(search);
   params.append(name, value);
   return params.toString();
-}
+};
 
 export function removeQueryParam(search: string, name: string) {
   const params = new URLSearchParams(search);
   params.delete(name);
   return params.toString();
-}
+};
 
 export function filter(name: string, value: string) {
   return `${window.location.pathname}?${
     addQueryParam(window.location.search, `filter[${name}]`, value)
   }`;
-}
+};
 
 export function sort(name: string) {
   const params = new URLSearchParams(window.location.search);
@@ -27,7 +27,7 @@ export function sort(name: string) {
       ? removeQueryParam(window.location.search, `sort[${name}]`)
       : addQueryParam(window.location.search, `sort[${name}]`, 'asc')
   }`;
-}
+};
 
 export function order(name: string) {
   const params = new URLSearchParams(window.location.search);
@@ -37,4 +37,4 @@ export function order(name: string) {
     : direction === 'desc' 
     ? 'caret-down'
     : 'sort';
-}
+};

@@ -2,7 +2,6 @@
 import type { ServerRequest } from '@stackpress/ingest/dist/types';
 import type Response from '@stackpress/ingest/dist/Response';
 //incept
-import type { TemplatePlugin } from '@stackpress/incept-ink/dist/types';
 import type Model from '@stackpress/incept/dist/schema/Model';
 //common
 import type { AdminConfig } from '../types';
@@ -16,71 +15,27 @@ export default function AdminRestorePageFactory(model: Model) {
     }
     //get the server
     const server = req.context;
-    //get session
-    const session = await server.call('me', req);
     //get the admin config
     const admin = server.config<AdminConfig['admin']>('admin') || {};
     const root = admin.root || '/admin';
-    //get the renderer
-    const { render } = server.plugin<TemplatePlugin>('template');
-    //determine the templates
-    const module = server.config.path<string>('client.module');
-    const error = '@stackpress/incept-admin/dist/components/error';
-    const template = `${module}/${model.name}/admin/templates/restore`;
     //get id from url params
     const ids = model.ids.map(column => req.data(column.name)).filter(Boolean);
     if (ids.length === model.ids.length) {
       //if confirmed
-      if (req.query('confirmed')) {
+      if (req.data('confirmed')) {
         //emit restore event
-        const response = await server.call(`${model.dash}-restore`, req);
+        await server.call(`${model.dash}-restore`, req, res);
         //if they want json (success or fail)
-        if (req.data.has('json')) {
-          return res.setJSON(response);
-        }
+        if (req.data.has('json')) return;
         //if successfully restored
-        if (response.code === 200) {
+        if (res.code === 200) {
           //redirect
-          return res.redirect(`${root}/${model.dash}/detail/${ids.join('/')}`);
+          res.redirect(`${root}/${model.dash}/detail/${ids.join('/')}`);
         }
-        //not restored, render error page
-        return res.setHTML(await render(error, { 
-          ...response, 
-          settings: admin,
-          session: session.results 
-        }));
+        return;
       }
-      const response = await server.call('${model.dash}-detail', req);
-      //if they want json (success or fail)
-      if (req.data.has('json')) {
-        return res.setJSON(response);
-      }
-      //if successfully fetched
-      if (response.code === 200) {
-        //render the restore page
-        return res.setHTML(await render(template, { 
-          ...response, 
-          settings: admin, 
-          session: session.results 
-        }));
-      }
-      //it did not fetch, render error page
-      return res.setHTML(await render(error, { 
-        ...response, 
-        settings: admin,
-        session: session.results
-      }));
+      //not confirmed, fetch the data using the id
+      await server.call(`${model.dash}-detail`, req, res);
     }
-    //if they want json (success or fail)
-    if (req.data.has('json')) {
-      return res.setJSON({ code: 404, status: 'Not Found' });
-    }
-    //no id was found, render error page (404)
-    res.setHTML(await render(error, { 
-      code: 404, 
-      status: 'Not Found',
-      settings: admin,
-      session: session.results 
-    }));
   };
 };

@@ -1,5 +1,5 @@
 //stackpress
-import { ServerRouter } from '@stackpress/ingest/dist/Router';
+import ServerRouter from '@stackpress/ingest/dist/router/ServerRouter';
 //incept
 import type Model from '@stackpress/incept/dist/schema/Model';
 //local

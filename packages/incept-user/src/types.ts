@@ -32,29 +32,31 @@ export type Session = SessionData & {
 // Server Types
 
 export type SessionPlugin = SessionType;
+export type AuthConfig = {
+  auth: {
+    name: string,
+    logo: string,
+    '2fa': {},
+    captcha: {},
+    roles: string[],
+    username: boolean,
+    email: boolean,
+    phone: boolean,
+    password: {
+      min: number,
+      max: number,
+      upper: boolean,
+      lower: boolean,
+      number: boolean,
+      special: boolean
+    }
+  }
+};
 export type SessionConfig = { 
   session: {
     name: string,
     seed: string,
-    access: PermissionList,
-    auth: {
-      name: string,
-      logo: string,
-      '2fa': {},
-      captcha: {},
-      roles: string[],
-      username: boolean,
-      email: boolean,
-      phone: boolean,
-      password: {
-        min: number,
-        max: number,
-        upper: boolean,
-        lower: boolean,
-        number: boolean,
-        special: boolean
-      }
-    }
+    access: PermissionList
   }
 };
 

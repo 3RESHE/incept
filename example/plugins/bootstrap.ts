@@ -6,10 +6,7 @@ import { config } from './config';
 
 export default async function bootstrap(mode = config.server.mode) {
   //make a server
-  const server = http({
-    //whether to use require cache on route entry file imports
-    cache: mode === 'production'
-  }) as Server;
+  const server = http() as Server;
   //load the plugins
   await server.bootstrap();
   //initialize the plugins

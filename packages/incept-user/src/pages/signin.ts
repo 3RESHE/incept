@@ -1,12 +1,12 @@
 //stackpress
 import type Response from '@stackpress/ingest/dist/Response';
 import type { ServerRequest } from '@stackpress/ingest/dist/types';
-import type { TemplatePlugin } from '@stackpress/incept-ink/dist/types';
 //common
-import type { SigninType, SessionConfig, SessionPlugin } from '../types';
-
-type AuthConfig = SessionConfig['session']['auth'];
-const template = '@stackpress/incept-user/dist/templates/signin';
+import type { 
+  SigninType, 
+  AuthExtended,
+  SessionPlugin
+} from '../types';
 
 export default async function SignInPage(req: ServerRequest, res: Response) {
   //if there is a response body or there is an error code
@@ -17,38 +17,23 @@ export default async function SignInPage(req: ServerRequest, res: Response) {
   //extract project and model from client
   const server = req.context;
   // /auth/signin/:type
-  const { 
-    type = 'username', 
-    redirect_uri: redirect = '/' 
-  } = req.data<{ type: SigninType, redirect_uri: string }>();
-  //get the auth config
-  const config = server.config<AuthConfig>('session', 'auth');
+  const { redirect_uri: redirect = '/' } = req.data<{ 
+    type: SigninType, 
+    redirect_uri: string 
+  }>();
   //get the session
   const session = server.plugin<SessionPlugin>('session');
-  //get the renderer
-  const { render } = server.plugin<TemplatePlugin>('template');
   //get authorization
   const token = session.token(req);
   const me = session.get(token || '');
+  //form submission
   if (req.method === 'POST') {
-    const response = await server.call('auth-signin', req);
-    if (response.code !== 200) {
-      res.setHTML(await render(template, { 
-        ...response, 
-        input: req.data(),
-        type, 
-        config 
-      }));
-      return;
-    }
-    const { profile } = response.results as {
-      profile: {
-        id: string,
-        name: string,
-        image: string,
-        roles: string[]
-      }
-    };
+    //sign in
+    await server.call('auth-signin', req, res);
+    //if there is an error, do nothing
+    if (res.code !== 200) return;
+    //sign in successful, get the profile
+    const { profile } = res.body as unknown as AuthExtended;
     //set session
     res.session.set('session', session.create({
       id: profile.id, 
@@ -59,10 +44,11 @@ export default async function SignInPage(req: ServerRequest, res: Response) {
     //redirect
     res.redirect(redirect);
     return;
+  //if there is already a session
   } else if (me) {
     res.redirect(redirect);
     return;
   }
-
-  res.setHTML(await render(template, { type, config }));
+  //need to say that the response is ok
+  res.setStatus(200);
 };

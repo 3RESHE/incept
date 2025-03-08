@@ -4,52 +4,50 @@ import path from 'node:path';
 //stackpress
 import type { ServerRequest } from '@stackpress/ingest/dist/types';
 import type Response from '@stackpress/ingest/dist/Response';
-import type { TemplatePlugin } from '@stackpress/incept-ink/dist/types';
-
-const template500 = '@/plugins/app/templates/500';
-const template404 = '@/plugins/app/templates/404';
 
 export default async function ErrorPage(req: ServerRequest, res: Response) {
   //if there is already a body
   if (res.body) return;
-  //get the server
-  const server = req.context;
-  //get the renderer
-  const { render } = server.plugin<TemplatePlugin>('template');
-
-  if (res.code === 404) {
-    const html = await render(template404, { url: req.url.pathname });
-    res.setHTML(html, res.code, res.status);
-    return;
-  }
-
   //general settings
-  const response = res.toStatusResponse();
-  response.stack = res.stack || [];
-  response.stack = response.stack.slice(1).map(trace => {
+  const { stack = [] } = res.toStatusResponse();
+  //add snippets to stack
+  stack.forEach((trace, i) => {
+    //skip the first trace
+    if (i === 0) return;
     const { file } = trace;
     if (!file.startsWith(path.sep) || !fs.existsSync(file)) {
       return trace;
     }
-
-    return { ...trace, source: fs.readFileSync(file, 'utf8') };
-  });
-  //render the template
-  const html = await render(template500, { 
-    ...response, 
-    url: req.url.pathname 
+    const { line, char } = trace;
+    const source = fs.readFileSync(file, 'utf8')
+    const lines = source.split('\n');
+    const snippet: Record<string, string|undefined> = {
+      before: lines[line - 2] || undefined,
+      main: lines[line - 1] || undefined,
+      after: lines[line] || undefined,
+    };
+    //if location doesnt match main line
+    if (snippet.main && snippet.main.length >= char) {
+      snippet.location = ' '.repeat(Math.max(char - 1, 0)) + '^';
+    }
+    //@ts-ignore - snippet does not exist in type Trace
+    stack[i] = { ...trace, snippet };
   });
   if (req.url.pathname.endsWith('.js')) {
-    res.setBody('text/javascript', `document.write(${
-      JSON.stringify(html
-        .replaceAll('\\\\n', '\n')
-        .replaceAll('\\\\\\', '')
-      )
-    });`, res.code, res.status);
+    res.setBody(
+      'application/javascript', 
+      `console.log(${JSON.stringify(res.toStatusResponse())});`, 
+      res.code, 
+      res.status
+    );
     return;
   } else if (req.url.pathname.endsWith('.css')) {
-    res.setBody('text/css', `/* ${response.error} */`, res.code, res.status);
+    res.setBody(
+      'text/css', 
+      `/* ${JSON.stringify(res.toStatusResponse())} */`, 
+      res.code, 
+      res.status
+    );
     return;
   }
-  res.setHTML(html, res.code, res.status);
 };

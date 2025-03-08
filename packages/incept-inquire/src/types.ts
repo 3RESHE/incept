@@ -1,6 +1,6 @@
 //stackpress
 import type { UnknownNest } from '@stackpress/lib/dist/types';
-import type { ServerRouter } from '@stackpress/ingest/dist/Router';
+import type ServerRouter from '@stackpress/ingest/dist/router/ServerRouter';
 import type Engine from '@stackpress/inquire/dist/Engine';
 import type Create from '@stackpress/inquire/dist/builder/Create';
 //local

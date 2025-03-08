@@ -1,5 +1,11 @@
 import type { InkCompiler } from '@stackpress/ink/dist/types';
-import type RefreshServer from '@stackpress/ink-dev/dist/RefreshServer';
+import type HttpServer from '@stackpress/ink-dev/dist/HttpServer';
+import type WhatwgServer from '@stackpress/ink-dev/dist/WhatwgServer';
+
+export type TemplateServers = {
+  http: HttpServer,
+  whatwg: WhatwgServer
+};
 
 export type Renderer = (
   filePath: string, 
@@ -8,17 +14,17 @@ export type Renderer = (
 
 export type InkPlugin = {
   compiler: InkCompiler,
-  refresh: RefreshServer,
   render: Renderer,
-  templates: Set<string>
+  servers: TemplateServers
 };
 
 export type TemplatePlugin = {
   render: Renderer,
-  templates: Set<string>
+  servers: TemplateServers
 };
 
 export type TemplateDevConfig = {
+  mode: 'http' | 'whatwg',
   buildRoute: string,
   socketRoute: string
 };
@@ -30,13 +36,13 @@ export type TemplateEngineConfig = {
   serverPath?: string,
   manifestPath?: string,
   cwd: string,
+  notemplate: string,
   dev: TemplateDevConfig
 };
 
 export type TemplateConfig = { 
   template: {
     engine: string,
-    config: TemplateEngineConfig,
-    templates: string[]
+    config: TemplateEngineConfig
   }
 };

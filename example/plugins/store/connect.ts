@@ -3,7 +3,7 @@ import path from 'node:path';
 import { PGlite } from '@electric-sql/pglite';
 import pglite from '@stackpress/inquire-pglite';
 
-const url = process.env.DATABASE_URL || './build/database';
+const url = process.env.DATABASE_URL || './.build/database';
 
 /**
  * Some database connections awaits the connection...

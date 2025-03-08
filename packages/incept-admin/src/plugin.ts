@@ -4,7 +4,6 @@ import type Transformer from '@stackpress/idea-transformer/dist/Transformer';
 import type Server from '@stackpress/ingest/dist/Server';
 //incept
 import type { ClientPlugin } from '@stackpress/incept/dist';
-import type { TemplatePlugin } from '@stackpress/incept-ink/dist/types';
 //admin
 import type { ClientWithRoutesPlugin } from './types';
 
@@ -14,26 +13,6 @@ type Client = ClientPlugin<ClientWithRoutesPlugin>;
  * This interface is intended for the Incept library.
  */
 export default function plugin(server: Server) {
-  //on config, add templates
-  server.on('config', req => {
-    const server = req.context;
-    const module = server.config.path('client.module', '@stackpress/.incept');
-    //get the client (to determine the model page templates)
-    const client = server.plugin<ClientPlugin>('client');
-    //get the template plugin
-    const { templates } = server.plugin<TemplatePlugin>('template');
-    templates.add('@stackpress/incept-admin/dist/components/error.ink');
-    if (!client || !templates) return;
-    //get all the models and add the page templates
-    Object.values(client.model).forEach(model => {
-      templates.add(`${module}/${model.config.name}/admin/templates/create.ink`);
-      templates.add(`${module}/${model.config.name}/admin/templates/detail.ink`);
-      templates.add(`${module}/${model.config.name}/admin/templates/remove.ink`);
-      templates.add(`${module}/${model.config.name}/admin/templates/restore.ink`);
-      templates.add(`${module}/${model.config.name}/admin/templates/search.ink`);
-      templates.add(`${module}/${model.config.name}/admin/templates/update.ink`);
-    });
-  }, -10);
   //on route, add admin routes
   server.on('route', req => {
     const server = req.context;

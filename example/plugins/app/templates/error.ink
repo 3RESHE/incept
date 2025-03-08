@@ -1,9 +1,9 @@
-<link rel="import" type="template" href="@/plugins/app/components/head.ink" name="html-head" />
-<link rel="import" type="component" href="@stackpress/ink-ui/layout/panel.ink" name="panel-layout" />
-<link rel="import" type="component" href="@stackpress/ink-ui/layout/table.ink" name="table-layout" />
-<link rel="import" type="component" href="@stackpress/ink-ui/layout/table/head.ink" name="table-head" />
-<link rel="import" type="component" href="@stackpress/ink-ui/layout/table/row.ink" name="table-row" />
-<link rel="import" type="component" href="@stackpress/ink-ui/layout/table/col.ink" name="table-col" />
+<link rel="import" type="template" href="@/plugins/app/components/head" name="html-head" />
+<link rel="import" type="component" href="@stackpress/ink-ui/layout/panel" name="panel-layout" />
+<link rel="import" type="component" href="@stackpress/ink-ui/layout/table" name="table-layout" />
+<link rel="import" type="component" href="@stackpress/ink-ui/layout/table/head" name="table-head" />
+<link rel="import" type="component" href="@stackpress/ink-ui/layout/table/row" name="table-row" />
+<link rel="import" type="component" href="@stackpress/ink-ui/layout/table/col" name="table-col" />
 <style>
   @ink theme;
   @ink reset;
@@ -14,40 +14,47 @@
   import { env, props } from '@stackpress/ink';
   import { _ } from '@stackpress/incept-i18n';
 
-  const { url, status, error, stack = [] } = props('document');
+  const {
+    config = {},
+    session = { 
+      id: 0, 
+      token: '', 
+      roles: [ 'GUEST' ], 
+      permissions: [] 
+    },
+    request = {},
+    response = {}
+  } = props('document');
 
-  const title = _('Oops...');
-  const description = _('There was an error.');
+  const {
+    error,
+    code = 200,
+    status = 'OK', 
+    stack = []
+  } = response;
 
-  stack.forEach(trace => {
-    const { source, line, char } = trace;
-    if (!source) return;
-    const lines = source.split('\n');
-    const snippet: Record<string, string|undefined> = {
-      before: lines[line - 2] || undefined,
-      main: lines[line - 1] || undefined,
-      after: lines[line] || undefined,
-    };
-    //if location doesnt match main line
-    if (snippet.main && snippet.main.length >= char) {
-      snippet.location = ' '.repeat(Math.max(char - 1, 0)) + '^';
-    }
+  const mode = config.server?.mode || 'production';
+  const development = mode !== 'production';
+  const notfound = code === 404;
 
-    trace.snippet = snippet;
-  });
+  const url = request.url?.pathname || '/';
+  const title = notfound ? _('Not Found') : _('Oops...');
+  const description = notfound 
+    ? _('The requested resource was not found.') 
+    : _('There was an error.');
 </script>
 <html>
   <html-head />
   <body class="dark bg-t-0 tx-t-1 tx-arial">
     <div class="p-20 w-calc-full-40">
-      <h1 class="pt-10 pb-20">{_('Oops...')}</h1>
-      <p>
-        Something went wrong. Please try again later.
-      </p>
-      <div class="bg-t-4 courier tx-lh-22 tx-word-wrap px-10 py-20 scroll-x-auto mt-20 tx-bold tx-2xl">
-        {error || status}
-      </div>
-      <if true={stack.length}>
+      <h1 class="pt-10 pb-20">{title}</h1>
+      <p>{description}</p>
+      <if true={!notfound}>
+        <div class="bg-t-4 courier tx-lh-22 tx-word-wrap px-10 py-20 scroll-x-auto mt-20 tx-bold tx-2xl">
+          {error || status}
+        </div>
+      </if>
+      <if true={!notfound && development && stack.length}>
         <h3 class="mt-60 tx-upper tx-lg">{_('Stack Trace:')}</h3>
         <table-layout 
           class="w-full mt-20"

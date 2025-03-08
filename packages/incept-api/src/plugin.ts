@@ -11,9 +11,9 @@ export default function plugin(server: Server) {
   //on route, add user routes
   server.on('route', req => {
     const server = req.context;
-    const router = server.withImports;
-    router.all('/auth/oauth/token', () => import('./pages/token'));
-    router.all('/auth/oauth', () => import('./pages/oauth'));
+    server.imports.all('/auth/oauth/token', () => import('./pages/token'));
+    server.imports.all('/auth/oauth', () => import('./pages/oauth'));
+    server.view.all('/auth/oauth', 'stackpress/template/pages/oauth', -100);
     const { endpoints = [] } = server.config<APIConfig['api']>('api') || {};
     for (const endpoint of endpoints) {
       if (endpoint.type === 'session') {

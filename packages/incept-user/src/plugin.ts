@@ -1,7 +1,5 @@
 //stackpress
 import type Server from '@stackpress/ingest/dist/Server';
-//incept
-import type { TemplatePlugin } from '@stackpress/incept-ink/dist/types';
 //user
 import type { PermissionList } from './types';
 import Session from './Session';
@@ -21,34 +19,29 @@ export default function plugin(server: Server) {
     //add session as a project plugin
     server.register('session', session);
   });
-  //on config (low priority), add user templates
-  server.on('config', req => {
-    const server = req.context;
-    const { templates } = server.plugin<TemplatePlugin>('template');
-    if (templates) {
-      templates.add('@stackpress/incept-user/dist/templates/signup.ink');
-      templates.add('@stackpress/incept-user/dist/templates/signin.ink');
-    }
-  }, -10);
   //on listen, add user events
   server.on('listen', req => {
-    const router = req.context.withImports;
-    router.on('auth-search', () => import('./events/search'), -10000);
-    router.on('auth-detail', () => import('./events/detail'), -10000);
-    router.on('auth-get', () => import('./events/detail'), -10000);
-    router.on('auth-signup', () => import('./events/signup'));
-    router.on('auth-signin', () => import('./events/signin'));
-    router.on('auth-signout', () => import('./events/signout'));
-    router.on('authorize', () => import('./events/authorize'));
-    router.on('me', () => import('./events/session'));
-    router.on('request', () => import('./pages/authorize'));
+    const server = req.context;
+    server.imports.on('auth-search', () => import('./events/search'), -10000);
+    server.imports.on('auth-detail', () => import('./events/detail'), -10000);
+    server.imports.on('auth-get', () => import('./events/detail'), -10000);
+    server.imports.on('auth-signup', () => import('./events/signup'));
+    server.imports.on('auth-signin', () => import('./events/signin'));
+    server.imports.on('auth-signout', () => import('./events/signout'));
+    server.imports.on('authorize', () => import('./events/authorize'));
+    server.imports.on('me', () => import('./events/session'));
+    server.imports.on('request', () => import('./pages/authorize'));
   });
   //on route, add user routes
   server.on('route', req => {
-    const router = req.context.withImports;
-    router.all('/auth/signin', () => import('./pages/signin'));
-    router.all('/auth/signin/:type', () => import('./pages/signin'));
-    router.all('/auth/signup', () => import('./pages/signup'));
-    router.all('/auth/signout', () => import('./pages/signout'));
+    const server = req.context;
+    server.imports.all('/auth/signin', () => import('./pages/signin'));
+    server.imports.all('/auth/signin/:type', () => import('./pages/signin'));
+    server.imports.all('/auth/signup', () => import('./pages/signup'));
+    server.imports.all('/auth/signout', () => import('./pages/signout'));
+
+    server.view.all('/auth/signin', '@stackpress/incept-user/dist/templates/signin', -100);
+    server.view.all('/auth/signin/:type', '@stackpress/incept-user/dist/templates/signin', -100);
+    server.view.all('/auth/signup', '@stackpress/incept-user/dist/templates/signup', -100);
   });
 };

@@ -7,10 +7,10 @@ import type Registry from '@stackpress/incept/dist/schema/Registry';
 import { render } from '@stackpress/incept/dist/schema/helpers';
 
 const template = `
-<link rel="import" type="template" href="@stackpress/incept-admin/dist/components/head.ink" name="html-head" />
-<link rel="import" type="component" href="@stackpress/incept-admin/dist/components/app.ink" name="admin-app" />
-<link rel="import" type="component" href="@stackpress/ink-ui/element/crumbs.ink" name="element-crumbs" />
-<link rel="import" type="component" href="../../components/form.ink" name="{{lower}}-form" />
+<link rel="import" type="template" href="@stackpress/incept-admin/dist/components/head" name="html-head" />
+<link rel="import" type="component" href="@stackpress/incept-admin/dist/components/app" name="admin-app" />
+<link rel="import" type="component" href="@stackpress/ink-ui/element/crumbs" name="element-crumbs" />
+<link rel="import" type="component" href="../../components/form" name="{{lower}}-form" />
 <style>
   @ink theme;
   @ink reset;
@@ -22,24 +22,35 @@ const template = `
   import { _ } from '@stackpress/incept-i18n';
 
   const { 
-    error,
-    code = 200, 
-    status = 'OK', 
-    errors = {}, 
-    input = {{defaults}},
+    config = {},
     session = { 
       id: 0, 
       token: '', 
       roles: [ 'GUEST' ], 
       permissions: [] 
     },
-    settings = { 
-      root: '/admin',
-      name: 'Admin', 
-      logo: '/images/logo-square.png',
-      menu: []
-    }
+    request = {},
+    response = {}
   } = props('document');
+
+  const { 
+    input = {{defaults}}
+  } = request.data || {};
+
+  const {
+    error,
+    code = 200,
+    status = 'OK',
+    errors = {}
+  } = response;
+
+  const settings = config.admin || { 
+    root: '/admin',
+    name: 'Admin', 
+    logo: '/images/logo-square.png',
+    menu: []
+  };
+
   const url = \`\${settings.root}/{{lower}}/create\`;
   const title = _('Create {{singular}}');
   const links = { search: \`\${settings.root}/{{lower}}/search\` };

@@ -1,7 +1,7 @@
 import type { ServerConfig } from '@stackpress/incept/dist/types';
 import type { LanguageConfig } from '@stackpress/incept-i18n/dist/types';
 import type { DatabaseConfig } from '@stackpress/incept-inquire/dist/types';
-import type { SessionConfig } from '@stackpress/incept-user/dist/types';
+import type { AuthConfig, SessionConfig } from '@stackpress/incept-user/dist/types';
 import type { TemplateConfig } from '@stackpress/incept-ink/dist/types';
 import type { AdminConfig } from '@stackpress/incept-admin/dist/types';
 import type { APIConfig } from '@stackpress/incept-api/dist/types';
@@ -24,7 +24,7 @@ const client = path.join(assets, 'client');
 // - [project]/build/client?
 // - [project]/build/plugins
 // - [project]/build/scripts
-const build = development ? path.join(cwd, 'build') : cwd;
+const build = development ? path.join(cwd, '.build') : cwd;
 // - [project]/build/migrations
 const migrations = path.join(build, 'migrations');
 // - [project]/build/revisions
@@ -42,6 +42,7 @@ export type Config = ServerConfig
   & DatabaseConfig
   & LanguageConfig 
   & TemplateConfig 
+  & AuthConfig
   & SessionConfig 
   & AdminConfig
   & APIConfig
@@ -74,18 +75,19 @@ export const config: Config = {
   template: {
     engine: 'ink',
     config: {
+      cwd: cwd,
       brand: '',
       minify: environment !== 'development',
       serverPath: templates,
       clientPath: client,
       manifestPath: manifest,
-      cwd: cwd,
+      notemplate: 'json',
       dev: { 
+        mode: 'http',
         buildRoute: '/client',
         socketRoute: '/__ink_dev__'
       }
-    },
-    templates: []
+    }
   },
   email: {
     host: 'smtp.example.com',
@@ -94,6 +96,24 @@ export const config: Config = {
     auth: {
       user: 'username',
       pass: 'password',
+    }
+  },
+  auth: {
+    name: 'Incept',
+    logo: '/images/incept-logo-long.png',
+    '2fa': {},
+    captcha: {},
+    roles: [ 'USER' ],
+    username: true,
+    email: true,
+    phone: true,
+    password: {
+      min: 8,
+      max: 32,
+      upper: true,
+      lower: true,
+      number: true,
+      special: true
     }
   },
   session: {
@@ -137,24 +157,6 @@ export const config: Config = {
         { method: 'ALL', route: '/auth/**' },
         { method: 'ALL', route: '/api/**' }
       ]
-    },
-    auth: {
-      name: 'Incept',
-      logo: '/images/incept-logo-long.png',
-      '2fa': {},
-      captcha: {},
-      roles: [ 'USER' ],
-      username: true,
-      email: true,
-      phone: true,
-      password: {
-        min: 8,
-        max: 32,
-        upper: true,
-        lower: true,
-        number: true,
-        special: true
-      }
     }
   },
   cookie: { path: '/' },

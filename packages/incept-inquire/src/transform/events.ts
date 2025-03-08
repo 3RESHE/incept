@@ -41,7 +41,7 @@ export default function generate(directory: Directory, registry: Registry) {
     //const router = new ServerRouter();
     source.addStatements(`
       const router = new ServerRouter();
-      const imports = router.withImports;
+      const imports = router.imports;
       imports.on('${model.dash}-batch', () => import('./batch'));
       imports.on('${model.dash}-create', () => import('./create'));
       imports.on('${model.dash}-detail', () => import('./detail'));

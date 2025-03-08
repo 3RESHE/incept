@@ -4,8 +4,6 @@ import path from 'node:path';
 import type Server from '@stackpress/ingest/dist/Server';
 import ink from '@stackpress/ink/compiler';
 import { plugin as css } from '@stackpress/ink-css';
-//ink
-import type { TemplatePlugin } from '../types';
 
 export default async function build(server: Server<any, any, any>) {
   //get the compiler options
@@ -20,8 +18,6 @@ export default async function build(server: Server<any, any, any>) {
     server: serverPath,
     manifest: manifestPath,
   };
-  //get the template plugin
-  const { templates } = server.plugin<TemplatePlugin>('template');
   //create ink compiler (to create the client, server and style builds)
   const compiler = ink({ brand, cwd, minify: true });
   //use ink css
@@ -36,6 +32,21 @@ export default async function build(server: Server<any, any, any>) {
     fs.mkdirSync(paths.client, { recursive: true });
   }
   //loop through the templates
+  const templates = new Set<string>(
+    Array
+      //Map<string, Set<EntryTask>>
+      .from(server.view.templates.values())
+      //Set<EntryTask>[]
+      .map(set => Array.from(set))
+      //EntryTask[][]
+      .flat()
+      //EntryTask[]
+      .map(task => !path.extname(task.entry) 
+        ? `${task.entry}.ink`
+        : task.entry
+      )
+      //string[]
+  );
   for (const template of templates) {
     //get the builder
     const builder = compiler.fromSource(template);
@@ -49,7 +60,7 @@ export default async function build(server: Server<any, any, any>) {
       //save the server build
       fs.writeFileSync(
         path.join(paths.server, `${builder.document.id}.js`),
-        (await builder.server()) + ';module.exports = InkAPI;'
+        await builder.server()
       );
     }
     //if there's a client path
